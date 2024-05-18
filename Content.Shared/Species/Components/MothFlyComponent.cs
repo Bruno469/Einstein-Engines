@@ -27,6 +27,4 @@ public sealed partial class MothFlyComponent : Component
     /// </summary>
     [DataField("popupText")]
     public string PopupText = "moth-fly-action-use";
-    [DataField("popupText")]
-    public string StopPopupText = "moth-fly-stop-action-use";
 }
