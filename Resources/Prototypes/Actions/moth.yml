@@ -1,0 +1,14 @@
+- type: entity
+  id: MothFlyAction
+  name: Fly!
+  description: Unfurl your wings and gracefully take flight into the night sky.
+  noSpawn: false
+  components:
+  - type: InstantAction
+    icon:
+      sprite: Actions/moth.rsi
+      state: Fly
+    event: !type:FlyActionEvent {}
+    checkCanInteract: false
+    checkConsciousness: true
+    useDelay: 25
