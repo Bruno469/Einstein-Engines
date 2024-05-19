@@ -11,4 +11,4 @@
     event: !type:FlyActionEvent {}
     checkCanInteract: false
     checkConsciousness: true
-    useDelay: 25
+    useDelay: 0.5
