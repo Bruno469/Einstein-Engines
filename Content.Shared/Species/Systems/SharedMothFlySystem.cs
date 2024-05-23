@@ -10,29 +10,26 @@ using Content.Shared.Movement.Events;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
 using Content.Shared.Movement.Systems;
-using Content.Shared.Movement.Components;
-using Robust.Shared.GameObjects;
 
 namespace Content.Shared.Species;
-public abstract partial class SharedMothFlySystem : EntitySystem
+
+public sealed partial class SharedMothFlySystem : EntitySystem
 {
     [Dependency] private readonly SharedActionsSystem _actionsSystem = default!;
+    [Dependency] private readonly SharedBodySystem _bodySystem = default!;
     [Dependency] private readonly IPrototypeManager _protoManager = default!;
     [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly MovementSpeedModifierSystem _movementSpeedModifier = default!;
+    [Dependency] private readonly StaminaSystem _stamina = default!;
 
     public override void Initialize()
     {
         base.Initialize();
         SubscribeLocalEvent<MothFlyComponent, MobStateChangedEvent>(OnMobStateChanged);
-        SubscribeLocalEvent<MothFlyComponent, FlyActionEvent>(OnFlyAction);
+        SubscribeLocalEvent<MothFlyComponent, ToggleMothflyEvent>(OnFlyAction);
     }
-    public void OnRoundStart(EntityUid uid, MothFlyComponent comp, MobStateChangedEvent args)
-    {
-        _actionsSystem.AddAction(uid, ref comp.ActionEntity, comp.ActionPrototype);
-        return;
-    }
+
     private void OnMobStateChanged(EntityUid uid, MothFlyComponent comp, MobStateChangedEvent args)
     {
         // When the mob changes state, check if they're dead and give them the action if so.
@@ -54,19 +51,17 @@ public abstract partial class SharedMothFlySystem : EntitySystem
         }
     }
 
-    private void OnFlyAction(EntityUid uid, MothFlyComponent comp, FlyActionEvent args)
+    private void OnFlyAction(EntityUid uid, MothFlyComponent comp, BaseActionEvent args)
     {
         // When they use the action, gib them (It's a meme lol).
-        if (IsEnabled(uid) == true)
-            _popupSystem.PopupClient(Loc.GetString(comp.StopPopupText, ("name", uid)), uid, uid);
         _popupSystem.PopupClient(Loc.GetString(comp.PopupText, ("name", uid)), uid, uid);
-        bool canFly = CanEnable(uid, comp);
-        SetEnabled(uid, comp, canFly);
+        if (TryComp<PhysicsComponent>(uid, out var physics))
+            _stamina.TakeStaminaDamage(uid, 50);
     }
 
     private bool IsEnabled(EntityUid uid)
     {
-        return HasComp<ActiveJetpackComponent>(uid);
+        return HasComp<MothFlyComponent>(uid);
     }
 
     protected virtual bool CanEnable(EntityUid uid, MothFlyComponent component)
@@ -87,13 +82,11 @@ public abstract partial class SharedMothFlySystem : EntitySystem
 
         if (TryComp<PhysicsComponent>(user, out var newphysics))
             _physics.SetBodyStatus(user, newphysics, BodyStatus.InAir);
-            _movementSpeedModifier.ChangeBaseSpeed(user, 2, 2, 1);
+        _movementSpeedModifier.ChangeBaseSpeed(user, 2, 2, 1);
     }
 
     public bool IsUserFlying(EntityUid uid)
     {
-        return HasComp<ActiveJetpackComponent>(uid);
+        return HasComp<MothFlyComponent>(uid);
     }
-
-    public sealed partial class FlyActionEvent : InstantActionEvent { }
 }
