@@ -54,8 +54,6 @@ public abstract class SharedMothFlySystem : EntitySystem
     {
         // When they use the action, gib them (It's a meme lol).
         _popupSystem.PopupClient(Loc.GetString(comp.PopupText, ("name", uid)), uid, uid);
-        if (TryComp<PhysicsComponent>(uid, out var physics))
-            _stamina.TakeStaminaDamage(uid, 50);
     }
 
     private bool IsEnabled(EntityUid uid)

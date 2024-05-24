@@ -4,7 +4,7 @@ using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Systems;
 using Robust.Shared.Collections;
 using Robust.Shared.Timing;
-using Robust.Shared.Species.Systems;
+using Content.Shared.Species.Systems;
 
 namespace Content.Server.Movement.Systems;
 
