@@ -12,8 +12,7 @@ using Robust.Shared.Physics.Systems;
 using Content.Shared.Movement.Systems;
 
 namespace Content.Shared.Species;
-
-public sealed partial class SharedMothFlySystem : EntitySystem
+public abstract class SharedMothFlySystem : EntitySystem
 {
     [Dependency] private readonly SharedActionsSystem _actionsSystem = default!;
     [Dependency] private readonly SharedBodySystem _bodySystem = default!;

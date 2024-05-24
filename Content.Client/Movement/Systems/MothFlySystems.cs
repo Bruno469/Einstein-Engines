@@ -1,31 +1,26 @@
+using Content.Shared.Clothing.Components;
+using Content.Shared.Clothing.EntitySystems;
 using Content.Shared.Movement.Components;
+using Content.Shared.Movement.Systems;
+using Robust.Client.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Timing;
 using Content.Shared.Species;
-using Content.Shared.Species.Components;
-using Content.Shared.Damage.Systems;
-using Content.Client.Atmos.EntitySystems;
-using Robust.Shared.Containers;
-using Content.Shared.Clothing.Components;
-using Content.Shared.Clothing.EntitySystems;
-using Content.Shared.Movement.Systems;
-using Robust.Client.GameObjects;
 
 namespace Content.Client.Movement.Systems;
 
 public sealed class MothFlySystems : SharedMothFlySystem
 {
     [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly ClothingSystem _clothing = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly StaminaSystem _stamina = default!;
-    [Dependency] private readonly IEntityManager _entManager = default!;
-    [Dependency] private readonly AtmosphereSystem _atmosphere = default!;
 
     public override void Initialize()
     {
         base.Initialize();
+        SubscribeLocalEvent<JetpackComponent, AppearanceChangeEvent>(OnJetpackAppearance);
     }
 
     protected override bool CanEnable(EntityUid uid, MothFlyComponent component)
@@ -58,7 +53,8 @@ public sealed class MothFlySystems : SharedMothFlySystem
     private void CreateParticles(EntityUid uid)
     {
         // Don't show particles unless the user is moving.
-        if (TryComp<PhysicsComponent>(uid, out var body) &&
+        if (Container.TryGetContainingContainer(uid, out var container) &&
+            TryComp<PhysicsComponent>(container.Owner, out var body) &&
             body.LinearVelocity.LengthSquared() < 1f)
         {
             return;
