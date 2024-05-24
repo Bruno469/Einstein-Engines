@@ -43,6 +43,10 @@ public sealed class MothFlySystems : SharedMothFlySystem
             return false;
         }
         var tile = _atmosphere.GetTileMixture(gridUid, null, coordinates, true);
+        if (tile != null)
+        {
+            return true;
+        }
         return false;
     }
     public override void Update(float frameTime)
@@ -95,7 +99,5 @@ public sealed class MothFlySystems : SharedMothFlySystem
         }
 
         Spawn("JetpackEffect", coordinates);
-        if (TryComp<PhysicsComponent>(uid, out var physics))
-            _stamina.TakeStaminaDamage(uid, 15);
     }
 }

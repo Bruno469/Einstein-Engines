@@ -4,19 +4,22 @@ using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Systems;
 using Robust.Shared.Collections;
 using Robust.Shared.Timing;
-using Content.Shared.Species.Systems;
+using Content.Shared.Species;
+using Robust.Shared.Physics.Components;
+using Content.Shared.Species.Components;
+using Content.Shared.Damage.Systems;
+using Content.Client.Atmos.EntitySystems;
 
 namespace Content.Server.Movement.Systems;
 
 public sealed class MothFlySystem : SharedMothFlySystem
 {
     [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly StaminaSystem _stamina = default!;
 
     protected override bool CanEnable(EntityUid uid, MothFlyComponent component)
     {
-        return base.CanEnable(uid, component) &&
-               TryComp<GasTankComponent>(uid, out var gasTank) &&
-               !(gasTank.Air.TotalMoles < component.MoleUsage);
+        return base.CanEnable(uid, component);
     }
 
     public override void Update(float frameTime)
@@ -26,27 +29,15 @@ public sealed class MothFlySystem : SharedMothFlySystem
         var toDisable = new ValueList<(EntityUid Uid, JetpackComponent Component)>();
         var query = EntityQueryEnumerator<ActiveJetpackComponent, JetpackComponent, GasTankComponent>();
 
-        while (query.MoveNext(out var uid, out var active, out var comp, out var gasTankComp))
+        while (query.MoveNext(out var uid, out var active, out var comp))
         {
             if (_timing.CurTime < active.TargetTime)
                 continue;
 
-            var gasTank = (uid, gasTankComp);
             active.TargetTime = _timing.CurTime + TimeSpan.FromSeconds(active.EffectCooldown);
-            var usedAir = _gasTank.RemoveAir(gasTank, comp.MoleUsage);
 
-            if (usedAir == null)
-                continue;
-
-            var usedEnoughAir =
-                MathHelper.CloseTo(usedAir.TotalMoles, comp.MoleUsage, comp.MoleUsage / 100);
-
-            if (!usedEnoughAir)
-            {
-                toDisable.Add((uid, comp));
-            }
-
-            _gasTank.UpdateUserInterface(gasTank);
+            if (TryComp<PhysicsComponent>(uid, out var physics))
+                _stamina.TakeStaminaDamage(uid, 15);
         }
 
         foreach (var (uid, comp) in toDisable)
