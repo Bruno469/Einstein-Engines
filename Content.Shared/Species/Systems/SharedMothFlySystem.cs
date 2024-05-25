@@ -10,6 +10,7 @@ using Content.Shared.Movement.Events;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
 using Content.Shared.Movement.Systems;
+using Content.Shared.Movement.Components;
 
 namespace Content.Shared.Species;
 public abstract class SharedMothFlySystem : EntitySystem
@@ -58,7 +59,7 @@ public abstract class SharedMothFlySystem : EntitySystem
 
     private bool IsEnabled(EntityUid uid)
     {
-        return HasComp<MothFlyComponent>(uid);
+        return HasComp<ActiveJetpackComponent>(uid);
     }
 
     protected virtual bool CanEnable(EntityUid uid, MothFlyComponent component)
@@ -84,6 +85,6 @@ public abstract class SharedMothFlySystem : EntitySystem
 
     public bool IsUserFlying(EntityUid uid)
     {
-        return HasComp<MothFlyComponent>(uid);
+        return HasComp<ActiveJetpackComponent>(uid);
     }
 }

@@ -8,6 +8,9 @@ using Content.Shared.Species;
 using Content.Shared.Species.Components;
 using Content.Shared.Damage.Systems;
 using Content.Client.Atmos.EntitySystems;
+using Content.Shared.Clothing.Components;
+using Content.Shared.Clothing.EntitySystems;
+using Content.Shared.Movement.Systems;
 
 namespace Content.Client.Movement.Systems;
 
