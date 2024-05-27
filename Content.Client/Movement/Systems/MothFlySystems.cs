@@ -1,5 +1,4 @@
 using Content.Shared.Movement.Components;
-using Robust.Client.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics.Components;
@@ -8,9 +7,7 @@ using Content.Shared.Species;
 using Content.Shared.Species.Components;
 using Content.Shared.Damage.Systems;
 using Content.Client.Atmos.EntitySystems;
-using Content.Shared.Clothing.Components;
-using Content.Shared.Clothing.EntitySystems;
-using Content.Shared.Movement.Systems;
+using Robust.Shared.Containers;
 
 namespace Content.Client.Movement.Systems;
 
@@ -30,26 +27,6 @@ public sealed class MothFlySystems : SharedMothFlySystem
     protected override bool CanEnable(EntityUid uid, MothFlyComponent component)
     {
         // No predicted atmos so you'd have to do a lot of funny to get this working.
-        var uidXform = Transform(uid);
-        var coordinates = uidXform.Coordinates;
-        var gridUid = coordinates.GetGridUid(EntityManager);
-        if (TryComp<MapGridComponent>(gridUid, out var grid))
-        {
-            coordinates = new EntityCoordinates(gridUid.Value, grid.WorldToLocal(coordinates.ToMapPos(EntityManager, _transform)));
-        }
-        else if (uidXform.MapUid != null)
-        {
-            coordinates = new EntityCoordinates(uidXform.MapUid.Value, _transform.GetWorldPosition(uidXform));
-        }
-        else
-        {
-            return false;
-        }
-        var tile = _atmosphere.GetTileMixture(gridUid, null, coordinates, true);
-        if (tile != null)
-        {
-            return true;
-        }
         return false;
     }
     public override void Update(float frameTime)
