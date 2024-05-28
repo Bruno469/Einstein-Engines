@@ -8,6 +8,10 @@ using Content.Shared.Species.Components;
 using Content.Shared.Damage.Systems;
 using Content.Client.Atmos.EntitySystems;
 using Robust.Shared.Containers;
+using Content.Shared.Clothing.Components;
+using Content.Shared.Clothing.EntitySystems;
+using Content.Shared.Movement.Systems;
+using Robust.Client.GameObjects;
 
 namespace Content.Client.Movement.Systems;
 
@@ -54,8 +58,7 @@ public sealed class MothFlySystems : SharedMothFlySystem
     private void CreateParticles(EntityUid uid)
     {
         // Don't show particles unless the user is moving.
-        if (Container.TryGetContainingContainer(uid, out var container) &&
-            TryComp<PhysicsComponent>(container.Owner, out var body) &&
+        if (TryComp<PhysicsComponent>(uid, out var body) &&
             body.LinearVelocity.LengthSquared() < 1f)
         {
             return;

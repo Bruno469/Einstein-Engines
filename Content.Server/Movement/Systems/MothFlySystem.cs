@@ -13,6 +13,10 @@ using Robust.Shared.Map.Components;
 using Content.Shared.Clothing.Components;
 using Content.Shared.Clothing.EntitySystems;
 using Content.Server.Atmos;
+using System.Runtime.Intrinsics;
+using Content.Server.Anomaly.Components;
+using Content.Shared.Anomaly.Components;
+using Robust.Server.GameObjects;
 
 namespace Content.Server.Movement.Systems;
 
@@ -28,19 +32,17 @@ public sealed class MothFlySystem : SharedMothFlySystem
         var uidXform = Transform(uid);
         var coordinates = uidXform.Coordinates;
         var gridUid = coordinates.GetGridUid(EntityManager);
+
         if (TryComp<MapGridComponent>(gridUid, out var grid))
         {
-            coordinates = new EntityCoordinates(gridUid.Value, grid.WorldToLocal(coordinates.ToMapPos(EntityManager, _transform)));
-        }
-        else if (uidXform.MapUid != null)
-        {
-            coordinates = new EntityCoordinates(uidXform.MapUid.Value, _transform.GetWorldPosition(uidXform));
+            coordinates = _transform.GetGridTilePositionOrDefault((gridUid, grid));
         }
         else
         {
             return false;
         }
-        var tile = _atmosphere.GetTileMixture(gridUid, null, tile., true);
+
+        var tile = _atmosphere.GetTileMixture(gridUid, null, coordinates, true);
         if (tile != null)
             return true;
         return base.CanEnable(uid, component);
