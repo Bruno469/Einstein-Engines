@@ -47,14 +47,14 @@ public sealed class MothFlySystem : SharedMothFlySystem
         var toDisable = new ValueList<(EntityUid Uid, MothFlyComponent Component)>();
         var query = EntityQueryEnumerator<ActiveJetpackComponent, MothFlyComponent>();
 
-        while (query.MoveNext(out var uid, out var active))
+        while (query.MoveNext(out var uid, out var active, out var comp))
         {
             if (_timing.CurTime < active.TargetTime)
                 continue;
 
             active.TargetTime = _timing.CurTime + TimeSpan.FromSeconds(active.EffectCooldown);
 
-            if (TryComp<PhysicsComponent>(uid))
+            if (TryComp<PhysicsComponent>(uid, out var physics))
                 _stamina.TakeStaminaDamage(uid, 15);
         }
 
