@@ -2,7 +2,7 @@
   id: MothFlyAction
   name: Fly!
   description: Unfurl your wings and gracefully take flight into the night sky.
-  noSpawn: false
+  noSpawn: true
   components:
   - type: InstantAction
     icon:
