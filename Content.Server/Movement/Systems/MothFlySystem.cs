@@ -55,7 +55,7 @@ public sealed class MothFlySystem : SharedMothFlySystem
             active.TargetTime = _timing.CurTime + TimeSpan.FromSeconds(active.EffectCooldown);
 
             if (TryComp<PhysicsComponent>(uid, out var physics))
-                _stamina.TakeStaminaDamage(uid, 15);
+                _stamina.TakeStaminaDamage(uid, 2);
         }
 
         foreach (var (uid, comp) in toDisable)
