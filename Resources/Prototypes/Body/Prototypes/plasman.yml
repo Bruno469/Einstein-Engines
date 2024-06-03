@@ -1,0 +1,35 @@
+- type: body
+  id: Plasman
+  name: "plasman"
+  root: torso
+  slots:
+    head:
+      part: HeadPlasman
+      connections:
+      - torso
+    torso:
+      part: TorsoPlasman
+      connections:
+      - right arm
+      - left arm
+      - right leg
+      - left leg
+      organs:
+        core: SentientPlasmanCore
+        lungs: OrganPlasmanLungs
+    right arm:
+      part: RightArmPlasman
+      connections:
+      - right hand
+    left arm:
+      part: LeftArmPlasman
+      connections:
+      - left hand
+    right hand:
+      part: RightHandPlasman
+    left hand:
+      part: LeftHandPlasman
+    right leg:
+      part: RightLegPlasman
+    left leg:
+      part: LeftLegPlasman

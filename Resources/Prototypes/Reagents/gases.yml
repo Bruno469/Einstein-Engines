@@ -26,6 +26,28 @@
         conditions:
         - !type:OrganType
           type: Plant
+      - !type:HealthChange
+        conditions:
+        - !type:OrganType
+          type: Plasman
+        scaleByQuantity: true
+        ignoreResistances: true
+        damage:
+          groups:
+            Burn: 100
+      - !type:FlammableReaction
+        conditions:
+        - !type:OrganType
+          type: Plasman
+        multiplier: 4
+      - !type:Ignite
+        conditions:
+        - !type:OrganType
+          type: Plasman
+      - !type:FlammableReaction
+        conditions:
+        - !type:OrganType
+          type: Plasman
       # Convert Oxygen into CO2.
       - !type:ModifyLungGas
         conditions:
@@ -35,6 +57,25 @@
         ratios:
           CarbonDioxide: 1.0
           Oxygen: -1.0
+      - !type:HealthChange
+        conditions:
+        - !type:OrganType
+          type: Vox
+        scaleByQuantity: true
+        ignoreResistances: true
+        damage:
+          types:
+            Poison:
+              7
+      - !type:AdjustAlert
+        alertType: Toxins
+        conditions:
+          - !type:ReagentThreshold
+            min: 0.5
+          - !type:OrganType
+            type: Vox
+        clear: true
+        time: 5
 
 - type: reagent
   id: Plasma
@@ -61,17 +102,203 @@
         amount: -2.0
     Gas:
       effects:
+      - !type:Oxygenate
+        conditions:
+        - !type:OrganType
+          type: Plasman
+      - !type:ModifyLungGas
+        conditions:
+        - !type:OrganType
+          type: Plasman
+        ratios:
+          Plasma: -1.0
       - !type:HealthChange
+        conditions:
+          - !type:OrganType
+            type: Vox
         scaleByQuantity: true
         ignoreResistances: true
         damage:
           types:
             Poison:
               1
+      - !type:HealthChange
+        conditions:
+          - !type:OrganType
+            type: Plant
+        scaleByQuantity: true
+        ignoreResistances: true
+        damage:
+          types:
+            Poison:
+              1
+      - !type:HealthChange
+        conditions:
+          - !type:OrganType
+            type: Rat
+        scaleByQuantity: true
+        ignoreResistances: true
+        damage:
+          types:
+            Poison:
+              1
+      - !type:HealthChange
+        conditions:
+          - !type:OrganType
+            type: Human
+        scaleByQuantity: true
+        ignoreResistances: true
+        damage:
+          types:
+            Poison:
+              1
+      - !type:HealthChange
+        conditions:
+          - !type:OrganType
+            type: Slime
+        scaleByQuantity: true
+        ignoreResistances: true
+        damage:
+          types:
+            Poison:
+              1
+      - !type:HealthChange
+        conditions:
+          - !type:OrganType
+            type: Dragon
+        scaleByQuantity: true
+        ignoreResistances: true
+        damage:
+          types:
+            Poison:
+              1
+      - !type:HealthChange
+        conditions:
+          - !type:OrganType
+            type: Dwarf
+        scaleByQuantity: true
+        ignoreResistances: true
+        damage:
+          types:
+            Poison:
+              1
+      - !type:HealthChange
+        conditions:
+          - !type:OrganType
+            type: Moth
+        scaleByQuantity: true
+        ignoreResistances: true
+        damage:
+          types:
+            Poison:
+              1
+      - !type:HealthChange
+        conditions:
+          - !type:OrganType
+            type: Arachnid
+        scaleByQuantity: true
+        ignoreResistances: true
+        damage:
+          types:
+            Poison:
+              1
+      - !type:HealthChange
+        conditions:
+        - !type:OrganType
+          type: Plasman
+        scaleByQuantity: true
+        ignoreResistances: true
+        damage:
+          types:
+            Cellular:
+              -1
       # We need a metabolism effect on reagent removal
       - !type:AdjustAlert
         alertType: Toxins
         conditions:
+          - !type:OrganType
+            type: Vox
+          - !type:ReagentThreshold
+            min: 1.5
+        clear: True
+        time: 5
+      - !type:AdjustAlert
+        alertType: Toxins
+        conditions:
+          - !type:OrganType
+            type: Plant
+          - !type:ReagentThreshold
+            min: 1.5
+        clear: True
+        time: 5
+      - !type:AdjustAlert
+        alertType: Toxins
+        conditions:
+          - !type:OrganType
+            type: Rat
+          - !type:ReagentThreshold
+            min: 1.5
+        clear: True
+        time: 5
+      - !type:AdjustAlert
+        alertType: Toxins
+        conditions:
+          - !type:OrganType
+            type: Human
+          - !type:ReagentThreshold
+            min: 1.5
+        clear: True
+        time: 5
+      - !type:AdjustAlert
+        alertType: Toxins
+        conditions:
+          - !type:OrganType
+            type: Slime
+          - !type:ReagentThreshold
+            min: 1.5
+        clear: True
+        time: 5
+      - !type:AdjustAlert
+        alertType: Toxins
+        conditions:
+          - !type:OrganType
+            type: Arachnid
+          - !type:ReagentThreshold
+            min: 1.5
+        clear: True
+        time: 5
+      - !type:AdjustAlert
+        alertType: Toxins
+        conditions:
+          - !type:OrganType
+            type: Moth
+          - !type:ReagentThreshold
+            min: 1.5
+        clear: True
+        time: 5
+      - !type:AdjustAlert
+        alertType: Toxins
+        conditions:
+          - !type:OrganType
+            type: Dwarf
+          - !type:ReagentThreshold
+            min: 1.5
+        clear: True
+        time: 5
+      - !type:AdjustAlert
+        alertType: Toxins
+        conditions:
+          - !type:OrganType
+            type: Bloodsucker
+          - !type:ReagentThreshold
+            min: 1.5
+        clear: True
+        time: 5
+      - !type:AdjustAlert
+        alertType: Toxins
+        conditions:
+          - !type:OrganType
+            type: Dragon
           - !type:ReagentThreshold
             min: 1.5
         clear: True
@@ -142,6 +369,9 @@
         - !type:OrganType
           type: Plant
           shouldHave: false
+        - !type:OrganType
+          type: Vox
+          shouldHave: false
         # Don't want people to get toxin damage from the gas they just
         # exhaled, right?
         - !type:ReagentThreshold
@@ -194,7 +424,7 @@
         - !type:OrganType
           type: Vox
         ratios:
-          CarbonDioxide: 1.0
+          Ammonia: 1.0
           Nitrogen: -1.0
       - !type:ModifyLungGas
         conditions:

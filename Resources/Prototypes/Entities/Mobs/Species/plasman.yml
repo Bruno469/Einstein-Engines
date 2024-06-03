@@ -1,0 +1,75 @@
+- type: entity
+  name: Urist McPlasm
+  parent: BaseMobSpeciesOrganic
+  id: MobPlasmaPerson
+  abstract: true
+  components:
+  - type: HumanoidAppearance
+    species: PlasmaPerson
+  - type: Hunger
+    baseDecayRate: 0
+  - type: Thirst
+    baseDecayRate: 0.0083
+  - type: Icon
+    sprite: Mobs/Species/Plasman.rsi
+    state: full
+  - type: Body
+    prototype: Plasman
+    requiredLegs: 2
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Plasman
+  - type: DamageVisuals
+    damageOverlayGroups:
+      Brute:
+        sprite: Mobs/Effects/brute_damage.rsi
+        color: "#cd7314"
+  - type: Butcherable
+    butcheringType: Spike
+    spawned:
+      - id: SheetPlasma1
+        amount: 3
+  - type: Bloodstream
+    bloodReagent: Plasma
+  - type: Reactive
+    groups:
+      Flammable: [ Touch ]
+      Extinguish: [ Touch ]
+    reactions:
+    - reagents: [ Plasma ]
+      methods: [ Ingestion, Touch ]
+      effects:
+      - !type:HealthChange
+        scaleByQuantity: true
+        damage:
+          types:
+            Poison: -1
+            Brute: -1
+            Radiation: -1
+            Asphyxiation: -1
+            Burn: -1
+            Toxin: -1
+  - type: Respirator
+    damage:
+      types:
+        Asphyxiation: 0.1
+    damageRecovery:
+      types:
+        Asphyxiation: -1.0
+    maxSaturation: 15
+  - type: Speech
+    speechVerb: Slime
+    speechSounds: Slime
+  - type: Vocal
+    sounds:
+      Male: UnisexPlasm
+      Female: UnisexPlasm
+      Unsexed: UnisexPlasm
+
+- type: entity
+  parent: MobHumanDummy
+  id: MobPlasmanDummy
+  noSpawn: true
+  components:
+  - type: HumanoidAppearance
+    species: PlasmaPerson
