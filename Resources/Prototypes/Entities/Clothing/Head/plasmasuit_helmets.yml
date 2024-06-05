@@ -36,7 +36,7 @@
 # COMMAND
 
 - type: entity
-  parent: ClothingHeadEVAHelmetBase
+  parent: ClothingHeadHardsuitBase
   id: ClothingHeadHelmetPlasmanCaptain
   name: Captain PlasmaMan Helmet
   description: A basic-looking PlasmanBasic helmet that provides minor protection against oxygen atmos.
@@ -51,9 +51,9 @@
     lowPressureMultiplier: 100
 
 - type: entity
-  parent: ClothingHeadEVAHelmetBase
+  parent: ClothingHeadHardsuitBase
   id: ClothingHeadHelmetPlasmanHos
-  name: Captain PlasmaMan Helmet
+  name: Head Of Security PlasmaMan Helmet
   description: A basic-looking PlasmanBasic helmet that provides minor protection against oxygen atmos.
   components:
   - type: BreathMask
@@ -66,9 +66,9 @@
     lowPressureMultiplier: 100
 
 - type: entity
-  parent: ClothingHeadEVAHelmetBase
+  parent: ClothingHeadHardsuitBase
   id: ClothingHeadHelmetPlasmanQm
-  name: Captain PlasmaMan Helmet
+  name: Quartermaster PlasmaMan Helmet
   description: A basic-looking PlasmanBasic helmet that provides minor protection against oxygen atmos.
   components:
   - type: BreathMask
