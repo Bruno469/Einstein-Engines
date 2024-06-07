@@ -1,0 +1,87 @@
+- type: entity
+  name: flamethrower
+  id: WeaponImprovisedFlamethrower
+  description: you shouldn't use this in space...
+  components:
+  - type: Sprite
+    sprite: Objects\Weapons\Guns\Cannons\flamethrower.rsi
+    layers:
+    - state: icon
+    - state: plasma-tank
+      map: [ "plasma-tank" ]
+      visible: false
+    - state: flamethrower-fire
+      visible: false
+      shader: unshaded
+      map: ["enum.ToggleVisuals.Layer"]
+  - type: GenericVisualizer
+    visuals:
+      enum.ToggleVisuals.Toggled:
+        enum.ToggleVisuals.Layer:
+          True: { visible: true }
+          False: { visible: false }
+  - type: Item
+    size: Huge
+  - type: ItemToggle
+    predictable: false
+    soundActivate:
+      collection: WelderOn
+      params:
+        variation: 0.125
+        volume: -5
+    soundDeactivate:
+      collection: WelderOff
+      params:
+        variation: 0.125
+        volume: -5
+  - type: Gun
+    fireRate: 2
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot:
+      path: /Audio/Effects/thunk.ogg
+    soundEmpty:
+      path: /Audio/Items/hiss.ogg
+    clumsyProof: true
+  - type: PneumaticCannon
+  - type: Appearance
+  - type: ItemMapper
+    containerWhitelist: [gas_tank]
+    mapLayers:
+      tank:
+        whitelist:
+          components:
+          - GasTank
+  - type: Construction
+  - type: ItemSlots
+    slots:
+      gas_tank:
+        name: flamethrower-component-itemslot-name
+        whitelist:
+          components:
+          - GasTank
+        insertSound:
+          path: /Audio/Weapons/click.ogg
+          params:
+            volume: -3
+  - type: ContainerContainer
+    containers:
+      storagebase: !type:Container
+        ents: []
+      gas_tank: !type:ContainerSlot
+  - type: Welder
+  - type: IgnitionSource
+    temperature: 700
+  - type: SolutionContainerManager
+    solutions:
+      Welder:
+        reagents:
+        - ReagentId: WeldingFuel
+          Quantity: 100
+        maxVol: 100
+  - type: PointLight
+    enabled: false
+    radius: 1.5
+    color: orange
+    netsync: false
