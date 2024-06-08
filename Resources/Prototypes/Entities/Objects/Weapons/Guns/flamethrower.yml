@@ -20,6 +20,7 @@
         enum.ToggleVisuals.Layer:
           True: { visible: true }
           False: { visible: false }
+  - type: Flamethrower
   - type: Item
     size: Huge
   - type: ItemToggle
