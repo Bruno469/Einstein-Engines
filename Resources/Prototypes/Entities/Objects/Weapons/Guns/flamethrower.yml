@@ -71,6 +71,8 @@
       storagebase: !type:Container
         ents: []
       gas_tank: !type:ContainerSlot
+  - type: BasicEntityAmmoProvider
+    proto: ProjectileFireMaker
   - type: Welder
   - type: IgnitionSource
     temperature: 700

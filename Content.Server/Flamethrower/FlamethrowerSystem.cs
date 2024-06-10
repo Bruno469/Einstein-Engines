@@ -5,7 +5,7 @@ using Content.Server.Stunnable;
 using Content.Server.Weapons.Ranged.Systems;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Interaction;
-using Content.Shared.PneumaticCannon;
+using Content.Shared.Flamethrower;
 using Content.Shared.StatusEffect;
 using Content.Shared.Tools.Components;
 using Content.Shared.Weapons.Ranged.Components;
@@ -27,10 +27,8 @@ public sealed class FlamethrowerSystem : SharedFlamethrowerSystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<FlamethrowerComponent, InteractUsingEvent>(OnInteractUsing, before: new []{ typeof(StorageSystem) });
         SubscribeLocalEvent<FlamethrowerComponent, GunShotEvent>(OnShoot);
         SubscribeLocalEvent<FlamethrowerComponent, ContainerIsInsertingAttemptEvent>(OnContainerInserting);
-        SubscribeLocalEvent<FlamethrowerComponent, GunRefreshModifiersEvent>(OnGunRefreshModifiers);
     }
 
     private void OnContainerInserting(EntityUid uid, FlamethrowerComponent component, ContainerIsInsertingAttemptEvent args)
@@ -48,7 +46,7 @@ public sealed class FlamethrowerSystem : SharedFlamethrowerSystem
         args.Cancel();
     }
 
-    private void OnShoot(Entity<FlamethrowerComponent> cannon, ref GunShotEvent args)
+    private void OnShoot(Entity<FlamethrowerComponent> cannon, ref GunShotEvent args, IEntityManager entityManager)
     {
         var (uid, component) = cannon;
         // require a gas tank if it uses gas
@@ -74,13 +72,6 @@ public sealed class FlamethrowerSystem : SharedFlamethrowerSystem
         // eject gas tank
         _slots.TryEject(uid, FlamethrowerComponent.TankSlotId, args.User, out _);
     }
-
-    private void OnGunRefreshModifiers(Entity<FlamethrowerComponent> ent, ref GunRefreshModifiersEvent args)
-    {
-        if (ent.Comp.ProjectileSpeed is { } speed)
-            args.ProjectileSpeed = speed;
-    }
-
     /// <summary>
     ///     Returns whether the pneumatic cannon has enough gas to shoot an item, as well as the tank itself.
     /// </summary>

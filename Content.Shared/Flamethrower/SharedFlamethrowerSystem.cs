@@ -25,7 +25,7 @@ public abstract class SharedFlamethrowerSystem : EntitySystem
             return;
 
         // pneumatic cannon usually doesn't shoot bullets
-        args.ThrowItems = component.ThrowItems;
+        args.ThrowItems = true;
 
         // we don't have atmos on shared, so just predict by the existence of a slot item
         // server will handle auto ejecting/not adding the slot item if it doesnt have enough gas,

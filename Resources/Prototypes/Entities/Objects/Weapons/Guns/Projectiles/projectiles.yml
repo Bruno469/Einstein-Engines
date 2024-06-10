@@ -991,3 +991,28 @@
         Heat: 20 # Slightly more damage than the 17heat from the Captain's Hitscan lasgun
     soundHit:
       collection: MeatLaserImpact
+
+- type: entity
+  id: ProjectileFireMaker
+  name: Projectile FireMaker
+  description: ...fire
+  noSpawn: true
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Projectiles/magic.rsi
+    layers:
+    - state: fireball
+      shader: unshaded
+  - type: FireMaker
+  - type: GasTank
+    outputPressure: 22.4
+    moles:
+      - 0 #oxygen
+      - 0 #nitrogen
+      - 0 #CO2
+      - 0 #plasma
+      - 0 #tritium
+      - 0 #water vapor
+      - 0 #ammonia
+      - 0 #n20
+    temperature: 293.15
