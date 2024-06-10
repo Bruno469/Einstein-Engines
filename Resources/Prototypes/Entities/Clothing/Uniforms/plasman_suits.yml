@@ -34,10 +34,10 @@
   description: Advanced PlasmaMan suit made for plasmaman
   components:
   - type: Sprite
-    sprite: Clothing/Uniforms/plasman/cap.rsi
+    sprite: Clothing/Uniforms/plasman/command/cap.rsi
     state: icon
   - type: Clothing
-    sprite: Clothing/Uniforms/plasman/cap.rsi
+    sprite: Clothing/Uniforms/plasman/command/cap.rsi
     slots: [innerclothing]
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
@@ -53,10 +53,10 @@
   description: Head Of Security suit made for plasmaman
   components:
   - type: Sprite
-    sprite: Clothing/Uniforms/plasman/hos.rsi
+    sprite: Clothing/Uniforms/plasman/command/hos.rsi
     state: icon
   - type: Clothing
-    sprite: Clothing/Uniforms/plasman/hos.rsi
+    sprite: Clothing/Uniforms/plasman/command/hos.rsi
     slots: [innerclothing]
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
@@ -72,10 +72,10 @@
   description: Quartermaster suit made for plasmaman
   components:
   - type: Sprite
-    sprite: Clothing/Uniforms/plasman/qm.rsi
+    sprite: Clothing/Uniforms/plasman/command/qm.rsi
     state: icon
   - type: Clothing
-    sprite: Clothing/Uniforms/plasman/qm.rsi
+    sprite: Clothing/Uniforms/plasman/command/qm.rsi
     slots: [innerclothing]
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
