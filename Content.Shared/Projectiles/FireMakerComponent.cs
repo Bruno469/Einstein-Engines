@@ -18,7 +18,7 @@ public sealed partial class FireMakerComponent : Component
     ///     Weapon used to shoot.
     /// </summary>
     [DataField, AutoNetworkedField]
-    public EntityUid? Weapon;
+    public EntityUid Weapon;
     public float EffectCooldown = 0.3f;
     public TimeSpan TargetTime = TimeSpan.Zero;
 }

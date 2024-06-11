@@ -1,15 +1,9 @@
 using Content.Server.Atmos.Components;
 using Content.Server.Atmos.EntitySystems;
-using Content.Server.Storage.EntitySystems;
 using Content.Server.Stunnable;
 using Content.Server.Weapons.Ranged.Systems;
 using Content.Shared.Containers.ItemSlots;
-using Content.Shared.Interaction;
 using Content.Shared.Flamethrower;
-using Content.Shared.StatusEffect;
-using Content.Shared.Tools.Components;
-using Content.Shared.Weapons.Ranged.Components;
-using Content.Shared.Weapons.Ranged.Events;
 using Content.Shared.Weapons.Ranged.Systems;
 using Robust.Shared.Containers;
 
@@ -46,7 +40,7 @@ public sealed class FlamethrowerSystem : SharedFlamethrowerSystem
         args.Cancel();
     }
 
-    private void OnShoot(Entity<FlamethrowerComponent> cannon, ref GunShotEvent args, IEntityManager entityManager)
+    private void OnShoot(Entity<FlamethrowerComponent> cannon, ref GunShotEvent args)
     {
         var (uid, component) = cannon;
         // require a gas tank if it uses gas
