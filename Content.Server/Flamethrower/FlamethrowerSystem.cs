@@ -6,12 +6,16 @@ using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Flamethrower;
 using Content.Shared.Weapons.Ranged.Systems;
 using Robust.Shared.Containers;
+using Content.Server.Weapons.Ranged.Components;
+using Content.Shared.Weapons.Ranged.Events;
+using Robust.Shared.GameObjects;
 
 namespace Content.Server.Flamethrower;
 
 public sealed class FlamethrowerSystem : SharedFlamethrowerSystem
 {
     [Dependency] private readonly AtmosphereSystem _atmos = default!;
+    [Dependency] private readonly IEntityManager _entity = default!;
     [Dependency] private readonly GasTankSystem _gasTank = default!;
     [Dependency] private readonly GunSystem _gun = default!;
     [Dependency] private readonly StunSystem _stun = default!;
@@ -20,7 +24,7 @@ public sealed class FlamethrowerSystem : SharedFlamethrowerSystem
     public override void Initialize()
     {
         base.Initialize();
-
+        SubscribeLocalEvent<GunComponent, AmmoShotEvent>(OnAmmoShot);
         SubscribeLocalEvent<FlamethrowerComponent, GunShotEvent>(OnShoot);
         SubscribeLocalEvent<FlamethrowerComponent, ContainerIsInsertingAttemptEvent>(OnContainerInserting);
     }
@@ -65,6 +69,20 @@ public sealed class FlamethrowerSystem : SharedFlamethrowerSystem
 
         // eject gas tank
         _slots.TryEject(uid, FlamethrowerComponent.TankSlotId, args.User, out _);
+    }
+    public void OnAmmoShot(EntityUid uid, GunComponent component, AmmoShotEvent args)
+    {
+        var gas = GetGas(uid);
+        var environment = _atmos.GetContainingMixture(uid, false, true);
+        var merger = new GasMixture(1) { Temperature = 383 };
+        merger.SetMoles(gas.Value, gas.Value.Comp.Air.TotalMoles);
+        foreach (var projectileUid in args.FiredProjectiles)
+        {
+            if (_entity.TryComp<FireMakerComponent>(projectileUid, out var flamethrowerBullet))
+            {
+                flamethrowerBullet.Merge(environment, merger);
+            }
+        }
     }
     /// <summary>
     ///     Returns whether the pneumatic cannon has enough gas to shoot an item, as well as the tank itself.
