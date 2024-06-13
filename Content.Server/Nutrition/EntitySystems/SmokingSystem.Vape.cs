@@ -165,6 +165,8 @@ namespace Content.Server.Nutrition.EntitySystems
         }
         private void OnEmagged(Entity<VapeComponent> entity, ref GotEmaggedEvent args)
         {
+            _explosionSystem.QueueExplosion(entity.Owner, "Default", entity.Comp.ExplosionIntensity, 0.5f, 100, canCreateVacuum: false);
+            EntityManager.DeleteEntity(entity);
             args.Handled = true;
         }
     }

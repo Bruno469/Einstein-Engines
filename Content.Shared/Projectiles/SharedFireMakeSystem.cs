@@ -38,12 +38,5 @@ public abstract partial class SharedFireMakeSystem : EntitySystem
 
     private void OnEmbedProjectileHit(EntityUid uid, EmbeddableProjectileComponent component, ref ProjectileHitEvent args)
     {
-
-        // Raise a specific event for projectiles.
-        if (TryComp(uid, out FireMakerComponent? projectile))
-        {
-            var ev = new ProjectileEmbedEvent(projectile.Shooter!.Value, projectile.Weapon!.Value, args.Target);
-            RaiseLocalEvent(uid, ref ev);
-        }
     }
 }

@@ -6,9 +6,11 @@ using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Flamethrower;
 using Content.Shared.Weapons.Ranged.Systems;
 using Robust.Shared.Containers;
-using Content.Server.Weapons.Ranged.Components;
 using Content.Shared.Weapons.Ranged.Events;
-using Robust.Shared.GameObjects;
+using Content.Shared.Projectiles;
+using Content.Shared.Weapons.Ranged.Components;
+using Content.Server.Atmos;
+using Content.Shared.Atmos;
 
 namespace Content.Server.Flamethrower;
 
@@ -20,6 +22,7 @@ public sealed class FlamethrowerSystem : SharedFlamethrowerSystem
     [Dependency] private readonly GunSystem _gun = default!;
     [Dependency] private readonly StunSystem _stun = default!;
     [Dependency] private readonly ItemSlotsSystem _slots = default!;
+    [Dependency] private readonly SharedContainerSystem _containerSystem = default!;
 
     public override void Initialize()
     {
@@ -74,13 +77,13 @@ public sealed class FlamethrowerSystem : SharedFlamethrowerSystem
     {
         var gas = GetGas(uid);
         var environment = _atmos.GetContainingMixture(uid, false, true);
-        var merger = new GasMixture(1) { Temperature = 383 };
-        merger.SetMoles(gas.Value, gas.Value.Comp.Air.TotalMoles);
+        if (gas == null || environment == null)
+            return;
         foreach (var projectileUid in args.FiredProjectiles)
         {
-            if (_entity.TryComp<FireMakerComponent>(projectileUid, out var flamethrowerBullet))
+            if (_entity.TryGetComponent<FireMakerComponent>(projectileUid, out var flamethrowerBullet))
             {
-                flamethrowerBullet.Merge(environment, merger);
+                _atmos.Merge(environment, gas.Value.Comp.Air);
             }
         }
     }
@@ -89,7 +92,7 @@ public sealed class FlamethrowerSystem : SharedFlamethrowerSystem
     /// </summary>
     private Entity<GasTankComponent>? GetGas(EntityUid uid)
     {
-        if (!Container.TryGetContainer(uid, FlamethrowerComponent.TankSlotId, out var container) ||
+        if (!_containerSystem.TryGetContainer(uid, FlamethrowerComponent.TankSlotId, out var container) ||
             container is not ContainerSlot slot || slot.ContainedEntity is not {} contained)
             return null;
 

@@ -12,6 +12,7 @@ using Robust.Shared.Timing;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Containers;
 using Content.Shared.Flamethrower;
+using Robust.Shared.Utility;
 
 namespace Content.Server.Projectiles;
 
@@ -25,55 +26,48 @@ public sealed class FireMakeSystem : SharedFireMakeSystem
     [Dependency] private readonly AtmosphereSystem _atmos = default!;
     [Dependency] private readonly GasTankSystem _gasTank = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly IEntityManager _entity = default!;
+    [Dependency] private readonly SharedContainerSystem _containerSystem = default!;
 
     public override void Initialize()
     {
         base.Initialize();
         SubscribeLocalEvent<FireMakerComponent, StartCollideEvent>(OnStartCollide);
-        SubscribeLocalEvent<FireMakerComponent, PrototypesReloadedEventArgs>(OnPrototypeLoad);
     }
-    // AO SPAWNAR PROCURA A ARMA QUE ATIROU E DEPOIS MUDA OS PROPRIOS PARAMENTROS DE GAS (esse burro acha que vai funcionar) [mas cara eu não vejo por que não funcionaria] {com certeza tem forma de fazer isso melhor mas vou ver ser funciona assim, resumindo it's just a test}
-    private void OnLoad(EntityUid flamethrower, EntityUid projetil)
-    {
-        var gas = GetGas(flamethrower);
-
-    }
-
-    private void OnPrototypeLoad(EntityUid uid, FireMakerComponent component, PrototypesReloadedEventArgs args)
-    {
-        if (component is null)
-            throw new ArgumentNullException(nameof(component));
-
-        OnLoad(component.Weapon, uid);
-    }
+    // AO SPAWNAR PROCURA A ARMA QUE ATIROU E DEPOIS MUDA OS PROPRIOS PARAMENTROS DE GAS (esse burro acha que vai funcionar) [mas cara eu não vejo por que não funcionaria] {com certeza tem forma de fazer isso melhor mas vou ver ser funciona assim, resumindo it's just a test} [[Tá... eu movi TUDO que eu falei aqui para a arma basicamente agora é só uma verificação e acredito que fica mais leve em questão de processamento...]]
 
     private void OnStartCollide(EntityUid uid, FireMakerComponent component, ref StartCollideEvent args)
     {
 
     }
-
     private Entity<GasTankComponent>? GetGas(EntityUid uid)
     {
-        if (!Container.TryGetContainer(uid, FlamethrowerComponent.TankSlotId, out var container) ||
+        if (!_containerSystem.TryGetContainer(uid, FlamethrowerComponent.TankSlotId, out var container) ||
             container is not ContainerSlot slot || slot.ContainedEntity is not {} contained)
             return null;
 
         return TryComp<GasTankComponent>(contained, out var gasTank) ? (contained, gasTank) : null;
     }
 
+    // Basicamente aqui vai ficar responsavel pela eliminação do gas dentro do projetil para o tile em que ele se encontra, estou usando update por enquanto pois não conheço um event que ativa de tile em tile TODO: procurar um event pra isso (provavelmente não tem)
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
 
-        var query = EntityQueryEnumerator<FireMakerComponent, JetpackComponent, GasTankComponent>();
+        var query = EntityQueryEnumerator<FireMakerComponent, GasTankComponent>();
 
-        while (query.MoveNext(out var uid, out var active, out var comp, out var gasTankComp))
+        while (query.MoveNext(out var uid, out var gasTankComp))
         {
-            if (_timing.CurTime < active.TargetTime)
+            if (_timing.CurTime < uid.TargetTime)
                 continue;
             var gasTank = (uid, gasTankComp);
-            active.TargetTime = _timing.CurTime + TimeSpan.FromSeconds(active.EffectCooldown);
-            var usedAir = _gasTank.RemoveAir(gasTank, comp.MoleUsage);
+            if (uid.Shooter == null)
+                return;
+            _entity.TryGetComponent<FlamethrowerComponent>(uid.Shooter, out var flamethrower);
+            if (flamethrower == null)
+                return;
+            uid.TargetTime = _timing.CurTime + TimeSpan.FromSeconds(uid.EffectCooldown);
+            var usedAir = _gasTank.RemoveAir(uid, flamethrower.GasUsage);
 
             if (usedAir == null)
                 continue;
