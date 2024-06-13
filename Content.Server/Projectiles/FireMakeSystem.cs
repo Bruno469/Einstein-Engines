@@ -56,21 +56,19 @@ public sealed class FireMakeSystem : SharedFireMakeSystem
 
         var query = EntityQueryEnumerator<FireMakerComponent, GasTankComponent>();
 
-        while (query.MoveNext(out var uid, out var gasTankComp))
+        while (query.MoveNext(out var uid, out var comp, out var gasTankComp))
         {
-            if (_timing.CurTime < uid.TargetTime)
+            if (_timing.CurTime < comp.TargetTime)
                 continue;
+
             var gasTank = (uid, gasTankComp);
-            if (uid.Shooter == null)
-                return;
-            _entity.TryGetComponent<FlamethrowerComponent>(uid.Shooter, out var flamethrower);
+            comp.TargetTime = _timing.CurTime + TimeSpan.FromSeconds(comp.EffectCooldown);
+            _entity.TryGetComponent<FlamethrowerComponent>(comp.Shooter, out var flamethrower);
+
             if (flamethrower == null)
                 return;
-            uid.TargetTime = _timing.CurTime + TimeSpan.FromSeconds(uid.EffectCooldown);
-            var usedAir = _gasTank.RemoveAir(uid, flamethrower.GasUsage);
 
-            if (usedAir == null)
-                continue;
+            var usedAir = _gasTank.RemoveAir(gasTank, flamethrower.GasUsage);
         }
     }
 }
