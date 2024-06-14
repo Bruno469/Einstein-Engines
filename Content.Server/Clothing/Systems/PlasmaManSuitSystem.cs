@@ -22,14 +22,13 @@ public sealed class PlasmaManSuitSystem : EntitySystem
 
     private void TryExtinguirFire(EntityUid uid, PlasmaManSuitComponent comp, IsHotEvent args)
     {
-        if (!EntityManager.TryGetComponent(uid, out TemperatureComponent? temperatureComponent)) return;
-        if (temperatureComponent.CurrentTemperature > 373)
-        {
-            _flammable.AdjustFireStacks(uid, -4);
-        }
-        else
-        {
+        // Verifica se tem cargas suficientes para ativar a superssão de fogo
+        if (!EntityManager.TryGetComponent(uid, out TemperatureComponent? temperatureComponent) || comp.loads > 0)
+            return;
 
-        }
+        // pega a temperatura e ve se ta alta (teoricamente não precisa já que esse event só é ativado quando ta quente)
+        if (temperatureComponent.CurrentTemperature > 373)
+            _flammable.AdjustFireStacks(uid, -4);
+            comp.loads -= 1;
     }
 }

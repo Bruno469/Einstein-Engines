@@ -6,4 +6,6 @@ namespace Content.Server.Clothing.Components;
 [Access(typeof(PlasmaManSuitSystem))]
 public sealed partial class PlasmaManSuitComponent : Component
 {
+    [DataField("Loads")]
+    public int loads = 3;
 }
