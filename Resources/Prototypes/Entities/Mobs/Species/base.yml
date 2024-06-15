@@ -89,8 +89,8 @@
     species: Human
   - type: SlowOnDamage
     speedModifierThresholds:
-      60: 0.8 # DV - Was 0.7
-      80: 0.6 # DV - Was 0.5
+      60: 0.7
+      80: 0.5
   - type: Fixtures
     fixtures: # TODO: This needs a second fixture just for mob collisions.
       fix1:
@@ -140,8 +140,6 @@
     - TemporaryBlindness
     - Pacified
     - StaminaModifier
-    - PsionicsDisabled #Nyano - Summary: PCs can have psionics disabled.
-    - PsionicallyInsulated #Nyano - Summary: PCs can be made insulated from psionic powers.
   - type: Reflect
     enabled: false
     reflectProb: 0
@@ -218,12 +216,6 @@
   - type: MobPrice
     price: 1500 # Kidnapping a living person and selling them for cred is a good move.
     deathPenalty: 0.01 # However they really ought to be living and intact, otherwise they're worth 100x less.
-  - type: CanEscapeInventory # Carrying system from nyanotrasen.
-  - type: LanguageSpeaker # This is here so all with no LanguageSpeaker at least spawn with the default languages.
-    speaks:
-    - GalacticCommon
-    understands:
-    - GalacticCommon
   - type: Tag
     tags:
     - CanPilot
@@ -245,7 +237,8 @@
   - type: Barotrauma
     damage:
       types:
-        Blunt: 0.55 #per second, scales with pressure and other constants.
+        Blunt: 0.50 #per second, scales with pressure and other constants.
+        Heat: 0.1
   - type: PassiveDamage # Slight passive regen. Assuming one damage type, comes out to about 4 damage a minute.
     allowedStates:
     - Alive

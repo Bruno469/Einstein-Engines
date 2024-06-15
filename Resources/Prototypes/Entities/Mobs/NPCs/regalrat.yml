@@ -118,14 +118,6 @@
   - type: Grammar
     attributes:
       gender: male
-  - type: PotentialPsionic # Nyano
-  - type: LanguageSpeaker
-    speaks:
-    - GalacticCommon
-    - Mouse
-    understands:
-    - GalacticCommon
-    - Mouse
 
 - type: entity
   id: MobRatKingBuff
@@ -292,16 +284,9 @@
   - type: GuideHelp
     guides:
     - MinorAntagonists
-  - type: FelinidFood # Nyanotrasen - Felinid, ability to eat rat, see Content.Server/Nyanotrasen/Abilities/Felinid/FelinidSystem.cs
-  - type: Food
-  - type: Item
-    size: Tiny # Delta V - Make them eatable and pickable.
-  - type: LanguageSpeaker
-    speaks:
-    - Mouse
-    understands:
-    - GalacticCommon
-    - Mouse
+  - type: FireVisuals
+    sprite: Mobs/Effects/onfire.rsi
+    normalState: Mouse_burning
 
 - type: weightedRandomEntity
   id: RatKingLoot

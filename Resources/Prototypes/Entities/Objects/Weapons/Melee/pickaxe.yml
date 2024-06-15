@@ -62,7 +62,3 @@
         Brute: 3
       types:
         Structural: 12
-  - type: ReverseEngineering # Nyano
-    difficulty: 2
-    recipes:
-      - MiningDrill

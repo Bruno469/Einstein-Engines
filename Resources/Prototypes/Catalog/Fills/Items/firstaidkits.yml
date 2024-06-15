@@ -98,7 +98,6 @@
       - id: SyringeEphedrine
       - id: BruteAutoInjector
       - id: BurnAutoInjector
-      - id: EmergencyMedipen
 
 - type: entity
   id: StimkitFilled

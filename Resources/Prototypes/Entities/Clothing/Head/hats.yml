@@ -49,9 +49,9 @@
   description: A stylish clothing option for security officers.
   components:
   - type: Sprite
-    sprite: DeltaV/Clothing/Head/Hats/beret_security.rsi # DeltaV - resprite
+    sprite: Clothing/Head/Hats/beret_security.rsi
   - type: Clothing
-    sprite: DeltaV/Clothing/Head/Hats/beret_security.rsi # DeltaV - resprite
+    sprite: Clothing/Head/Hats/beret_security.rsi
   - type: Tag
     tags:
     - ClothMade
@@ -104,10 +104,8 @@
 - type: entity
   parent: ClothingHeadBase
   id: ClothingHeadHatBeretQM
-  # DeltaV - Logistics Department - Replace Quartermaster with Logistics Officer
-  name: logistics officer's beret
-  description: A beret with the logistics department's insignia emblazoned on it. For logistics officers that are more inclined towards style.
-  # End of modified code
+  name: quartermaster's beret
+  description: A beret with the cargo's insignia emblazoned on it. For quartermasters that are more inclined towards style.
   components:
   - type: Sprite
     sprite: Clothing/Head/Hats/beret_qm.rsi
@@ -126,9 +124,9 @@
   description: A black beret with a commander's rank emblem. For officers that are more inclined towards style than safety.
   components:
   - type: Sprite
-    sprite: DeltaV/Clothing/Head/Hats/beret_hos.rsi # DeltaV - resprite
+    sprite: Clothing/Head/Hats/beret_hos.rsi
   - type: Clothing
-    sprite: DeltaV/Clothing/Head/Hats/beret_hos.rsi # DeltaV - resprite
+    sprite: Clothing/Head/Hats/beret_hos.rsi
   - type: Tag
     tags:
     - ClothMade
@@ -139,12 +137,12 @@
   parent: ClothingHeadBase
   id: ClothingHeadHatBeretWarden
   name: warden's beret
-  description: A black beret with a warden's rank emblem. For officers that are more inclined towards style than safety. # DeltaV - changed description to match sprite
+  description: A corporate blue beret with a warden's rank emblem. For officers that are more inclined towards style than safety.
   components:
   - type: Sprite
-    sprite: DeltaV/Clothing/Head/Hats/beret_warden.rsi # DeltaV - resprite
+    sprite: Clothing/Head/Hats/beret_warden.rsi
   - type: Clothing
-    sprite: DeltaV/Clothing/Head/Hats/beret_warden.rsi # DeltaV - resprite
+    sprite: Clothing/Head/Hats/beret_warden.rsi
 
 - type: entity
   parent: ClothingHeadBase
@@ -319,9 +317,9 @@
   description: "There's a new sheriff in station."
   components:
   - type: Sprite
-    sprite: DeltaV/Clothing/Head/Hats/hoshat.rsi # DeltaV - resprite
+    sprite: Clothing/Head/Hats/hoshat.rsi
   - type: Clothing
-    sprite: DeltaV/Clothing/Head/Hats/hoshat.rsi # DeltaV - resprite
+    sprite: Clothing/Head/Hats/hoshat.rsi
   - type: Tag
     tags:
     - ClothMade
@@ -398,11 +396,6 @@
     sprite: Clothing/Head/Hats/redwizard.rsi
   - type: Clothing
     sprite: Clothing/Head/Hats/redwizard.rsi
-  - type: PressureProtection # DeltaV - Make real wizard clothes space proof
-    highPressureMultiplier: 0.6
-    lowPressureMultiplier: 1000
-  - type: TemperatureProtection
-    coefficient: 0.2
 
 - type: entity
   parent: ClothingHeadBase
@@ -483,17 +476,30 @@
     - WhitelistChameleon
 
 - type: entity
-  parent: ClothingHeadBase
+  parent: [ClothingHeadBase, BaseFoldable]
   id: ClothingHeadHatUshanka
   name: ushanka
   description: "Perfect for winter in Siberia, da?"
   components:
-  - type: Sprite
-    sprite: Clothing/Head/Hats/ushanka.rsi
   - type: Clothing
     sprite: Clothing/Head/Hats/ushanka.rsi
+  - type: Appearance
   - type: AddAccentClothing
     accent: RussianAccent
+  - type: Foldable
+    canFoldInsideContainer: true
+  - type: FoldableClothing
+    foldedEquippedPrefix: up
+    foldedHeldPrefix: up
+  - type: Sprite
+    sprite: Clothing/Head/Hats/ushanka.rsi
+    layers:
+    - state: icon
+      map: [ "unfoldedLayer" ]
+    - state: icon-up
+      map: ["foldedLayer"]
+      visible: false
+
 
 - type: entity
   parent: ClothingHeadBase
@@ -505,22 +511,17 @@
     sprite: Clothing/Head/Hats/violetwizard.rsi
   - type: Clothing
     sprite: Clothing/Head/Hats/violetwizard.rsi
-  - type: PressureProtection # DeltaV - Make real wizard clothes space proof
-    highPressureMultiplier: 0.6
-    lowPressureMultiplier: 1000
-  - type: TemperatureProtection
-    coefficient: 0.2
 
 - type: entity
   parent: ClothingHeadBase
   id: ClothingHeadHatWarden
   name: warden's cap
-  description: The responsibility weighs heavy, like a barbed crown. # DeltaV - changed description to remove THE LAW
+  description: A police officer's Hat. This hat emphasizes that you are THE LAW
   components:
   - type: Sprite
-    sprite: DeltaV/Clothing/Head/Hats/warden.rsi # DeltaV - resprite
+    sprite: Clothing/Head/Hats/warden.rsi
   - type: Clothing
-    sprite: DeltaV/Clothing/Head/Hats/warden.rsi # DeltaV - resprite
+    sprite: Clothing/Head/Hats/warden.rsi
   - type: StealTarget
     stealGroup: ClothingHeadHatWarden
 
@@ -566,11 +567,6 @@
     - ClothMade
     - HamsterWearable
     - WhitelistChameleon
-  - type: PressureProtection # DeltaV - Make real wizard clothes space proof
-    highPressureMultiplier: 0.6
-    lowPressureMultiplier: 1000
-  - type: TemperatureProtection
-    coefficient: 0.2
 
 - type: entity
   parent: ClothingHeadBase

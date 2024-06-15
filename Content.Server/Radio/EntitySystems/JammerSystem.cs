@@ -1,7 +1,6 @@
 using Content.Server.DeviceNetwork.Components;
 using Content.Server.DeviceNetwork.Systems;
 using Content.Server.Medical.CrewMonitoring;
-using Content.Server.Medical.SuitSensors;
 using Content.Server.Popups;
 using Content.Server.Power.EntitySystems;
 using Content.Server.PowerCell;
@@ -31,7 +30,6 @@ public sealed class JammerSystem : EntitySystem
         SubscribeLocalEvent<ActiveRadioJammerComponent, PowerCellChangedEvent>(OnPowerCellChanged);
         SubscribeLocalEvent<RadioJammerComponent, ExaminedEvent>(OnExamine);
         SubscribeLocalEvent<RadioSendAttemptEvent>(OnRadioSendAttempt);
-        SubscribeLocalEvent<SuitSensorComponent, SuitSensorsSendAttemptEvent>(OnSensorSendAttempt);
     }
 
     public override void Update(float frameTime)
@@ -56,14 +54,10 @@ public sealed class JammerSystem : EntitySystem
         if (activated)
         {
             EnsureComp<ActiveRadioJammerComponent>(uid);
-            var stationId = _stationSystem.GetOwningStation(uid);
-            if (stationId != null && _singletonServerSystem.TryGetActiveServerAddress<CrewMonitoringServerComponent>(stationId.Value, out var netId))
-            {
-                EnsureComp<DeviceNetworkJammerComponent>(uid, out var jammingComp);
-                jammingComp.Range = comp.Range;
-                jammingComp.JammableNetworks.Add(netId);
-                Dirty(uid, jammingComp);
-            }
+            EnsureComp<DeviceNetworkJammerComponent>(uid, out var jammingComp);
+            jammingComp.Range = comp.Range;
+            jammingComp.JammableNetworks.Add(DeviceNetworkComponent.DeviceNetIdDefaults.Wireless.ToString());
+            Dirty(uid, jammingComp);
         }
         else
         {
@@ -96,14 +90,6 @@ public sealed class JammerSystem : EntitySystem
     private void OnRadioSendAttempt(ref RadioSendAttemptEvent args)
     {
         if (ShouldCancelSend(args.RadioSource))
-        {
-            args.Cancelled = true;
-        }
-    }
-
-    private void OnSensorSendAttempt(EntityUid uid, SuitSensorComponent comp, ref SuitSensorsSendAttemptEvent args)
-    {
-        if (ShouldCancelSend(uid))
         {
             args.Cancelled = true;
         }

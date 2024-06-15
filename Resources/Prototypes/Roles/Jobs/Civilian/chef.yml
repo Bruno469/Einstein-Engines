@@ -6,7 +6,7 @@
   requirements:
     - !type:DepartmentTimeRequirement
       department: Civilian
-      time: 3600 #DeltaV 1 hour
+      time: 3600 # Corvax-RoleTime
   startingGear: ChefGear
   icon: "JobIconChef"
   supervisors: job-supervisors-hop
@@ -16,11 +16,7 @@
   - Kitchen
   extendedAccess:
   - Hydroponics
-  - Bar #Nyano - Summary: After this line, Professional Che is a component to be added. Very important.
-  special: 
-  - !type:AddComponentSpecial
-    components:
-    - type: ProfessionalChef #Nyano - End Summary. 
+  - Bar
 
 - type: startingGear
   id: ChefGear
@@ -28,7 +24,6 @@
     jumpsuit: ClothingUniformJumpsuitChef
     head: ClothingHeadHatChef
     back: ClothingBackpackFilled
-    mask: ClothingMaskItalianMoustache
     shoes: ClothingShoesColorBlack
     id: ChefPDA
     ears: ClothingHeadsetService

@@ -2,7 +2,7 @@
 - type: emote
   id: Scream
   category: Vocal
-  chatMessages: [screams!]
+  chatMessages: [grita!]
   chatTriggers:
     - scream
     - screams
@@ -28,11 +28,18 @@
     - yells!
     - yelled
     - yelling
+    - aa
+    - aaa
+    - aaaa
+    - aaaaa
+    - grita
+    - berra
+    - urra
 
 - type: emote
   id: Laugh
   category: Vocal
-  chatMessages: [laughs]
+  chatMessages: [ri]
   chatTriggers:
     - laugh
     - laughs
@@ -61,11 +68,30 @@
     - chortling
     - chortling.
     - chortling!
+    - ri
+    - dá risada
+    - da risada
+    - gargalha
+    - risos
+
 
 - type: emote
   id: Honk
   category: Vocal
   chatMessages: [honks]
+  chatTriggers:
+    - honk
+    - honk.
+    - honk!
+    - honks
+    - honks.
+    - honks!
+    - honked
+    - honked.
+    - honked!
+    - honking
+    - honking.
+    - honking!
 
 - type: emote
   id: Sigh
@@ -108,8 +134,8 @@
     - cries
     - cries.
     - cries!
-    - sob
-    - sob.
+    - chora
+    - chola
     - sobs
     - sobs.
     - sobs!
@@ -170,25 +196,15 @@
    - click
    - click.
    - click!
-   - click?
    - clicks
    - clicks.
    - clicks!
-   - clicks?
-   - clicked
-   - clicked.
-   - clicked!
-   - clicked?
-   - clicking
-   - clicking.
-   - clicking!
-   - clicking?
 
 # hand emotes
 - type: emote
   id: Clap
   category: Hands
-  chatMessages: [claps!]
+  chatMessages: [bate palma!]
   chatTriggers:
     - clap
     - claps
@@ -196,11 +212,15 @@
     - claps!
     - clapping
     - clapped
+    - palma
+    - palmas
+    - bate palma
+    - bate palmas
 
 - type: emote
   id: Snap
   category: Hands
-  chatMessages: [snaps fingers] # snaps <{THEIR($ent)}> fingers?
+  chatMessages: [estala os dedos] # snaps <{THEIR($ent)}> fingers?
   chatTriggers:
     - snap
     - snaps
@@ -215,6 +235,10 @@
     - snaps their fingers!
     - snapping fingers
     - snapped fingers
+    - estala
+    - estala os dedos
+    - estrala os dedos
+    - estrala
 
 - type: emote
   id: Salute
@@ -227,12 +251,24 @@
     - salutes
     - salutes.
     - salutes!
+    - saúda
+    - sauda
+    - bate continência
+    - bate continencia
+    - continência
+    - continencia
 
 - type: emote
   id: DefaultDeathgasp
   chatMessages: ["emote-deathgasp"]
   chatTriggers:
   - deathgasp
+
+- type: emote
+  id: SiliconDeathgasp
+  chatMessages: ["silicon-emote-deathgasp"]
+  chatTriggers:
+  - sdeathgasp
 
 - type: emote
   id: Buzz
@@ -263,18 +299,105 @@
   chatMessages: [chirps!]
   chatTriggers:
     - chirp
-    - chirp.
     - chirp!
-    - chirp?
+    - chirp.
     - chirps
-    - chirps.
+    - churps.
     - chirps!
-    - chirps?
     - chirped
     - chirped.
     - chirped!
-    - chirped?
     - chirping
     - chirping.
     - chirping!
-    - chirping?
+
+# Machine Emotes
+- type: emote
+  id: Beep
+  category: Vocal
+  chatMessages: [beeps.]
+  chatTriggers:
+    - beep
+    - beep!
+    - beep.
+    - beeps
+    - beeps.
+    - beeps!
+    - beeped
+    - beeped.
+    - beeped!
+    - beeping
+    - beeping.
+    - beeping!
+
+- type: emote
+  id: Chime
+  category: Vocal
+  chatMessages: [chimes.]
+  chatTriggers:
+    - chime
+    - chime.
+    - chime!
+    - chimes
+    - chimes.
+    - chimes!
+    - chimed
+    - chimed.
+    - chimed!
+    - chiming
+    - chiming,
+    - chiming!
+
+- type: emote
+  id: Buzz-Two
+  category: Vocal
+  chatMessages: [buzzesTwice.]
+  chatTriggers:
+    - buzztwice
+    - buzztwice.
+    - buzztwice!
+    - buzzstwice
+    - buzzstwice.
+    - buzzstwice!
+    - buzzestwice
+    - buzzestwice.
+    - buzzestwice!
+    - buzzingtwice
+    - buzzingtwice.
+    - buzzingtwice!
+    - buzzedtwice
+    - buzzedtwice.
+    - buzzedtwice!
+    - buzz twice
+    - buzz twice.
+    - buzz twice!
+    - buzzs twice
+    - buzzs twice.
+    - buzzs twice!
+    - buzzes twice
+    - buzzes twice.
+    - buzzes twice!
+    - buzzing twice
+    - buzzing twice.
+    - buzzing twice!
+    - buzzed twice
+    - buzzed twice.
+    - buzzed twice!
+
+- type: emote
+  id: Ping
+  category: Vocal
+  chatMessages: [pings.]
+  chatTriggers:
+    - ping
+    - ping.
+    - ping!
+    - pings
+    - pings.
+    - pings!
+    - pinged
+    - pinged.
+    - pinged!
+    - pinging
+    - pinging.
+    - pinging!

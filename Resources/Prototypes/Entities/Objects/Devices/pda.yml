@@ -108,6 +108,7 @@
 - type: entity
   parent: BasePDA
   id: BaseMedicalPDA
+  abstract: true
   components:
   - type: HealthAnalyzer
     scanDelay: 1
@@ -173,12 +174,6 @@
     accentVColor: "#A32D26"
   - type: Icon
     state: pda-interncadet
-  - type: CartridgeLoader # DeltaV - Crime Assist
-    preinstalled:
-      - CrewManifestCartridge
-      - NotekeeperCartridge
-      - NewsReaderCartridge
-      - CrimeAssistCartridge
 
 - type: entity
   parent: BasePDA
@@ -307,37 +302,23 @@
 
 - type: entity
   name: chaplain PDA
-  parent: SciencePDA # DeltaV - Chaplain is part of episetmics
+  parent: BasePDA
   id: ChaplainPDA
   description: God's chosen PDA.
   components:
-  - type: Sprite # DeltaV - Give Chaplain PDA Epistemics colors
-    sprite: DeltaV/Objects/Devices/pda.rsi
-    layers:
-    - map: [ "enum.PdaVisualLayers.Base" ]
-    - state: "light_overlay"
-      map: [ "enum.PdaVisualLayers.Flashlight" ]
-      shader: "unshaded"
-      visible: false
-    - state: "id_overlay"
-      map: [ "enum.PdaVisualLayers.IdLight" ]
-      shader: "unshaded"
-      visible: false
   - type: Pda
     id: ChaplainIDCard
     state: pda-chaplain
   - type: PdaBorderColor
     borderColor: "#333333"
-    accentVColor: "#8900c9" # DeltaV - Give Chaplain PDA Epistemics colors
   - type: Icon
-    sprite: DeltaV/Objects/Devices/pda.rsi # DeltaV - Give Chaplain PDA Epistemics colors
     state: pda-chaplain
 
 - type: entity
-  name: logistics officer PDA # DeltaV - Logistics Department replacing Cargo
+  name: quartermaster PDA
   parent: BasePDA
   id: QuartermasterPDA
-  description: PDA for the guy that directs logistics. # DeltaV - Logistics Department replacing Cargo
+  description: PDA for the guy that orders the guns.
   components:
   - type: Pda
     id: QuartermasterIDCard
@@ -351,8 +332,8 @@
 - type: entity
   parent: BasePDA
   id: CargoPDA
-  name: logistics PDA # DeltaV - Logistics Department replacing Cargo
-  description: PDA for the guys that order the pizzas. # DeltaV - Logistics Department replacing Cargo
+  name: cargo PDA
+  description: PDA for the guys that order the pizzas.
   components:
   - type: Pda
     id: CargoIDCard
@@ -430,12 +411,6 @@
     borderColor: "#6f6192"
   - type: Icon
     state: pda-lawyer
-  - type: CartridgeLoader # DeltaV - Crime Assist
-    preinstalled:
-      - CrewManifestCartridge
-      - NotekeeperCartridge
-      - NewsReaderCartridge
-      - CrimeAssistCartridge
 
 - type: entity
   parent: BasePDA
@@ -589,7 +564,7 @@
 - type: entity
   parent: BasePDA
   id: RnDPDA
-  name: mystagogue PDA # DeltaV - Epistemics Department replacing Science
+  name: research director PDA
   description: It appears surprisingly ordinary.
   components:
   - type: Pda
@@ -601,17 +576,11 @@
     accentVColor: "#8900c9"
   - type: Icon
     state: pda-rd
-  - type: CartridgeLoader # Nyanotrasen - Glimmer Monitor
-    preinstalled:
-      - CrewManifestCartridge
-      - NotekeeperCartridge
-      - NewsReaderCartridge
-      - GlimmerMonitorCartridge
 
 - type: entity
   parent: BasePDA
   id: SciencePDA
-  name: epistemics PDA # DeltaV - Epistemics Department replacing Science
+  name: science PDA
   description: It's covered with an unknown gooey substance.
   components:
   - type: Pda
@@ -622,12 +591,6 @@
     accentVColor: "#8900c9"
   - type: Icon
     state: pda-science
-  - type: CartridgeLoader # Nyanotrasen - Glimmer Monitor
-    preinstalled:
-      - CrewManifestCartridge
-      - NotekeeperCartridge
-      - NewsReaderCartridge
-      - GlimmerMonitorCartridge
 
 - type: entity
   parent: BasePDA
@@ -643,12 +606,6 @@
     accentHColor: "#447987"
   - type: Icon
     state: pda-hos
-  - type: CartridgeLoader # DeltaV - Crime Assist
-    preinstalled:
-      - CrewManifestCartridge
-      - NotekeeperCartridge
-      - NewsReaderCartridge
-      - CrimeAssistCartridge
 
 - type: entity
   parent: BasePDA
@@ -664,12 +621,6 @@
     accentVColor: "#949137"
   - type: Icon
     state: pda-warden
-  - type: CartridgeLoader # DeltaV - Crime Assist
-    preinstalled:
-      - CrewManifestCartridge
-      - NotekeeperCartridge
-      - NewsReaderCartridge
-      - CrimeAssistCartridge
 
 - type: entity
   parent: BasePDA
@@ -684,12 +635,6 @@
     borderColor: "#A32D26"
   - type: Icon
     state: pda-security
-  - type: CartridgeLoader # DeltaV - Crime Assist
-    preinstalled:
-      - CrewManifestCartridge
-      - NotekeeperCartridge
-      - NewsReaderCartridge
-      - CrimeAssistCartridge
 
 - type: entity
   parent: BasePDA
@@ -979,12 +924,6 @@
     borderColor: "#774705"
   - type: Icon
     state: pda-detective
-  - type: CartridgeLoader # DeltaV - Crime Assist
-    preinstalled:
-      - CrewManifestCartridge
-      - NotekeeperCartridge
-      - NewsReaderCartridge
-      - CrimeAssistCartridge
 
 - type: entity
   parent: BaseMedicalPDA
@@ -1001,12 +940,6 @@
     accentVColor: "#d7d7d0"
   - type: Icon
     state: pda-brigmedic
-  - type: CartridgeLoader # DeltaV - Crime Assist
-    preinstalled:
-      - CrewManifestCartridge
-      - NotekeeperCartridge
-      - NewsReaderCartridge
-      - CrimeAssistCartridge
 
 - type: entity
   parent: ClownPDA
@@ -1092,12 +1025,6 @@
     accentVColor: "#DFDFDF"
   - type: Icon
     state: pda-seniorofficer
-  - type: CartridgeLoader # DeltaV - Crime Assist
-    preinstalled:
-      - CrewManifestCartridge
-      - NotekeeperCartridge
-      - NewsReaderCartridge
-      - CrimeAssistCartridge
 
 - type: entity
   parent: SyndiPDA

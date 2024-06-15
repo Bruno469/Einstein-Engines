@@ -68,7 +68,7 @@ namespace Content.Server.Medical
             // Adds a tiny amount of the chem stream from earlier along with vomit
             if (TryComp<BloodstreamComponent>(uid, out var bloodStream))
             {
-                const float chemMultiplier = 0.1f;
+                const float chemMultiplier = 0.5f;
 
                 var vomitAmount = solutionSize;
 

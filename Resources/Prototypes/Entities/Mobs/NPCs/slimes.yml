@@ -111,17 +111,13 @@
     successChance: 0.5
     interactSuccessString: petting-success-slimes
     interactFailureString: petting-failure-generic
-  - type: LanguageSpeaker
-    speaks:
-    - Bubblish
-    understands:
-    - Bubblish
+  - type: ReplacementAccent
+    accent: slimes
   - type: GhostTakeoverAvailable
   - type: GhostRole
     makeSentient: true
     name: ghost-role-information-slimes-name
     description: ghost-role-information-slimes-description
-    rules: deltav-ghost-role-information-softantag-rules #DeltaV
   - type: Speech
     speechVerb: Slime
     speechSounds: Slime
@@ -149,8 +145,8 @@
     - type: NpcFactionMember
       factions:
         - SimpleHostile
-#    - type: GhostRole #DeltaV - all slimes neutral when ghost role
-#      description: ghost-role-information-angry-slimes-description
+    - type: GhostRole
+      description: ghost-role-information-angry-slimes-description
 
 - type: entity
   name: green slime
@@ -184,8 +180,8 @@
     - type: NpcFactionMember
       factions:
         - SimpleHostile
-#    - type: GhostRole #DeltaV - all slimes neutral when ghost role
-#      description: ghost-role-information-angry-slimes-description
+    - type: GhostRole
+      description: ghost-role-information-angry-slimes-description
 
 - type: entity
   name: yellow slime
@@ -219,5 +215,5 @@
     - type: NpcFactionMember
       factions:
         - SimpleHostile
-#    - type: GhostRole #DeltaV - all slimes neutral when ghost role
-#      description: ghost-role-information-angry-slimes-description
+    - type: GhostRole
+      description: ghost-role-information-angry-slimes-description

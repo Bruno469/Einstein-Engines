@@ -10,20 +10,11 @@
     sprite: Mobs/Species/Human/parts.rsi
     state: full
   - type: Thirst
-  - type: Carriable # Carrying system from nyanotrasen.
   - type: Butcherable
     butcheringType: Spike
     spawned:
     - id: FoodMeatHuman
       amount: 5
-  - type: PotentialPsionic #Nyano - Summary: makes potentially psionic.
-  - type: LanguageSpeaker
-    speaks:
-    - GalacticCommon
-    - SolCommon
-    understands:
-    - GalacticCommon
-    - SolCommon
 
 - type: entity
   parent: BaseSpeciesDummy

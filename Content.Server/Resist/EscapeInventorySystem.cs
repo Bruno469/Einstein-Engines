@@ -1,9 +1,5 @@
 using Content.Server.Popups;
-using Content.Shared.Storage;
-using Content.Server.Carrying; // Carrying system from Nyanotrasen.
-using Content.Shared.Inventory;
-using Content.Shared.Hands.EntitySystems;
-using Content.Server.Storage.Components;
+using Content.Shared.Storage.Components;
 using Content.Shared.ActionBlocker;
 using Content.Shared.DoAfter;
 using Content.Shared.Hands.EntitySystems;
@@ -23,12 +19,6 @@ public sealed class EscapeInventorySystem : EntitySystem
     [Dependency] private readonly SharedContainerSystem _containerSystem = default!;
     [Dependency] private readonly ActionBlockerSystem _actionBlockerSystem = default!;
     [Dependency] private readonly SharedHandsSystem _handsSystem = default!;
-    [Dependency] private readonly CarryingSystem _carryingSystem = default!; // Carrying system from Nyanotrasen.
-
-    /// <summary>
-    /// You can't escape the hands of an entity this many times more massive than you.
-    /// </summary>
-    public const float MaximumMassDisadvantage = 6f;
 
     public override void Initialize()
     {
@@ -66,15 +56,14 @@ public sealed class EscapeInventorySystem : EntitySystem
             AttemptEscape(uid, container.Owner, component);
     }
 
-    public void AttemptEscape(EntityUid user, EntityUid container, CanEscapeInventoryComponent component, float multiplier = 1f) //private to public for carrying system.
+    private void AttemptEscape(EntityUid user, EntityUid container, CanEscapeInventoryComponent component, float multiplier = 1f)
     {
         if (component.IsEscaping)
             return;
 
         var doAfterEventArgs = new DoAfterArgs(EntityManager, user, component.BaseResistTime * multiplier, new EscapeInventoryEvent(), user, target: container)
         {
-            BreakOnTargetMove = false,
-            BreakOnUserMove = true,
+            BreakOnMove = true,
             BreakOnDamage = true,
             NeedHand = false
         };
@@ -92,13 +81,6 @@ public sealed class EscapeInventorySystem : EntitySystem
 
         if (args.Handled || args.Cancelled)
             return;
-
-        if (TryComp<BeingCarriedComponent>(uid, out var carried)) // Start of carrying system of nyanotrasen.
-        {
-            _carryingSystem.DropCarried(carried.Carrier, uid);
-            return;
-        } // End of carrying system of nyanotrasen.
-
 
         _containerSystem.AttachParentToContainerOrGrid((uid, Transform(uid)));
         args.Handled = true;

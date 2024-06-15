@@ -205,7 +205,7 @@ namespace Content.Server.Cargo.Systems
             // Try to fulfill from any station where possible, if the pad is not occupied.
             foreach (var trade in _listEnts)
             {
-                var tradePads = GetCargoPallets(trade);
+                var tradePads = GetCargoPallets(trade, BuySellType.Buy);
                 _random.Shuffle(tradePads);
 
                 var freePads = GetFreeCargoPallets(trade, tradePads);
@@ -234,14 +234,12 @@ namespace Content.Server.Cargo.Systems
 
         private void GetTradeStations(StationDataComponent data, ref List<EntityUid> ents)
         {
-            var tradeStationQuery = AllEntityQuery<TradeStationComponent>(); // We *could* cache this, but I don't know where it'd go
-
-            while (tradeStationQuery.MoveNext(out var uid, out _))
+            foreach (var gridUid in data.Grids)
             {
-                //if (!_tradeQuery.HasComponent(uid))
-                //    continue;
+                if (!_tradeQuery.HasComponent(gridUid))
+                    continue;
 
-                ents.Add(uid);
+                ents.Add(gridUid);
             }
         }
 

@@ -185,8 +185,8 @@
 - type: entity
   parent: ClothingHeadHardsuitWithLightBase
   id: ClothingHeadHelmetHardsuitBrigmedic
-  name: corpsman hardsuit helmet # DeltaV - rename brigmedic to corpsman
-  description: The lightweight helmet of the corpsman hardsuit. Protects against viruses, and clowns. # Delta V - rename brigmedic to corpsman
+  name: brigmedic hardsuit helmet
+  description: The lightweight helmet of the brigmedic hardsuit. Protects against viruses, and clowns.
   components:
   - type: BreathMask
   - type: Sprite
@@ -570,6 +570,21 @@
         Slash: 0.9
         Piercing: 0.9
         Heat: 0.9
+
+#ERT Chaplain Hardsuit
+- type: entity
+  parent: ClothingHeadHelmetHardsuitSyndie
+  id: ClothingHeadHelmetHardsuitERTChaplain
+  name: ERT chaplain hardsuit helmet
+  description: A special hardsuit helmet worn by members of an emergency response team.
+  components:
+  - type: BreathMask
+  - type: Sprite
+    sprite: Clothing/Head/Hardsuits/ERThelmets/ertchaplain.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Hardsuits/ERThelmets/ertchaplain.rsi
+  - type: PointLight
+    color: "#ffffff"
 
 #ERT Engineer Hardsuit
 - type: entity

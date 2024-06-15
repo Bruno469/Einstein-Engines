@@ -8,10 +8,9 @@
     contents:
       - id: ClothingMaskBreath
       - id: EmergencyOxygenTankFilled
-      - id: SpaceMedipen
       - id: EmergencyMedipen
       - id: Flare
-      - id: FoodPSB # Nyanotrasen - Replace Tinned Meat with PSB
+      - id: FoodSnackNutribrick
       - id: DrinkWaterBottleFull
   - type: Sprite
     layers:
@@ -28,10 +27,9 @@
     contents:
       - id: ClothingMaskBreath
       - id: ExtendedEmergencyOxygenTankFilled
-      - id: SpaceMedipen
       - id: EmergencyMedipen
       - id: Flare
-      - id: FoodPSB # Nyanotrasen - Replace Tinned Meat with PSB
+      - id: FoodSnackNutribrick
       - id: DrinkWaterBottleFull
   - type: Sprite
     layers:
@@ -49,31 +47,9 @@
     contents:
       - id: ClothingMaskGasSecurity
       - id: EmergencyOxygenTankFilled
-      - id: SpaceMedipen
       - id: EmergencyMedipen
       - id: Flare
-      - id: FoodPSB # Nyanotrasen - Replace Tinned Meat with PSB
-      - id: DrinkWaterBottleFull
-  - type: Sprite
-    layers:
-      - state: internals
-      - state: emergencytank
-
-- type: entity
-  name: survival box
-  parent: BoxCardboard
-  id: BoxSurvivalBrigmedic
-  description: It's a box with basic internals inside.
-  suffix: MedSec
-  components:
-  - type: StorageFill
-    contents:
-      - id: ClothingMaskBreathMedicalSecurity
-      - id: EmergencyOxygenTankFilled
-      - id: SpaceMedipen
-      - id: EmergencyMedipen
-      - id: EmergencyMedipen
-      - id: FoodPSB # Nyanotrasen - Replace Tinned Meat with PSB
+      - id: FoodSnackNutribrick
       - id: DrinkWaterBottleFull
   - type: Sprite
     layers:
@@ -91,10 +67,9 @@
     contents:
       - id: ClothingMaskBreathMedical
       - id: EmergencyOxygenTankFilled
-      - id: SpaceMedipen
       - id: EmergencyMedipen
       - id: Flare
-      - id: FoodPSB # Nyanotrasen - Replace Tinned Meat with PSB
+      - id: FoodSnackNutribrick
       - id: DrinkWaterBottleFull
   - type: Sprite
     layers:
@@ -118,10 +93,9 @@
     contents:
       - id: ClothingMaskBreath
       - id: EmergencyFunnyOxygenTankFilled
-      - id: SpaceMedipen
       - id: EmergencyMedipen
       - id: Flare
-      - id: FoodPSB # Nyanotrasen - Replace Tinned Meat with PSB
+      - id: FoodSnackNutribrick
       - id: DrinkWaterBottleFull
   - type: Tag
     tags:
@@ -139,8 +113,7 @@
       - id: ExtendedEmergencyOxygenTankFilled
       - id: EmergencyMedipen
       - id: Flare
-      - id: FoodPSB # Nyanotrasen - Replace Tinned Meat with PSB
-      - id: DrinkWaterBottleFull
+      - id: FoodSnackNutribrick
   - type: Sprite
     layers:
       - state: internals

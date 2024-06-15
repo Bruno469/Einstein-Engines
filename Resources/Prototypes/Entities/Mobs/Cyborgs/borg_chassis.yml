@@ -118,8 +118,6 @@
     access: [["Engineering"], ["Command"], ["Research"]]
   - type: Inventory
     templateId: borgShort
-  - type: SiliconLawProvider # Delta-V - Adds custom lawset for Engineering Cyborg
-    laws: Engineer 
 
 - type: entity
   id: BorgChassisJanitor
@@ -171,8 +169,6 @@
     access: [["Service"], ["Command"], ["Research"]]
   - type: Inventory
     templateId: borgShort
-  - type: SiliconLawProvider # Delta-V Adds custom lawset for Janitor Cyborg
-    laws: Janitor
 
 - type: entity
   id: BorgChassisMedical
@@ -224,9 +220,6 @@
     access: [["Medical"], ["Command"], ["Research"]]
   - type: Inventory
     templateId: borgDutch
-  - type: FabricateCandy # Nyanotrasen - The medical cyborg can generate candies filled with medicine.
-  - type: SiliconLawProvider # Delta-V - Adds custom lawset for Medical cyborg
-    laws: Medical
 
 - type: entity
   id: BorgChassisService

@@ -3,6 +3,7 @@ using Content.Shared.FixedPoint;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
+using Content.Shared.Stealth.Components;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Shared.Enums;
@@ -19,7 +20,6 @@ namespace Content.Client.Overlays;
 /// </summary>
 public sealed class EntityHealthBarOverlay : Overlay
 {
-    [Dependency] private readonly IPrototypeManager _prototype = default!;
     private readonly IEntityManager _entManager;
     private readonly SharedTransformSystem _transform;
     private readonly MobStateSystem _mobStateSystem;
@@ -27,17 +27,14 @@ public sealed class EntityHealthBarOverlay : Overlay
     private readonly ProgressColorSystem _progressColor;
     public override OverlaySpace Space => OverlaySpace.WorldSpaceBelowFOV;
     public HashSet<string> DamageContainers = new();
-    private readonly ShaderInstance _shader;
 
     public EntityHealthBarOverlay(IEntityManager entManager)
     {
-        IoCManager.InjectDependencies(this);
         _entManager = entManager;
         _transform = _entManager.System<SharedTransformSystem>();
         _mobStateSystem = _entManager.System<MobStateSystem>();
         _mobThresholdSystem = _entManager.System<MobThresholdSystem>();
         _progressColor = _entManager.System<ProgressColorSystem>();
-        _shader = _prototype.Index<ShaderPrototype>("unshaded").Instance();
     }
 
     protected override void Draw(in OverlayDrawArgs args)
@@ -50,8 +47,6 @@ public sealed class EntityHealthBarOverlay : Overlay
         var scaleMatrix = Matrix3.CreateScale(new Vector2(scale, scale));
         var rotationMatrix = Matrix3.CreateRotation(-rotation);
 
-        handle.UseShader(_shader);
-
         var query = _entManager.AllEntityQueryEnumerator<MobThresholdsComponent, MobStateComponent, DamageableComponent, SpriteComponent>();
         while (query.MoveNext(out var uid,
             out var mobThresholdsComponent,
@@ -61,6 +56,11 @@ public sealed class EntityHealthBarOverlay : Overlay
         {
             if (_entManager.TryGetComponent<MetaDataComponent>(uid, out var metaDataComponent) &&
                 metaDataComponent.Flags.HasFlag(MetaDataFlags.InContainer))
+            {
+                continue;
+            }
+
+            if (_entManager.HasComponent<StealthComponent>(uid))
             {
                 continue;
             }
@@ -122,7 +122,6 @@ public sealed class EntityHealthBarOverlay : Overlay
             handle.DrawRect(pixelDarken, Black.WithAlpha(128));
         }
 
-        handle.UseShader(null);
         handle.SetTransform(Matrix3.Identity);
     }
 

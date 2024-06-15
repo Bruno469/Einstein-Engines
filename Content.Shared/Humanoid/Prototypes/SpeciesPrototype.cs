@@ -133,8 +133,7 @@ public enum SpeciesNaming : byte
     First,
     FirstLast,
     FirstDashFirst,
-    //Start of Nyano - Summary: for Oni naming
-    LastNoFirst,
-    //End of Nyano - Summary: for Oni naming
+    XnoY,
     TheFirstofLast,
+    FirstDashLast, // Parkstation-IPC
 }

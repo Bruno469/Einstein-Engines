@@ -27,11 +27,6 @@
         - GhostImpassable
   - type: Eye
     drawFov: false
-    visMask:
-      - TelegnosticProjection
-      - PsionicInvisibility
-      - Ghost
-      - Normal
   - type: Input
     context: "ghost"
   - type: Examiner
@@ -53,7 +48,6 @@
   - type: Tag
     tags:
     - BypassInteractionRangeChecks
-  - type: UniversalLanguageSpeaker # Ghosts should understand any language.
 
 - type: entity
   id: ActionGhostBoo

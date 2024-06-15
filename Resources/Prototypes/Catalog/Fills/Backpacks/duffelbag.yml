@@ -226,10 +226,10 @@
   name: syndicate C-4 bundle
   description: "Contains a lot of C-4 charges."
   components:
-  - type: StorageFill
-    contents:
-      - id: C4
-        amount: 8
+    - type: StorageFill
+      contents:
+        - id: C4
+          amount: 8
 
 - type: entity
   parent: ClothingBackpackChameleon

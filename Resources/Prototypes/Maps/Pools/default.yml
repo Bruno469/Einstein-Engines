@@ -1,14 +1,21 @@
 - type: gameMapPool
   id: DefaultMapPool
   maps:
-# DeltaV
-  - Arena
-  - Asterisk
-  - Edge
-  - Hammurabi
-  - Lighthouse
-  - Pebble
-  - Shoukou
-  - Tortuga
-  - TheHive
-  - Submarine
+  - Atlas
+  - Bagel
+  - Barratry
+  - Box
+  - Cluster
+  - Core
+  - Fland
+  - Marathon
+  - Meta
+  - Omega
+  - Origin
+  - Saltern
+  - Packed
+  - Reach
+  - Falcon
+  #- RadStation
+  #- EstacaoPirata
+  #- Train <- return after station anchoring PR is finished and merged

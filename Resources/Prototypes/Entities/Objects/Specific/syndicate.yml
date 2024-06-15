@@ -57,10 +57,10 @@
   - type: Sprite
     sprite: Objects/Devices/communication.rsi
     layers:
-    - state: radio
+    - state: old-radio
   - type: Item
     sprite: Objects/Devices/communication.rsi
-    heldPrefix: radio
+    heldPrefix: old-radio
   - type: UserInterface
     interfaces:
     - key: enum.StoreUiKey.Key
@@ -102,6 +102,19 @@
     preset: StorePresetUplink
     balance:
       Telecrystal: 40
+  - type: Tag
+    tags:
+    - NukeOpsUplink
+
+- type: entity
+  parent: BaseUplinkRadio
+  id: BaseUplinkRadio60TC
+  suffix: 60 TC, LoneOps
+  components:
+  - type: Store
+    preset: StorePresetUplink
+    balance:
+      Telecrystal: 60
   - type: Tag
     tags:
     - NukeOpsUplink

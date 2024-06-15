@@ -230,7 +230,6 @@
       - spicy
   - type: Sprite
     state: cubancarp
-# Delta-V: Removed the toxin and changed the description.
   - type: SolutionContainerManager
     solutions:
       food:
@@ -238,7 +237,7 @@
         reagents:
         - ReagentId: Nutriment
           Quantity: 6
-        - ReagentId: Protein
+        - ReagentId: CarpoToxin
           Quantity: 3
   - type: Tag
     tags:
@@ -508,14 +507,13 @@
   name: sashimi
   parent: FoodMealBase
   id: FoodMealSashimi
-  description: Its taste can only be described as "Exotic".
+  description: Its taste can only be described as "Exotic". The poisoning though? That's pretty common.
   components:
   - type: FlavorProfile
     flavors:
       - fishy
   - type: Sprite
     state: sashimi
-# Delta-V: Removed the toxin and changed the description.
   - type: SolutionContainerManager
     solutions:
       food:
@@ -523,8 +521,8 @@
         reagents:
         - ReagentId: Nutriment
           Quantity: 6
-        - ReagentId: Protein
-          Quantity: 6
+        - ReagentId: CarpoToxin
+          Quantity: 15
   - type: Tag
     tags:
     - Meat

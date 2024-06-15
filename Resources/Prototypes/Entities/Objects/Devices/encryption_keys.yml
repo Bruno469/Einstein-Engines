@@ -29,7 +29,7 @@
 - type: entity
   parent: EncryptionKey
   id: EncryptionKeyCargo
-  name: logistics encryption key # DeltaV - Logistics Department replacing Cargo
+  name: cargo encryption key
   description: An encryption key used by supply employees.
   components:
   - type: EncryptionKey
@@ -72,7 +72,6 @@
     - Security
     - Service
     - Supply
-    - Prison #DeltaV
     defaultChannel: Command
   - type: Sprite
     layers:
@@ -127,7 +126,7 @@
 - type: entity
   parent: EncryptionKey
   id: EncryptionKeyMedicalScience
-  name: med-epi encryption key # DeltaV - Epistemics Department replacing Science
+  name: med-sci encryption key
   description: An encryption key used by someone who hasn't decided which side to take.
   components:
   - type: EncryptionKey
@@ -143,7 +142,7 @@
 - type: entity
   parent: EncryptionKey
   id: EncryptionKeyScience
-  name: epistemics encryption key # DeltaV - Epistemics Department replacing Science
+  name: science encryption key
   description: An encryption key used by scientists. Maybe it is plasmaproof?
   components:
   - type: EncryptionKey
@@ -179,7 +178,6 @@
   - type: EncryptionKey
     channels:
     - Security
-    - Prison #deltaV
     defaultChannel: Security
   - type: Sprite
     layers:
@@ -215,10 +213,6 @@
     layers:
     - state: crypt_red
     - state: synd_label
-  - type: ReverseEngineering # Nyano
-    difficulty: 5
-    recipes:
-      - EncryptionKeySyndie
 
 - type: entity
   parent: EncryptionKey

@@ -1,11 +1,11 @@
 - type: reagentDispenserInventory
   id: SodaDispenserInventory
   inventory:
+  - DrinkCoconutWaterJug
   - DrinkCoffeeJug
   - DrinkColaBottleFull
   - DrinkCreamCartonXL
   - DrinkDrGibbJug
-  - DrinkEnergyDrinkJug
   - DrinkGreenTeaJug
   - DrinkIceJug
   - DrinkJuiceLimeCartonXL
@@ -19,6 +19,7 @@
   - DrinkTeaJug
   - DrinkTonicWaterBottleFull
   - DrinkWaterMelonJuiceJug
+  #- Guarana
 
 - type: reagentDispenserInventory
   id: BoozeDispenserInventory
@@ -35,3 +36,4 @@
   - DrinkVodkaBottleFull
   - DrinkWhiskeyBottleFull
   - DrinkWineBottleFull
+  #- Cachaca

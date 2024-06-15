@@ -1,7 +1,6 @@
 using Content.Server.Antag;
 using Content.Server.GameTicking.Rules.Components;
 using Content.Server.Mind;
-using Content.Server.NPC.Systems;
 using Content.Server.Objectives;
 using Content.Server.PDA.Ringer;
 using Content.Server.Roles;
@@ -10,6 +9,7 @@ using Content.Shared.CCVar;
 using Content.Shared.Dataset;
 using Content.Shared.Mind;
 using Content.Shared.Mobs.Systems;
+using Content.Shared.NPC.Systems;
 using Content.Shared.Objectives.Components;
 using Content.Shared.PDA;
 using Content.Shared.Roles;
@@ -111,6 +111,11 @@ public sealed class TraitorRuleSystem : GameRuleSystem<TraitorRuleComponent>
             return;
 
         var traitorsToSelect = _antagSelection.CalculateAntagCount(_playerManager.PlayerCount, PlayersPerTraitor, MaxTraitors);
+
+	// Tentativa de workaround hardcoded idiota, não achei o bug dos 19 traitor - Pirata
+	if (traitorsToSelect > 10){
+		traitorsToSelect = 10;
+	}
 
         var selectedTraitors = _antagSelection.ChooseAntags(traitorsToSelect, eligiblePlayers);
 
@@ -247,7 +252,7 @@ public sealed class TraitorRuleSystem : GameRuleSystem<TraitorRuleComponent>
             // If we have too many traitors, divide by how many players below target for next traitor we are.
             if (ev.JoinOrder < target)
             {
-                chance /= (target - ev.JoinOrder);
+                continue; // Pirata - não adiciona antags se já tem o bastante
             }
             else // Tick up towards 100% chance.
             {

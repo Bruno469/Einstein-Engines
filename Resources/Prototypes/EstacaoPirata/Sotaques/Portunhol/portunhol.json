@@ -1,0 +1,456 @@
+{
+    "words": [
+        {
+            "og": [
+                "sim"
+            ],
+            "mod": ["si"]
+        },
+        {
+            "og": [
+                "não"
+            ],
+            "mod": [
+                "no"
+            ]
+        },
+        {
+            "og": [
+                "meus",
+                "minhas"
+            ],
+            "mod": [
+                "mis"
+            ]
+        },
+        {
+            "og": [
+                "meu",
+                "minha"
+            ],
+            "mod": [
+                "mi"
+            ]
+        },
+        {
+            "og": [
+                "irmão",
+                "cara"
+            ],
+            "mod": [
+                "hermano"
+            ]
+        },
+        {
+            "og": [
+                "irmãos",
+                "caras"
+            ],
+            "mod": [
+                "hermanos"
+            ]
+        },
+        {
+            "og": [
+                "homem"
+            ],
+            "mod": [
+                "hombre"
+            ]
+        },
+        {
+            "og": [
+                "irmã"
+            ],
+            "mod": [
+                "hermana"
+            ]
+        },
+        {
+            "og": [
+                "irmãs"
+            ],
+            "mod": [
+                "hermanas"
+            ]
+        },
+        {
+            "og": [
+                "é"
+            ],
+            "mod": [
+                "es"
+            ]
+        },
+        {
+            "og": [
+                "você"
+            ],
+            "mod": [
+                "tu",
+                "usted"
+            ]
+        },
+        {
+            "og": [
+                "o"
+            ],
+            "mod": [
+                "el"
+            ]
+        },
+        {
+            "og": [
+                "os"
+            ],
+            "mod": [
+                "los"
+            ]
+        },
+        {
+            "og": [
+                "a"
+            ],
+            "mod": [
+                "la"
+            ]
+        },
+        {
+            "og": [
+                "as"
+            ],
+            "mod": [
+                "las"
+            ]
+        },
+        {
+            "og": [
+                "meu"
+            ],
+            "mod": [
+                "mi"
+            ]
+        },
+        {
+            "og": [
+                "fogo"
+            ],
+            "mod": [
+                "fuego"
+            ]
+        },
+        {
+            "og": [
+                "fila"
+            ],
+            "mod": [
+                "bicha"
+            ]
+        },
+        {
+            "og": [
+                "sec",
+                "segurança",
+                "security",
+                "polícia"
+            ],
+            "mod": [
+                "policía"
+            ]
+        },
+        {
+            "og": [
+                "tenho"
+            ],
+            "mod": [
+                "tengo"
+            ]
+        },
+        {
+            "og": [
+                "secs",
+                "seguranças",
+                "securitys",
+                "polícias"
+            ],
+            "mod": [
+                "policías"
+            ]
+        },
+        {
+            "og": [
+                "médico",
+                "med"
+            ],
+            "mod": [
+                "doctor"
+            ]
+        },
+        {
+            "og": [
+                "médicos",
+                "meds"
+            ],
+            "mod": [
+                "doctors"
+            ]
+        },
+        {
+            "og": [
+                "está",
+                "esta"
+            ],
+            "mod": [
+                "estas"
+            ]
+        },
+        {
+            "og": [
+                "estou"
+            ],
+            "mod": [
+                "estoy"
+            ]
+        },
+        {
+            "og": [
+                "engi",
+                "eng",
+                "engenheiro"
+            ],
+            "mod": [
+                "ingineiro"
+            ]
+        },
+        {
+            "og": [
+                "engis",
+                "engs",
+                "engenheiros"
+            ],
+            "mod": [
+                "ingineiro"
+            ]
+        },
+        {
+            "og": [
+                "botânico",
+                "botânica",
+                "botanico",
+                "botanica"
+            ],
+            "mod": [
+                "herbalista"
+            ]
+        },
+        {
+            "og": [
+                "botânicos",
+                "botânicas",
+                "botanico",
+                "botanica"
+            ],
+            "mod": [
+                "herbalistas"
+            ]
+        },
+        {
+            "og": [
+                "muito",
+                "muita"
+            ],
+            "mod": [
+                "muy"
+            ]
+        },
+        {
+            "og": [
+                "bem"
+            ],
+            "mod": [
+                "bien"
+            ]
+        },
+        {
+            "og": [
+                "ola",
+                "olá",
+                "oi",
+                "eae"
+            ],
+            "mod": [
+                "hola"
+            ]
+        },
+        {
+            "og": [
+                "eu"
+            ],
+            "mod": [
+                "yo"
+            ]
+        },
+        {
+            "og": [
+                "merda"
+            ],
+            "mod": [
+                "mierda"
+            ]
+        },
+        {
+            "og": [
+                "em"
+            ],
+            "mod": [
+                "en"
+            ]
+        },
+        {
+            "og": [
+                "um"
+            ],
+            "mod": [
+                "uno"
+            ]
+        },
+        {
+            "og": [
+                "dois"
+            ],
+            "mod": [
+                "dos"
+            ]
+        },
+        {
+            "og": [
+                "três",
+                "tres"
+            ],
+            "mod": [
+                "tres"
+            ]
+        },
+        {
+            "og": [
+                "quatro"
+            ],
+            "mod": [
+                "cuatro"
+            ]
+        },
+        {
+            "og": [
+                "sete"
+            ],
+            "mod": [
+                "siete"
+            ]
+        },
+        {
+            "og": [
+                "oito"
+            ],
+            "mod": [
+                "ocho"
+            ]
+        },
+        {
+            "og": [
+                "nove"
+            ],
+            "mod": [
+                "nueve"
+            ]
+        },
+        {
+            "og": [
+                "dez"
+            ],
+            "mod": [
+                "diez"
+            ]
+        },
+        {
+            "og": [
+                "uma"
+            ],
+            "mod": [
+                "una"
+            ]
+        },
+        {
+            "og": [
+                "uns"
+            ],
+            "mod": [
+                "unos"
+            ]
+        },
+        {
+            "og": [
+                "umas"
+            ],
+            "mod": [
+                "unas"
+            ]
+        },
+        {
+            "og": [
+                "caralho"
+            ],
+            "mod": [
+                "gararro"
+            ]
+        },
+        {
+            "og": [
+                "bom"
+            ],
+            "mod": [
+                "bueno"
+            ]
+        },
+        {
+            "og": [
+                "bons"
+            ],
+            "mod": [
+                "buenos"
+            ]
+        },
+        {
+            "og": [
+                "boa"
+            ],
+            "mod": [
+                "buena"
+            ]
+        },
+        {
+            "og": [
+                "boas"
+            ],
+            "mod": [
+                "buenas"
+            ]
+        }
+    ],
+    "phrases": [
+        {
+            "og": [
+                "filho da puta",
+                "fdp"
+            ],
+            "mod": [
+                "hijo da puta"
+            ]
+        }
+    ],
+    "ending": [
+        "Esse."
+    ],
+    "begin": [
+        "Orale,"
+    ]
+}

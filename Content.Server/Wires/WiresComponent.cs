@@ -1,4 +1,5 @@
 using Robust.Shared.Audio;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Wires;
 
@@ -15,7 +16,7 @@ public sealed partial class WiresComponent : Component
     ///     The layout ID of this entity's wires.
     /// </summary>
     [DataField(required: true)]
-    public string LayoutId { get; set; } = default!;
+    public ProtoId<WireLayoutPrototype> LayoutId { get; set; } = default!;
 
     /// <summary>
     ///     The serial number of this board. Randomly generated upon start,
@@ -47,8 +48,8 @@ public sealed partial class WiresComponent : Component
     ///     If this should follow the layout saved the first time the layout dictated by the
     ///     layout ID is generated, or if a new wire order should be generated every time.
     /// </summary>
-    [DataField("alwaysRandomize")]
-    public bool AlwaysRandomize { get; private set; } = true; // Nyanotrasen - Always randomize wires
+    [DataField]
+    public bool AlwaysRandomize { get; private set; }
 
     /// <summary>
     ///     Per wire status, keyed by an object.

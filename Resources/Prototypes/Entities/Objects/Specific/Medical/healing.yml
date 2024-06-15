@@ -365,7 +365,6 @@
         - ReagentId: Dexalin
           Quantity: 10
 
-
 - type: entity
   name: pill canister (dexalin 10u)
   parent: PillCanister
@@ -711,6 +710,10 @@
   parent: Pill
   id: PillAmbuzolPlus
   components:
+    - type: Pill
+      pillType: 2
+    - type: Sprite
+      state: pill3
     - type: SolutionContainerManager
       solutions:
         food:

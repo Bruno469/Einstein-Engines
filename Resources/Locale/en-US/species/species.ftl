@@ -9,3 +9,6 @@ species-name-arachnid = Arachnid
 species-name-moth = Moth Person
 species-name-skeleton = Skeleton
 species-name-vox = Vox
+
+## Parkstation Names
+species-name-ipc = IPC

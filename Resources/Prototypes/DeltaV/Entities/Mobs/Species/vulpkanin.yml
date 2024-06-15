@@ -6,18 +6,20 @@
   abstract: true
   components:
   - type: HumanoidAppearance
-    species: Vulpkanin
+    species: HumanoidFoxes
   - type: Hunger
-  - type: Carriable # Carrying system from nyanotrasen.
-  - type: Inventory # Allows vulps to wear properly shaped helmets
-    speciesId: vulpkanin
+    baseDecayRate: 0.025
   - type: Thirst
+    baseDecayRate: 0.06
   - type: Icon
     sprite: DeltaV/Mobs/Species/Vulpkanin/parts.rsi
     state: full
   - type: Body
     prototype: Vulpkanin
     requiredLegs: 2
+  - type: VulpLanguageSpeaker
+  - type: VulpLangaugeListener
+  - type: VulpGiveTranslator
   - type: Speech
     speechSounds: Vulpkanin
     speechVerb: Vulpkanin
@@ -72,38 +74,25 @@
       - map: [ "head" ]
       - map: [ "pocket1" ]
       - map: [ "pocket2" ]
-      - map: [ "clownedon" ] # Dynamically generated
-        sprite: "DeltaV/Effects/creampie.rsi"
-        state: "creampie_vulpkanin"
-        visible: false
-  - type: MeleeWeapon
-    hidden: true
-    soundHit:
-      path: /Audio/Weapons/pierce.ogg
-    angle: 30
-    animation: WeaponArcClaw
-    damage:
-      types:
-        Blunt: 2
-        Slash: 3
-  - type: Perishable
   - type: Damageable
-    damageModifierSet: Vulpkanin
+    damageContainer: Biological
+    damageModifierSet: Vulps
+  - type: Perishable
   - type: TemperatureProtection
     coefficient: 0.1
-  - type: Vocal
-    sounds:
-      Male: MaleVulpkanin
-      Female: FemaleVulpkanin
-      Unsexed: MaleVulpkanin
-  - type: DogVision
-  - type: LanguageSpeaker
-    speaks:
-    - GalacticCommon
-    - Canilunzt
-    understands:
-    - GalacticCommon
-    - Canilunzt
+  - type: Temperature
+    heatDamageThreshold: 335
+    coldDamageThreshold: 200
+    currentTemperature: 310.15
+    specificHeat: 46
+    coldDamage:
+      types:
+        Cold : 0.05
+  - type: Flammable
+    damage:
+      types:
+        Heat: 1.5 # Rip Fur
+
 
 - type: entity
   save: false
@@ -114,4 +103,4 @@
   description: A dummy vulpkanin meant to be used in character setup.
   components:
   - type: HumanoidAppearance
-    species: Vulpkanin
+    species: HumanoidFoxes

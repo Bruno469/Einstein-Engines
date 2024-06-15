@@ -46,14 +46,14 @@
               amount: 2
               doAfter: 3
 
-        - to: shuttleWindow #Nyano
+        - to: shuttleWindow
           steps:
             - material: Plasteel
               amount: 2
             - material: ReinforcedGlass
               amount: 2
               doAfter: 4
-
+        
         - to: clockworkWindow
           steps:
             - material: ClockworkGlass
@@ -223,7 +223,7 @@
               doAfter: 2
             - tool: Anchoring
               doAfter: 3
-
+    
     - node: shuttleWindow
       entity: ShuttleWindow
       edges:
@@ -237,6 +237,7 @@
               amount: 2
             - !type:DeleteEntity {}
           steps:
+          #To-Do: Add deconstruct visuals
             - tool: Welding
               doAfter: 6
             - tool: Screwing

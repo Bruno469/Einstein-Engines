@@ -36,12 +36,6 @@
     - VimPilot
   - type: StealTarget
     stealGroup: AnimalIan
-  - type: LanguageSpeaker
-    speaks:
-    - Dog
-    understands:
-    - GalacticCommon
-    - Dog
 
 - type: entity
   name: Old Ian
@@ -127,12 +121,6 @@
     tags:
     - CannotSuicide
     - VimPilot
-  - type: LanguageSpeaker
-    speaks:
-    - Cat
-    understands:
-    - GalacticCommon
-    - Cat
 
 - type: entity
   name: Exception
@@ -151,12 +139,6 @@
     tags:
     - CannotSuicide
     - VimPilot
-  - type: LanguageSpeaker
-    speaks:
-    - Cat
-    understands:
-    - GalacticCommon
-    - Cat
 
 - type: entity
   name: Floppa
@@ -306,12 +288,8 @@
     spawned:
     - id: FoodMeat
       amount: 2
-  - type: LanguageSpeaker
-    speaks:
-    - Dog
-    understands:
-    - GalacticCommon
-    - Dog
+  - type: ReplacementAccent
+    accent: dog
   - type: InteractionPopup
     successChance: 0.5
     interactSuccessString: petting-success-dog
@@ -335,34 +313,6 @@
   parent: MobSloth
   id: MobPaperwork
   description: Took up a new job sorting books in the library after he got transferred from Space Station 13. He seems to be just as slow at this.
-  components:
-  - type: Sprite
-    drawdepth: Mobs
-    sprite: Mobs/Pets/paperwork.rsi
-    layers:
-    - map: ["enum.DamageStateVisualLayers.Base"]
-      state: paperwork
-  - type: DamageStateVisuals
-    states:
-      Alive:
-        Base: paperwork
-      Critical:
-        Base: paperwork_dead
-      Dead:
-        Base: paperwork_dead
-  - type: Butcherable
-    spawned:
-    - id: FoodMeat
-      amount: 3
-  - type: InteractionPopup
-    successChance: 1
-    interactSuccessString: petting-success-sloth
-    interactFailureString: petting-failure-sloth
-    interactSuccessSpawn: EffectHearts
-  - type: Grammar
-    attributes:
-      proper: true
-      gender: male
 
 - type: entity
   name: Walter
@@ -409,12 +359,8 @@
     spawned:
     - id: FoodMeat
       amount: 3
-  - type: LanguageSpeaker
-    speaks:
-    - Dog
-    understands:
-    - GalacticCommon
-    - Dog
+  - type: ReplacementAccent
+    accent: dog
   - type: InteractionPopup
     successChance: 0.7
     interactSuccessString: petting-success-dog
@@ -572,12 +518,6 @@
     - VimPilot
   - type: StealTarget
     stealGroup: AnimalRenault
-  - type: LanguageSpeaker
-    speaks:
-    - Fox
-    understands:
-    - GalacticCommon
-    - Fox
 
 - type: entity
   name: Hamlet
@@ -625,12 +565,6 @@
     - CannotSuicide
     - Hamster
     - VimPilot
-  - type: LanguageSpeaker
-    speaks:
-    - Mouse
-    understands:
-    - GalacticCommon
-    - Mouse
 
 - type: entity
   name: Shiva
@@ -638,14 +572,6 @@
   id: MobSpiderShiva
   description: The first defender of the station.
   components:
-  - type: GhostRole # DeltaV
-    makeSentient: true
-    allowSpeech: true
-    allowMovement: true
-    name: ghost-role-information-Shiva-name
-    description: ghost-role-information-Shiva-description
-    rules: ghost-role-information-Shiva-rules
-  - type: GhostTakeoverAvailable # DeltaV
   - type: InteractionPopup
     successChance: 0.5 # spider is mean
     interactSuccessString: petting-success-tarantula
@@ -798,17 +724,10 @@
   - type: GhostRole
     name: ghost-role-information-smile-name
     description: ghost-role-information-smile-description
-    rules: ghost-role-information-smile-rules
   - type: Grammar
     attributes:
       proper: true
       gender: female
-  - type: LanguageSpeaker
-    speaks:
-    - Bubblish
-    understands:
-    - GalacticCommon
-    - Bubblish
 
 - type: entity
   name: Pun Pun
@@ -843,13 +762,6 @@
     attributes:
       proper: true
       gender: male
-  - type: LanguageSpeaker
-    speaks:
-    - Monkey
-    understands:
-    - GalacticCommon
-    - Monkey
-    - Kobold
 
 - type: entity
   name: Tropico
@@ -877,9 +789,3 @@
 #  - type: AlwaysRevolutionaryConvertible
   - type: StealTarget
     stealGroup: AnimalTropico
-  - type: LanguageSpeaker
-    speaks:
-    - Crab
-    understands:
-    - GalacticCommon
-    - Crab

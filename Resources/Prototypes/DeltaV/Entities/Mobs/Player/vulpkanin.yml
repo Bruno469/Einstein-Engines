@@ -17,6 +17,11 @@
     - type: MobMover
     - type: InputMover
     - type: Alerts
+    - type: Vocal
+      sounds:
+        Male: MaleVulpkanin
+        Female: FemaleVulpkanin
+        Unsexed: MaleVulpkanin
     - type: Eye
     - type: CameraRecoil
     - type: Examiner
@@ -24,7 +29,6 @@
     - type: NpcFactionMember
       factions:
         - NanoTrasen
-    - type: PotentialPsionic
     - type: Respirator
       damage:
        types:

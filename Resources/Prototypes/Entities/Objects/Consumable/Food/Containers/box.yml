@@ -263,18 +263,6 @@
     - id: FoodPizzaDonkpocket
       prob: 0.10
       orGroup: Pizza
-    - id: FoodMothPizzaFirecracker # Nyanotrasen - Moth Recipes
-      prob: 0.05
-      orGroup: Pizza
-    - id: FoodMothPizzaFiveCheese # Nyanotrasen - Moth Recipes
-      prob: 0.05
-      orGroup: Pizza
-    - id: FoodMothPizzaPesto # Nyanotrasen - Moth Recipes
-      prob: 0.05
-      orGroup: Pizza
-    - id: FoodPizzaCorncob # Nyanotrasen - Corncob Pizza
-      prob: 0.01
-      orGroup: Pizza
 
 # Nugget
 
@@ -751,8 +739,4 @@
         orGroup: GiftPool
       - id: GoldenBikeHorn
         prob: 0.1
-        orGroup: GiftPool
-      - id: ToyRenault # DeltaV Toy, see Resources/Prototypes/DeltaV/Entities/Objects/Fun/toys.yml
-        orGroup: GiftPool
-      - id: ToySiobhan # DeltaV Toy, see Resources/Prototypes/DeltaV/Entities/Objects/Fun/toys.yml
         orGroup: GiftPool

@@ -3,6 +3,7 @@ using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Inventory;
 using Content.Shared.Preferences;
 using Content.Shared.Roles;
+using Content.Shared.VulpLangauge;
 
 namespace Content.Shared.Station;
 
@@ -30,6 +31,7 @@ public abstract class SharedStationSpawningSystem : EntitySystem
                     InventorySystem.TryEquip(entity, equipmentEntity, slot.Name, true, force:true);
                 }
             }
+            
         }
 
         if (!TryComp(entity, out HandsComponent? handsComponent))
@@ -45,6 +47,12 @@ public abstract class SharedStationSpawningSystem : EntitySystem
             {
                 _handsSystem.TryPickup(entity, inhandEntity, emptyHand, checkActionBlocker: false, handsComp: handsComponent);
             }
+        }
+
+        if (HasComp<VulpGiveTranslatorComponent>(entity))
+        {
+            var VulpTranslatorEntity = EntityManager.SpawnEntity("VulpTranslator", coords);
+            _handsSystem.TryForcePickupAnyHand(entity, VulpTranslatorEntity, checkActionBlocker: false, handsComp: handsComponent);
         }
     }
 }

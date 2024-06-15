@@ -346,11 +346,6 @@
         type: Add
         time: 10
         refresh: false
-      - !type:ChemRemovePsionic #Nyano - Summary: removes psionics from the user at 20u.
-        conditions:
-          - !type:ReagentThreshold
-            reagent: MindbreakerToxin
-            min: 20
   # TODO: PROPER hallucinations
 
 - type: reagent
@@ -430,11 +425,12 @@
   color: "#D6CE7B"
   metabolisms:
     Poison:
+      metabolismRate: 0.2
       effects:
       - !type:HealthChange
         damage:
           types:
-            Poison: 6
+            Poison: 3
 
 - type: reagent
   id: VentCrud

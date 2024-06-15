@@ -1,0 +1,40 @@
+- type: emoteSounds
+  id: MaleMoth
+  params:
+    variation: 0.125
+  sounds:
+    Scream:
+      path: /Audio/Voice/Moth/moth_scream.ogg
+    Laugh:
+      path: /Audio/Voice/Moth/moth_laugh.ogg
+
+- type: emoteSounds
+  id: FemaleMoth
+  params:
+    variation: 0.125
+  sounds:
+    Scream:
+      path: /Audio/Voice/Moth/moth_scream.ogg
+    Laugh:
+      path: /Audio/Voice/Moth/moth_laugh.ogg
+
+- type: emoteSounds
+  id: Cat
+  sound:
+    path: /Audio/Animals/cat_meow.ogg
+    params:
+      variation: 0.125
+
+- type: emoteSounds
+  id: Dog
+  sound:
+    path: /Audio/Animals/small_dog_bark_happy.ogg
+    params:
+      variation: 0.125
+
+- type: emoteSounds
+  id: Chicken
+  sound:
+    path: /Audio/Animals/chicken_cluck_happy.ogg
+    params:
+      variation: 0.125

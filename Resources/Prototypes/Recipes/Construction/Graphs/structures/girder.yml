@@ -43,7 +43,7 @@
         - to: reinforcedGirder
           completed:
             - !type:SnapToGrid
-              southRotation: true
+              southRotation: false
           conditions:
             - !type:EntityAnchored {}
           steps:
@@ -145,18 +145,7 @@
               amount: 2
               doAfter: 2
 
-        - to: paperWall #Nyano
-          completed:
-            - !type:SnapToGrid
-              southRotation: true
-          conditions:
-            - !type:EntityAnchored {}
-          steps:
-            - material: Paper
-              amount: 2
-              doAfter: 2
-
-        - to: shuttleInteriorWall #Nyano
+        - to: shuttleInteriorWall
           completed:
             - !type:SnapToGrid
               southRotation: true
@@ -290,7 +279,7 @@
             - tool: Prying
               doAfter: 5
 
-    - node: shuttleInteriorWall #Nyano
+    - node: shuttleInteriorWall
       entity: WallShuttleInterior
       edges:
         - to: girder
@@ -321,7 +310,7 @@
               amount: 2
               doAfter: 1
 
-        - to: shuttleWall #Nyano
+        - to: shuttleWall
           completed:
             - !type:SnapToGrid
               southRotation: true
@@ -337,7 +326,7 @@
               amount: 2
               doAfter: 1
 
-        - to: diagonalshuttleWall #Nyano
+        - to: diagonalshuttleWall
           completed:
             - !type:SnapToGrid
               southRotation: false
@@ -418,7 +407,7 @@
             - tool: Cutting
               doAfter: 1
 
-    - node: shuttleWall #Nyano
+    - node: shuttleWall
       entity: WallShuttle
       edges:
         - to: reinforcedGirder
@@ -436,7 +425,7 @@
               doAfter: 1
               completed:
                 - !type:VisualizerDataInt
-                  key: "enum.ReinforcedWallVisuals.DeconstructionStage"
+                  key: "enum.ShuttleWallVisuals.DeconstructionStage"
                   data: 5
             - tool: Screwing
               doAfter: 2
@@ -444,7 +433,7 @@
               doAfter: 5
               completed:
                 - !type:VisualizerDataInt
-                  key: "enum.ReinforcedWallVisuals.DeconstructionStage"
+                  key: "enum.ShuttleWallVisuals.DeconstructionStage"
                   data: 4
             - tool: Prying
               doAfter: 2
@@ -452,30 +441,30 @@
               doAfter: 1
               completed:
                 - !type:VisualizerDataInt
-                  key: "enum.ReinforcedWallVisuals.DeconstructionStage"
+                  key: "enum.ShuttleWallVisuals.DeconstructionStage"
                   data: 3
             - tool: Welding
               doAfter: 10
               completed:
                 - !type:VisualizerDataInt
-                  key: "enum.ReinforcedWallVisuals.DeconstructionStage"
+                  key: "enum.ShuttleWallVisuals.DeconstructionStage"
                   data: 2
             - tool: Prying
               doAfter: 1
               completed:
                 - !type:VisualizerDataInt
-                  key: "enum.ReinforcedWallVisuals.DeconstructionStage"
+                  key: "enum.ShuttleWallVisuals.DeconstructionStage"
                   data: 1
             - tool: Screwing
               doAfter: 1
               completed:
                 - !type:VisualizerDataInt
-                  key: "enum.ReinforcedWallVisuals.DeconstructionStage"
+                  key: "enum.ShuttleWallVisuals.DeconstructionStage"
                   data: 0
             - tool: Cutting
               doAfter: 4
 
-    - node: diagonalshuttleWall #Nyano
+    - node: diagonalshuttleWall
       entity: WallShuttleDiagonal
       edges:
         - to: reinforcedGirder
@@ -487,48 +476,25 @@
               prototype: SheetSteel1
               amount: 1
           steps:
+          #To-Do: Add deconstruct visuals
             - tool: Welding
               doAfter: 5
             - tool: Cutting
               doAfter: 1
-              completed:
-                - !type:VisualizerDataInt
-                  key: "enum.ReinforcedWallVisuals.DeconstructionStage"
-                  data: 5
             - tool: Screwing
               doAfter: 1
             - tool: Welding
               doAfter: 5
-              completed:
-                - !type:VisualizerDataInt
-                  key: "enum.ReinforcedWallVisuals.DeconstructionStage"
-                  data: 4
             - tool: Prying
               doAfter: 1
             - tool: Anchoring
               doAfter: 1
-              completed:
-                - !type:VisualizerDataInt
-                  key: "enum.ReinforcedWallVisuals.DeconstructionStage"
-                  data: 3
             - tool: Welding
               doAfter: 10
-              completed:
-                - !type:VisualizerDataInt
-                  key: "enum.ReinforcedWallVisuals.DeconstructionStage"
-                  data: 2
             - tool: Prying
               doAfter: 1
-              completed:
-                - !type:VisualizerDataInt
-                  key: "enum.ReinforcedWallVisuals.DeconstructionStage"
-                  data: 1
             - tool: Screwing
               doAfter: 1
-              completed:
-                - !type:VisualizerDataInt
-                  key: "enum.ReinforcedWallVisuals.DeconstructionStage"
-                  data: 0
             - tool: Cutting
               doAfter: 1
 
@@ -539,18 +505,6 @@
           steps:
             - tool: Welding
               doAfter: 5
-
-    - node: paperWall #Nyano
-      entity: WallPaper
-      edges:
-        - to: girder
-          completed:
-            - !type:GivePrototype
-              prototype: SheetPaper1
-              amount: 2
-          steps:
-            - tool: Prying
-              doAfter: 10
 
     - node: reinforcedWallRust
       entity: WallReinforcedRust

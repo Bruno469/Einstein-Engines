@@ -14,6 +14,7 @@
   - BorgModuleHarvesting
   - SeedExtractorMachineCircuitboard
   - HydroponicsTrayMachineCircuitboard
+  - ReagentGrinderIndustrialMachineCircuitboard
 
 - type: technology
   id: CritterMechs
@@ -96,6 +97,19 @@
   - FatExtractorMachineCircuitboard
   - BiofabricatorMachineCircuitboard
   - BiomassReclaimerMachineCircuitboard
+
+- type: technology
+  id: MedipenRefilling
+  name: research-technology-medipen-refilling
+  icon:
+    sprite: Structures/Machines/medipen_refiller.rsi
+    state: base
+  discipline: CivilianServices
+  tier: 1
+  cost: 10000
+  recipeUnlocks:
+  - MedipenRefillerMachineCircuitboard
+  - ChemicalMedipen
 
 # Tier 2
 
@@ -227,43 +241,3 @@
   recipeUnlocks:
   - BluespaceBeaker
   - SyringeBluespace
-
-- type: technology
-  id: BasicTranslation
-  name: research-technology-basic-translation
-  icon:
-    sprite: Objects/Devices/translator.rsi
-    state: icon
-  discipline: CivilianServices
-  tier: 2
-  cost: 10000
-  recipeUnlocks:
-  - CanilunztTranslator
-  - BubblishTranslator
-  - NekomimeticTranslator
-  - DraconicTranslator
-  - SolCommonTranslator
-  - RootSpeakTranslator
-  - BasicGalaticCommonTranslatorImplanter
-  - MofficTranslator
-
-- type: technology
-  id: AdvancedTranslation
-  name: research-technology-advanced-translation
-  icon:
-    sprite: Objects/Devices/translator.rsi
-    state: icon
-  discipline: CivilianServices
-  tier: 3
-  cost: 15000
-  recipeUnlocks:
-  - XenoTranslator
-  - AdvancedGalaticCommonTranslatorImplanter
-  - BubblishTranslatorImplanter
-  - NekomimeticTranslatorImplanter
-  - DraconicTranslatorImplanter
-  - CanilunztTranslatorImplanter
-  - SolCommonTranslatorImplanter
-  - RootSpeakTranslatorImplanter
-  - AnimalTranslator
-  - MofficTranslatorImplanter

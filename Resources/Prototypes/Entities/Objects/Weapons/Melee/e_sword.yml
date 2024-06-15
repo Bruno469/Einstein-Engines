@@ -55,7 +55,7 @@
         Blunt: 4.5
   - type: Item
     size: Small
-    sprite: DeltaV/Objects/Weapons/Melee/e_sword.rsi # Delta-V
+    sprite: Objects/Weapons/Melee/e_sword-inhands.rsi
   - type: UseDelay
     delay: 1.0
   - type: PointLight
@@ -78,9 +78,6 @@
     malus: 0
   - type: Reflect
     enabled: false
-  - type: Tag
-    tags:
-      - NoPaint
   - type: IgnitionSource
     temperature: 700
 
@@ -159,7 +156,6 @@
   - type: Tag
     tags:
     - Write
-    - NoPaint
   - type: DisarmMalus
     malus: 0
 
@@ -185,7 +181,7 @@
   name: energy cutlass
   parent: EnergySword
   id: EnergyCutlass
-  description: An exotic energy weapon, brutal blade crackling with crudely harnessed plasma. #DeltaV - nicer description.
+  description: An exotic energy weapon.
   components:
   - type: EnergySword
   - type: ItemToggleMeleeWeapon
@@ -197,7 +193,7 @@
   - type: ItemToggleDisarmMalus
     activatedDisarmMalus: 0.6
   - type: Sprite
-    sprite: DeltaV/Objects/Weapons/Melee/e_cutlass.rsi # DeltaV
+    sprite: Objects/Weapons/Melee/e_cutlass.rsi
     layers:
       - state: e_cutlass
       - state: e_cutlass_blade
@@ -205,16 +201,9 @@
         visible: false
         shader: unshaded
         map: [ "blade" ]
-  - type: MeleeWeapon # DeltaV - reduced attack rate of e-cutlass; slower, more brutal swings
-    attackRate: 0.75
-    soundHit:
-      path: /Audio/Weapons/eblade1.ogg
-    damage:
-      types:
-        Blunt: 6
   - type: Item
     size: Small
-    sprite: DeltaV/Objects/Weapons/Melee/e_cutlass.rsi #DeltaV
+    sprite: Objects/Weapons/Melee/e_cutlass.rsi
   - type: ToggleableLightVisuals
     spriteLayer: blade
     inhandVisuals:
@@ -258,12 +247,13 @@
       params:
         volume: 3
   - type: ItemToggleDisarmMalus
-    activatedDisarmMalus: 0.7
+    activatedDisarmMalus: 0.6
   - type: Wieldable
   - type: MeleeWeapon
     wideAnimationRotation: -135
     attackRate: 1.5
     angle: 100
+    range: 1.0
     damage:
       types:
         Blunt: 4.5
@@ -280,10 +270,8 @@
     size: Small
     sprite: Objects/Weapons/Melee/e_sword_double-inhands.rsi
   - type: Reflect
-    reflectProb: .80 #DeltaV: 80% Energy Reflection but no ballistics.
+    reflectProb: .50
     spread: 75
-    reflects:
-      - Energy #DeltaV: 80% Energy Reflection but no ballistics.
   - type: UseDelay
     delay: 1
   - type: ToggleableLightVisuals

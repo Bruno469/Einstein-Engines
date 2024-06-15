@@ -6,6 +6,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.orig
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -306,6 +307,4 @@ Resources/MapImages
 
 # Direnv stuff
 .direnv/
-
-# Changelog package lock
-package-lock.json
+.vscode/settings.json

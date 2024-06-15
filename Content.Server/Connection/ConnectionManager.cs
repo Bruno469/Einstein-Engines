@@ -1,8 +1,10 @@
 using System.Collections.Immutable;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Content.Server.Database;
 using Content.Server.GameTicking;
 using Content.Server.Preferences.Managers;
+using Content.Server.Redial;
 using Content.Shared.CCVar;
 using Content.Shared.GameTicking;
 using Content.Shared.Players.PlayTimeTracking;
@@ -16,7 +18,6 @@ namespace Content.Server.Connection
     public interface IConnectionManager
     {
         void Initialize();
-        Task<bool> HasPrivilegedJoin(NetUserId userId);
     }
 
     /// <summary>
@@ -31,14 +32,11 @@ namespace Content.Server.Connection
         [Dependency] private readonly IConfigurationManager _cfg = default!;
         [Dependency] private readonly ILocalizationManager _loc = default!;
         [Dependency] private readonly ServerDbEntryManager _serverDbEntry = default!;
-
-        private List<NetUserId> _connectedWhitelistedPlayers = new(); // DeltaV - Soft whitelist improvements
+        [Dependency] private readonly RedialManager _redial = default!;
 
         public void Initialize()
         {
             _netMgr.Connecting += NetMgrOnConnecting;
-            _netMgr.Connected += OnConnected; // DeltaV - Soft whitelist improvements
-            _netMgr.Disconnect += OnDisconnected; // DeltaV - Soft whitelist improvements
             _netMgr.AssignUserIdCallback = AssignUserIdCallback;
             // Approval-based IP bans disabled because they don't play well with Happy Eyeballs.
             // _netMgr.HandleApprovalCallback = HandleApproval;
@@ -82,7 +80,11 @@ namespace Content.Server.Connection
                 if (banHits is { Count: > 0 })
                     await _db.AddServerBanHitsAsync(id, banHits);
 
-                e.Deny(msg);
+                var properties = new Dictionary<string, object>();
+                if (reason == ConnectionDenyReason.Full)
+                    properties["delay"] = _cfg.GetCVar(CCVars.GameServerFullReconnectDelay);
+
+                e.Deny(new NetDenyReason(msg, properties));
             }
             else
             {
@@ -158,13 +160,24 @@ namespace Content.Server.Connection
                 }
             }
 
+            var wasInGame = EntitySystem.TryGet<GameTicker>(out var ticker) &&
+                            ticker.PlayerGameStatuses.TryGetValue(userId, out var status) &&
+                            status == PlayerGameStatus.JoinedGame;
+            var adminBypass = _cfg.GetCVar(CCVars.AdminBypassMaxPlayers) && adminData != null;
+            if ((_plyMgr.PlayerCount >= _cfg.GetCVar(CCVars.SoftMaxPlayers) && !adminBypass) && !wasInGame)
+            {
+                var reason = Loc.GetString("soft-player-cap-full");
+                var redial = _redial.GetRandomRedial();
 
-            var isPrivileged = await HasPrivilegedJoin(userId);
-            var isQueueEnabled = _cfg.GetCVar(CCVars.QueueEnabled);
+                if (redial != null)
+                {
+                    // It's not super easy to get messages to client we redirect so we're gonna hitch a ride.
+                    reason += "%redial";
+                    reason += redial;
+                }
 
-            if (_plyMgr.PlayerCount >= _cfg.GetCVar(CCVars.SoftMaxPlayers) && !isPrivileged && !isQueueEnabled)
-                return (ConnectionDenyReason.Full, Loc.GetString("soft-player-cap-full"), null);
-
+                return (ConnectionDenyReason.Full, reason, null);
+            }
 
             var bans = await _db.GetServerBansAsync(addr, userId, hwId, includeUnbanned: false);
             if (bans.Count > 0)
@@ -174,8 +187,7 @@ namespace Content.Server.Connection
                 return (ConnectionDenyReason.Ban, message, bans);
             }
 
-            // DeltaV - Replace existing softwhitelist implementation
-            if (false) //_cfg.GetCVar(CCVars.WhitelistEnabled))
+            if (_cfg.GetCVar(CCVars.WhitelistEnabled))
             {
                 var min = _cfg.GetCVar(CCVars.WhitelistMinPlayers);
                 var max = _cfg.GetCVar(CCVars.WhitelistMaxPlayers);
@@ -188,28 +200,6 @@ namespace Content.Server.Connection
                     // was the whitelist playercount changed?
                     if (min > 0 || max < int.MaxValue)
                         msg += "\n" + Loc.GetString("whitelist-playercount-invalid", ("min", min), ("max", max));
-                    return (ConnectionDenyReason.Whitelist, msg, null);
-                }
-            }
-
-            // DeltaV - Soft whitelist improvements
-            if (_cfg.GetCVar(CCVars.WhitelistEnabled))
-            {
-                var connectedPlayers = _plyMgr.PlayerCount;
-                var connectedWhitelist = _connectedWhitelistedPlayers.Count;
-
-                var slots = _cfg.GetCVar(CCVars.WhitelistMinPlayers);
-
-                var noSlotsOpen = slots > 0 && slots < connectedPlayers - connectedWhitelist;
-
-                if (noSlotsOpen && await _db.GetWhitelistStatusAsync(userId) == false
-                                     && adminData is null)
-                {
-                    var msg = Loc.GetString(_cfg.GetCVar(CCVars.WhitelistReason));
-
-                    if (slots > 0)
-                        msg += "\n" + Loc.GetString("whitelist-playercount-invalid", ("min", slots), ("max", _cfg.GetCVar(CCVars.SoftMaxPlayers)));
-
                     return (ConnectionDenyReason.Whitelist, msg, null);
                 }
             }
@@ -233,41 +223,6 @@ namespace Content.Server.Connection
             var assigned = new NetUserId(Guid.NewGuid());
             await _db.AssignUserIdAsync(name, assigned);
             return assigned;
-        }
-
-        /// <summary>
-        ///     DeltaV - Soft whitelist improvements
-        ///     Handles a completed connection, and stores the player if they're whitelisted and the whitelist is enabled
-        /// </summary>
-        private async void OnConnected(object? sender, NetChannelArgs e)
-        {
-            var userId = e.Channel.UserId;
-
-            if (_cfg.GetCVar(CCVars.WhitelistEnabled) && await _db.GetWhitelistStatusAsync(userId))
-            {
-                _connectedWhitelistedPlayers.Add(userId);
-            }
-        }
-
-        /// <summary>
-        ///     DeltaV - Soft whitelist improvements
-        ///     Handles a disconnection, and removes a stored player from the count if the whitelist is enabled
-        /// </summary>
-        private async void OnDisconnected(object? sender, NetChannelArgs e)
-        {
-            if (_cfg.GetCVar(CCVars.WhitelistEnabled))
-            {
-                _connectedWhitelistedPlayers.Remove(e.Channel.UserId);
-            }
-        }
-
-        public async Task<bool> HasPrivilegedJoin(NetUserId userId)
-        {
-            var isAdmin = await _dbManager.GetAdminDataForAsync(userId) != null;
-            var wasInGame = EntitySystem.TryGet<GameTicker>(out var ticker) &&
-                            ticker.PlayerGameStatuses.TryGetValue(userId, out var status) &&
-                            status == PlayerGameStatus.JoinedGame;
-            return isAdmin || wasInGame;
         }
     }
 }

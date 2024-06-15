@@ -48,11 +48,10 @@
       groups:
         trade:
           addComponents:
-          - type: ProtectedGrid
-          # If you comment out the tradestation, make sure to also set cargo.tradestation_spawns_in_ftl_map to TRUE
-          - type: TradeStation
+            - type: ProtectedGrid
+            - type: TradeStation
           paths:
-          - /Maps/Shuttles/trading_outpost.yml
+            - /Maps/Shuttles/trading_outpost.yml
         mining:
           paths:
           - /Maps/Shuttles/mining.yml
@@ -64,40 +63,15 @@
           maxCount: 2
           stationGrid: false
           paths:
-          - /Maps/Ruins/DeltaV/biodome_satellite.yml #Delta V - Move to DV folder
-          - /Maps/Ruins/DeltaV/derelict.yml #Delta V - Move to DV folder
-          - /Maps/Ruins/DeltaV/djstation.yml #Delta V - Move to DV folder
-          - /Maps/Ruins/DeltaV/old_ai_sat.yml #Delta V - Move to DV folder
-          - /Maps/Ruins/DeltaV/relaystation.yml #Delta V - Move to DV folder
-          - /Maps/Ruins/DeltaV/whiteship_ancient.yml #Delta V - Move to DV folder
-          - /Maps/Ruins/DeltaV/whiteship_bluespacejumper.yml #Delta V - Move to DV folder
-
-- type: entity
-  id: BaseStationShuttlesCore
-  abstract: true
-  components:
-    - type: GridSpawn
-      groups:
-        cargo:
-          paths:
-          - /Maps/Shuttles/cargo_core.yml
-        mining:
-          paths:
-          - /Maps/Shuttles/mining.yml
-        ruins:
-          hide: true
-          nameGrid: true
-          minCount: 2
-          maxCount: 2
-          stationGrid: false
-          paths:
-          - /Maps/Ruins/DeltaV/biodome_satellite.yml #Delta V - Move to DV folder
-          - /Maps/Ruins/DeltaV/derelict.yml #Delta V - Move to DV folder
-          - /Maps/Ruins/DeltaV/djstation.yml #Delta V - Move to DV folder
-          - /Maps/Ruins/DeltaV/old_ai_sat.yml #Delta V - Move to DV folder
-          - /Maps/Ruins/DeltaV/relaystation.yml #Delta V - Move to DV folder
-          - /Maps/Ruins/DeltaV/whiteship_ancient.yml #Delta V - Move to DV folder
-          - /Maps/Ruins/DeltaV/whiteship_bluespacejumper.yml #Delta V - Move to DV folder
+          - /Maps/Ruins/biodome_satellite.yml
+          - /Maps/Ruins/derelict.yml
+          - /Maps/Ruins/djstation.yml
+          - /Maps/Ruins/old_ai_sat.yml
+          - /Maps/Ruins/relaystation.yml
+          - /Maps/Ruins/syndicate_dropship.yml
+          - /Maps/Ruins/whiteship_ancient.yml
+          - /Maps/Ruins/whiteship_bluespacejumper.yml
+          - /Maps/Ruins/runawayprisoner.yml
 
 - type: entity
   id: BaseStationCentcomm

@@ -4,10 +4,6 @@
   id: BoxHandcuff
   description: A box full of handcuffs.
   components:
-  - type: Storage
-    whitelist:
-      components:
-      - Handcuff
   - type: StorageFill
     contents:
       - id: Handcuffs

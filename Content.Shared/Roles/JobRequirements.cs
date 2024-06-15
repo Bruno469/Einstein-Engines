@@ -76,8 +76,7 @@ namespace Content.Shared.Roles
             Dictionary<string, TimeSpan> playTimes,
             [NotNullWhen(false)] out FormattedMessage? reason,
             IEntityManager entManager,
-            IPrototypeManager prototypes,
-            bool isWhitelisted)
+            IPrototypeManager prototypes)
         {
             reason = null;
             if (job.Requirements == null)
@@ -85,7 +84,7 @@ namespace Content.Shared.Roles
 
             foreach (var requirement in job.Requirements)
             {
-                if (!TryRequirementMet(requirement, playTimes, out reason, entManager, prototypes, isWhitelisted))
+                if (!TryRequirementMet(requirement, playTimes, out reason, entManager, prototypes))
                     return false;
             }
 
@@ -100,9 +99,7 @@ namespace Content.Shared.Roles
             Dictionary<string, TimeSpan> playTimes,
             [NotNullWhen(false)] out FormattedMessage? reason,
             IEntityManager entManager,
-            IPrototypeManager prototypes,
-            bool isWhitelisted,
-            string? localePrefix = "role-timer-")
+            IPrototypeManager prototypes)
         {
             reason = null;
 
@@ -134,7 +131,7 @@ namespace Content.Shared.Roles
                             return true;
 
                         reason = FormattedMessage.FromMarkup(Loc.GetString(
-                            $"{localePrefix}department-insufficient",
+                            "role-timer-department-insufficient",
                             ("time", Math.Ceiling(deptDiff)),
                             ("department", Loc.GetString(deptRequirement.Department)),
                             ("departmentColor", department.Color.ToHex())));
@@ -145,7 +142,7 @@ namespace Content.Shared.Roles
                         if (deptDiff <= 0)
                         {
                             reason = FormattedMessage.FromMarkup(Loc.GetString(
-                                $"{localePrefix}department-too-high",
+                                "role-timer-department-too-high",
                                 ("time", -deptDiff),
                                 ("department", Loc.GetString(deptRequirement.Department)),
                                 ("departmentColor", department.Color.ToHex())));
@@ -165,7 +162,7 @@ namespace Content.Shared.Roles
                             return true;
 
                         reason = FormattedMessage.FromMarkup(Loc.GetString(
-                            $"{localePrefix}overall-insufficient",
+                              "role-timer-overall-insufficient", 
                               ("time", Math.Ceiling(overallDiff))));
                         return false;
                     }
@@ -173,7 +170,7 @@ namespace Content.Shared.Roles
                     {
                         if (overallDiff <= 0 || overallTime >= overallRequirement.Time)
                         {
-                            reason = FormattedMessage.FromMarkup(Loc.GetString($"{localePrefix}overall-too-high", ("time", -overallDiff)));
+                            reason = FormattedMessage.FromMarkup(Loc.GetString("role-timer-overall-too-high", ("time", -overallDiff)));
                             return false;
                         }
 
@@ -201,7 +198,7 @@ namespace Content.Shared.Roles
                             return true;
 
                         reason = FormattedMessage.FromMarkup(Loc.GetString(
-                            $"{localePrefix}role-insufficient",
+                            "role-timer-role-insufficient",
                             ("time", Math.Ceiling(roleDiff)),
                             ("job", Loc.GetString(proto)),
                             ("departmentColor", departmentColor.ToHex())));
@@ -212,7 +209,7 @@ namespace Content.Shared.Roles
                         if (roleDiff <= 0)
                         {
                             reason = FormattedMessage.FromMarkup(Loc.GetString(
-                                $"{localePrefix}role-too-high",
+                                "role-timer-role-too-high",
                                 ("time", -roleDiff),
                                 ("job", Loc.GetString(proto)),
                                 ("departmentColor", departmentColor.ToHex())));
@@ -221,15 +218,6 @@ namespace Content.Shared.Roles
 
                         return true;
                     }
-                case WhitelistRequirement _: // DeltaV - Whitelist requirement
-                    if (isWhitelisted == null)
-                        throw new ArgumentNullException(nameof(isWhitelisted), "isWhitelisted cannot be null.");
-
-                    if (isWhitelisted)
-                        return true;
-
-                    reason = FormattedMessage.FromMarkup(Loc.GetString("playtime-deny-reason-not-whitelisted"));
-                    return false;
                 default:
                     throw new NotImplementedException();
             }

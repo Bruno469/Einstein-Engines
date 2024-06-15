@@ -48,11 +48,8 @@
     flavorKind: station-event-random-sentience-flavor-organic
   - type: Bloodstream
     bloodMaxVolume: 50
-  - type: LanguageSpeaker
-    speaks:
-    - Mouse
-    understands:
-    - Mouse
+  - type: ReplacementAccent
+    accent: mouse
   - type: MeleeWeapon
     soundHit:
         path: /Audio/Effects/bite.ogg
@@ -123,14 +120,6 @@
   - type: HTN
     rootTask:
       task: SimpleHostileCompound
-  - type: Extractable # DeltaV - Make it so bees can be ground up
-    grindableSolutionName: bee
-  - type: SolutionContainerManager
-    solutions:
-      bee:
-        reagents:
-        - ReagentId: GroundBee
-          Quantity: 5
   - type: ZombieImmune
 
 - type: entity
@@ -232,11 +221,8 @@
   - type: EggLayer
     eggSpawn:
     - id: FoodEgg
-  - type: LanguageSpeaker
-    speaks:
-    - Chicken
-    understands:
-    - Chicken
+  - type: ReplacementAccent
+    accent: chicken
   - type: SentienceTarget
     flavorKind: station-event-random-sentience-flavor-organic
   - type: NpcFactionMember
@@ -377,14 +363,6 @@
     tags:
     - Trash
     - VimPilot
-  - type: Destructible
-    thresholds:
-    - trigger:
-        !type:DamageTypeTrigger
-        damageType: Blunt
-        damage: 10
-      behaviors:
-      - !type:GibBehavior { }
   - type: NonSpreaderZombie
 
 - type: entity
@@ -429,7 +407,6 @@
     makeSentient: true
     allowSpeech: true
     allowMovement: true
-    whitelistRequired: false
     name: ghost-role-information-mothroach-name
     description: ghost-role-information-mothroach-description
   - type: Fixtures
@@ -446,7 +423,7 @@
   - type: GhostTakeoverAvailable
   - type: Speech
     speechVerb: Moth
-    speechSounds: Chitter # Delta-V - Eep!
+    speechSounds: Squeak
   - type: MothAccent
   - type: Sprite
     sprite: Mobs/Animals/mothroach.rsi
@@ -503,18 +480,12 @@
   - type: CombatMode
   - type: Butcherable
     spawned:
-    - id: FoodMeatRat
+    - id: FoodMeatSlime
       amount: 2
-    - id: HideMothroach # Gotta make the plushies
-      amount: 1
-      prob: 0.5
   - type: Extractable
     grindableSolutionName: food
-  - type: LanguageSpeaker
-    speaks:
-    - Moffic
-    understands:
-    - Moffic
+  - type: ReplacementAccent
+    accent: mothroach
   - type: ZombieAccentOverride
     accent: zombieMoth
   - type: Vocal
@@ -529,7 +500,6 @@
     tags:
     - Trash
     - CannotSuicide
-    - DoorBumpOpener # DeltaV - After all, why not? Why shouldn't they be able to open doors?
     - VimPilot
   - type: CanEscapeInventory
   - type: NpcFactionMember
@@ -547,6 +517,13 @@
         damage: 60
       behaviors:
       - !type:GibBehavior { }
+  - type: FireVisuals
+    sprite: Mobs/Effects/onfire.rsi
+    normalState: Mouse_burning
+
+
+# Note that the mallard duck is actually a male drake mallard, with the brown duck being the female variant of the same species, however ss14 lacks sex specific textures
+# The white duck is more akin to a pekin or call duck.
 
 - type: entity
   name: mallard duck #Quack
@@ -610,11 +587,8 @@
   - type: EggLayer
     eggSpawn:
     - id: FoodEgg
-  - type: LanguageSpeaker
-    speaks:
-    - Duck
-    understands:
-    - Duck
+  - type: ReplacementAccent
+    accent: duck
   - type: SentienceTarget
     flavorKind: station-event-random-sentience-flavor-organic
   - type: NpcFactionMember
@@ -768,9 +742,8 @@
           Quantity: 30
   - type: Udder
     reagentId: Milk
-    targetSolution: udder
-    quantity: 25
-    updateRate: 30
+    quantityPerUpdate: 25
+    growthDelay: 30
   - type: Butcherable
     spawned:
     - id: FoodMeat
@@ -851,11 +824,8 @@
     interactSuccessSpawn: EffectHearts
     interactSuccessSound:
       path: /Audio/Voice/Arachnid/arachnid_chitter.ogg
-  - type: LanguageSpeaker
-    speaks:
-    - Crab
-    understands:
-    - Crab
+  - type: ReplacementAccent
+    accent: crab
   - type: Bloodstream
     bloodMaxVolume: 50
     bloodReagent: CopperBlood
@@ -1091,11 +1061,8 @@
   - type: Inventory
     speciesId: kangaroo
     templateId: kangaroo
-  - type: LanguageSpeaker
-    speaks:
-    - Kangaroo
-    understands:
-    - Kangaroo
+  - type: ReplacementAccent
+    accent: kangaroo
   - type: InventorySlots
   - type: Strippable
   - type: Butcherable
@@ -1284,12 +1251,7 @@
   - type: Speech
     speechSounds: Monkey
     speechVerb: Monkey
-  - type: LanguageSpeaker
-    speaks:
-    - Monkey
-    understands:
-    - Monkey
-    - Kobold
+  - type: MonkeyAccent
   - type: SentienceTarget
     flavorKind: station-event-random-sentience-flavor-primate
   - type: AlwaysRevolutionaryConvertible
@@ -1323,13 +1285,7 @@
   - type: Speech
     speechSounds: Monkey
     speechVerb: Monkey
-  - type: LanguageSpeaker
-    speaks:
-    - Monkey
-    understands:
-    - Monkey
-    - Kobold
-    - GalacticCommon
+  - type: MonkeyAccent
   - type: NpcFactionMember
     factions:
     - Syndicate
@@ -1368,12 +1324,8 @@
   - type: NameIdentifier
     group: Kobold
   - type: LizardAccent
-  - type: LanguageSpeaker
-    speaks:
-    - Kobold
-    understands:
-    - Kobold
-    - Monkey
+  - type: ReplacementAccent
+    accent: kobold
   - type: Speech
     speechSounds: Lizard
     speechVerb: Reptilian
@@ -1601,11 +1553,8 @@
     spawned:
     - id: FoodMeatRat
       amount: 1
-  - type: LanguageSpeaker
-    speaks:
-    - Mouse
-    understands:
-    - Mouse
+  - type: ReplacementAccent
+    accent: mouse
   - type: Tag
     tags:
     - Trash
@@ -1637,10 +1586,15 @@
   - type: CanEscapeInventory
   - type: MobPrice
     price: 50
-  - type: FelinidFood # Nyanotrasen - Felinid, ability to eat mice, see Content.Server/Nyanotrasen/Abilities/Felinid/FelinidSystem.cs
   - type: BadFood
   - type: NonSpreaderZombie
   - type: PreventSpiller
+  - type: FireVisuals
+    sprite: Mobs/Effects/onfire.rsi
+    normalState: Mouse_burning
+  - type: Puller
+    needsHands: true
+
 
 - type: entity
   parent: MobMouse
@@ -1930,11 +1884,6 @@
       path: /Audio/Animals/parrot_raught.ogg
   - type: Bloodstream
     bloodMaxVolume: 50
-  - type: LanguageSpeaker
-    speaks:
-    - GalacticCommon
-    understands:
-    - GalacticCommon
 
 - type: entity
   name: penguin
@@ -2181,11 +2130,8 @@
   - type: MeleeChemicalInjector
     transferAmount: 0.75
     solution: melee
-  - type: LanguageSpeaker
-    speaks:
-    - Xeno
-    understands:
-    - Xeno
+  - type: ReplacementAccent
+    accent: xeno
   - type: InteractionPopup
     successChance: 0.5
     interactSuccessString: petting-success-tarantula
@@ -2255,7 +2201,6 @@
       makeSentient: true
       name: ghost-role-information-giant-spider-name
       description: ghost-role-information-giant-spider-description
-      rules: deltav-ghost-role-information-softantag-rules #DeltaV
     - type: GhostTakeoverAvailable
 
 - type: entity
@@ -2516,11 +2461,6 @@
   - type: Tag
     tags:
     - VimPilot
-  - type: LanguageSpeaker
-    speaks:
-    - Fox
-    understands:
-    - Fox
 
 - type: entity
   name: corgi
@@ -2567,11 +2507,8 @@
     spawned:
     - id: FoodMeat
       amount: 2
-  - type: LanguageSpeaker
-    speaks:
-    - Dog
-    understands:
-    - Dog
+  - type: ReplacementAccent
+    accent: dog
   - type: InteractionPopup
     interactSuccessString: petting-success-dog
     interactFailureString: petting-failure-generic
@@ -2624,7 +2561,6 @@
   - type: NpcFactionMember
     factions:
     - SimpleHostile
-    - PsionicInterloper #Nyano - Summary: makes a psionic interloper.
   - type: InteractionPopup
     successChance: 0 # Override the automatic success that would normally be inherited from MobCorgi.
     interactSuccessString: petting-success-corrupted-corgi # Normally impossible but added an easter egg just in case.
@@ -2635,7 +2571,7 @@
   - type: Bloodstream
     bloodReagent: DemonsBlood
   - type: Damageable
-    damageContainer: CorporealSpirit # Nyanotrasen - Corporeal Spirit allows Holy water to do damage
+    damageContainer: Biological
     damageModifierSet: Infernal
   - type: Temperature
     heatDamageThreshold: 4000 #They come from hell, so..
@@ -2723,11 +2659,8 @@
     spawned:
     - id: FoodMeat
       amount: 3
-  - type: LanguageSpeaker
-    speaks:
-    - Cat
-    understands:
-    - Cat
+  - type: ReplacementAccent
+    accent: cat
   - type: InteractionPopup
     successChance: 0.7
     interactSuccessString: petting-success-cat
@@ -2794,12 +2727,6 @@
   - type: NpcFactionMember
     factions:
     - Syndicate
-  - type: LanguageSpeaker
-    speaks:
-    - Xeno
-    understands:
-    - Xeno
-    - GalacticCommon
 
 - type: entity
   name: space cat
@@ -3095,11 +3022,8 @@
     spawned:
     - id: FoodMeat
       amount: 1
-  - type: LanguageSpeaker
-    speaks:
-    - Mouse
-    understands:
-    - Mouse
+  - type: ReplacementAccent
+    accent: mouse
   - type: Tag
     tags:
     - VimPilot
@@ -3136,10 +3060,13 @@
   - type: Bloodstream
     bloodMaxVolume: 60
   - type: CanEscapeInventory
-    BaseResistTime: 3
+    baseResistTime: 3
   - type: MobPrice
     price: 60
   - type: NonSpreaderZombie
+  - type: FireVisuals
+    sprite: Mobs/Effects/onfire.rsi
+    normalState: Mouse_burning
 
 - type: entity
   name: pig
@@ -3193,7 +3120,7 @@
         Base: dead
   - type: Butcherable
     spawned:
-    - id: FoodMeat
+    - id: FoodMeatBacon
       amount: 6
   - type: Grammar
     attributes:
@@ -3205,11 +3132,8 @@
     interactSuccessSpawn: EffectHearts
     interactSuccessSound:
       path: /Audio/Animals/pig_oink.ogg
-  - type: LanguageSpeaker
-    speaks:
-    - Pig
-    understands:
-    - Pig
+  - type: ReplacementAccent
+    accent: pig
   - type: SentienceTarget
     flavorKind: station-event-random-sentience-flavor-organic
   - type: NpcFactionMember
@@ -3246,7 +3170,7 @@
   - type: InventorySlots
   - type: Strippable
   - type: Bloodstream
-    bloodReagent: Water
+    bloodReagent: Sap
     bloodMaxVolume: 60
   - type: UserInterface
     interfaces:
@@ -3295,12 +3219,6 @@
     reformTime: 10
     popupText: diona-reform-attempt
     reformPrototype: MobDionaReformed
-  - type: LanguageSpeaker
-    speaks:
-    - RootSpeak
-    understands:
-    - GalacticCommon
-    - RootSpeak
 
 - type: entity
   parent: MobDionaNymph

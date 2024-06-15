@@ -9,9 +9,9 @@
   description: Standard security gear. Protects the head from impacts.
   components:
   - type: Sprite
-    sprite: DeltaV/Clothing/Head/Helmets/security.rsi # DeltaV - resprite
+    sprite: Clothing/Head/Helmets/security.rsi
   - type: Clothing
-    sprite: DeltaV/Clothing/Head/Helmets/security.rsi # DeltaV - resprite
+    sprite: Clothing/Head/Helmets/security.rsi
   - type: Armor #Values seem to let the user survive one extra hit if attacked consistently.
     modifiers:
       coefficients:
@@ -79,9 +79,9 @@
   description: It's a helmet specifically designed to protect against close range attacks.
   components:
   - type: Sprite
-    sprite: DeltaV/Clothing/Head/Helmets/light_riot.rsi # DeltaV - resprite
+    sprite: Clothing/Head/Helmets/light_riot.rsi
   - type: Clothing
-    sprite: DeltaV/Clothing/Head/Helmets/light_riot.rsi # DeltaV - resprite
+    sprite: Clothing/Head/Helmets/light_riot.rsi
   - type: IngestionBlocker
   - type: Armor
     modifiers:
@@ -146,29 +146,6 @@
         Slash: 0.8
         Piercing: 0.9
         Heat: 0.9
-
-#SCAF Helmet
-- type: entity
-  parent: ClothingHeadBase
-  id: ClothingHeadHelmetScaf
-  name: scaf helmet
-  description: A robust, strong helmet.
-  components:
-  - type: Sprite
-    sprite: Clothing/Head/Helmets/scaf.rsi
-  - type: Clothing
-    sprite: Clothing/Head/Helmets/scaf.rsi
-  - type: IngestionBlocker
-  - type: Armor
-    modifiers:
-      coefficients:
-        Blunt: 0.9
-        Slash: 0.9
-        Piercing: 0.8
-  - type: Tag
-    tags:
-    - HidesHair
-    - WhitelistChameleon
 
 #Space Ninja Helmet
 - type: entity

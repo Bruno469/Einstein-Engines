@@ -33,3 +33,19 @@
 - type: lobbyBackground
   id: Blueprint
   background: /Textures/LobbyScreens/blueprint.webp
+
+- type: lobbyBackground
+  id: Behonker
+  background: /Textures/LobbyScreens/behonker.webp
+
+- type: lobbyBackground
+  id: Pirate
+  background: /Textures/LobbyScreens/pirate.png
+
+- type: lobbyBackground
+  id: Caos
+  background: /Textures/LobbyScreens/caos.png
+
+- type: lobbyBackground
+  id: TerminalStation
+  background: /Textures/LobbyScreens/terminalstation.webp

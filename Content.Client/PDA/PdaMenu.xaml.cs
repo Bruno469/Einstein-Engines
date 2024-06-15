@@ -9,6 +9,7 @@ using Robust.Client.Graphics;
 using Robust.Client.UserInterface.XAML;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Timing;
+using Content.Client.Time;
 
 namespace Content.Client.PDA
 {
@@ -19,6 +20,8 @@ namespace Content.Client.PDA
         [Dependency] private readonly IGameTiming _gameTiming = default!;
         [Dependency] private readonly IEntitySystemManager _entitySystem = default!;
         private readonly ClientGameTicker _gameTicker;
+
+        private TimeSystem? _timeSystem = default!;
 
         public const int HomeView = 0;
         public const int ProgramListView = 1;
@@ -43,6 +46,7 @@ namespace Content.Client.PDA
         {
             IoCManager.InjectDependencies(this);
             _gameTicker = _entitySystem.GetEntitySystem<ClientGameTicker>();
+            _timeSystem = _entitySystem.GetEntitySystem<TimeSystem>();
             RobustXamlLoader.Load(this);
 
             ViewContainer.OnChildAdded += control => control.Visible = false;
@@ -135,7 +139,6 @@ namespace Content.Client.PDA
         public void UpdateState(PdaUpdateState state)
         {
             FlashLightToggleButton.IsActive = state.FlashlightEnabled;
-
             if (state.PdaOwnerInfo.ActualOwnerName != null)
             {
                 _pdaOwner = state.PdaOwnerInfo.ActualOwnerName;
@@ -162,10 +165,8 @@ namespace Content.Client.PDA
                 ("station", _stationName)));
             
 
-            var stationTime = _gameTiming.CurTime.Subtract(_gameTicker.RoundStartTimeSpan);
-
-            StationTimeLabel.SetMarkup(Loc.GetString("comp-pda-ui-station-time",
-                ("time", stationTime.ToString("hh\\:mm\\:ss"))));
+            StationTimeLabel.SetMarkup(Loc.GetString("comp-pda-ui-station-time", ("time", _timeSystem!.GetRoundDuration().ToString("hh\\:mm\\:ss"))));
+            StationDateLabel.SetMarkup(Loc.GetString("comp-pda-ui-station-date", ("date", _timeSystem!.GetStationDate().ToString("d 'de' MMMM, HH'h'"))));
 
             var alertLevel = state.PdaOwnerInfo.StationAlertLevel;
             var alertColor = state.PdaOwnerInfo.StationAlertColor;
@@ -331,15 +332,12 @@ namespace Content.Client.PDA
                 view.Visible = false;
             }
         }
-
         protected override void Draw(DrawingHandleScreen handle)
         {
             base.Draw(handle);
-
-            var stationTime = _gameTiming.CurTime.Subtract(_gameTicker.RoundStartTimeSpan);
-
-            StationTimeLabel.SetMarkup(Loc.GetString("comp-pda-ui-station-time",
-                ("time", stationTime.ToString("hh\\:mm\\:ss"))));
+            StationTimeLabel.SetMarkup(Loc.GetString("comp-pda-ui-station-time", ("time", _timeSystem!.GetRoundDuration().ToString("hh\\:mm\\:ss"))));
+            StationDateLabel.SetMarkup(Loc.GetString("comp-pda-ui-station-date", ("date", _timeSystem!.GetStationDate().ToString("d 'de' MMMM, HH'h'"))));
         }
+
     }
 }
