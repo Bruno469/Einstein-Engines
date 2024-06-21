@@ -238,3 +238,24 @@
     outputPressure: 101.3
   - type: Clothing
     sprite: Objects/Tanks/plasma.rsi
+
+- type: entity
+  parent: Clothing
+  id: ClothingBackpackPlasmaManTank
+  name: PlasmaMan Tank
+  description: Supplies to spray nozzles in your hands.
+  components:
+  - type: Tag
+    tags:
+    - WhitelistChameleon
+  - type: Sprite
+    sprite: Objects/Tanks/plasmaman.rsi
+    state: icon
+  - type: Item
+    size: Ginormous
+  - type: GasTank
+    outputPressure: 101.3
+  - type: Clothing
+    slots: BACK
+    sprite: Objects/Tanks/plasmaman.rsi
+  - type: PlasmaManSuit

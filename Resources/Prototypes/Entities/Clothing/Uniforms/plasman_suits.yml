@@ -12,13 +12,6 @@
     slots: [innerclothing]
     equipSound:
       path: /Audio/Items/jumpsuit_equip.ogg
-  - type: ExplosionResistance
-    damageCoefficient: 0.9
-  - type: Armor
-    modifiers:
-      coefficients:
-        Heat: 0.9
-        Caustic: 0.9
   - type: ClothingSpeedModifier
     walkModifier: 0.9
     sprintModifier: 0.9
@@ -29,7 +22,7 @@
 
 - type: entity
   parent: ClothingPlasmansuitBase
-  id: ClothingJumpsuitPlasmaman
+  id: ClothingJumpsuitPlasmamanCaptain
   name: Captain PlasmaMan Suit
   description: Advanced PlasmaMan suit made for plasmaman
   components:
@@ -48,7 +41,7 @@
 
 - type: entity
   parent: ClothingPlasmansuitBase
-  id: ClothingJumpsuitPlasmaman
+  id: ClothingJumpsuitPlasmamanHeadOfSecurity
   name: Head Of Security PlasmaMan Suit
   description: Head Of Security suit made for plasmaman
   components:
@@ -67,7 +60,7 @@
 
 - type: entity
   parent: ClothingPlasmansuitBase
-  id: ClothingJumpsuitPlasmaman
+  id: ClothingJumpsuitPlasmamanQuartermaster
   name: Quartermaster PlasmaMan Suit
   description: Quartermaster suit made for plasmaman
   components:

@@ -4,6 +4,7 @@
   id: ClothingHeadHelmetPlasmanBasic
   name: Advanced PlasmaMan Helmet
   description: A basic-looking PlasmanBasic helmet that provides minor protection against oxygen atmos.
+  noSpawn: true
   components:
   - type: BreathMask
   - type: Sprite
@@ -40,6 +41,7 @@
   id: ClothingHeadHelmetPlasmanCaptain
   name: Captain PlasmaMan Helmet
   description: A basic-looking PlasmanBasic helmet that provides minor protection against oxygen atmos.
+  noSpawn: true
   components:
   - type: BreathMask
   - type: Sprite
@@ -55,6 +57,7 @@
   id: ClothingHeadHelmetPlasmanHos
   name: Head Of Security PlasmaMan Helmet
   description: A basic-looking PlasmanBasic helmet that provides minor protection against oxygen atmos.
+  noSpawn: true
   components:
   - type: BreathMask
   - type: Sprite
@@ -70,6 +73,7 @@
   id: ClothingHeadHelmetPlasmanQm
   name: Quartermaster PlasmaMan Helmet
   description: A basic-looking PlasmanBasic helmet that provides minor protection against oxygen atmos.
+  noSpawn: true
   components:
   - type: BreathMask
   - type: Sprite
