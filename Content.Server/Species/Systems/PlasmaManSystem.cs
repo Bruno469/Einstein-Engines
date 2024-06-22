@@ -23,13 +23,17 @@ public sealed class PlasmaManSystem : EntitySystem
     private void TryExtinguirFire(EntityUid uid, PlasmaManComponent comp, IsHotEvent args)
     {
         int loads = 3;
-        // Verifica se tem cargas suficientes para ativar a superssão de fogo
+        // Verifica se tem cargas suficientes para ativar a supressão de fogo
         if (!EntityManager.TryGetComponent(uid, out TemperatureComponent? temperatureComponent) || loads > 0)
             return;
 
         // pega a temperatura e ve se ta alta (teoricamente não precisa já que esse event só é ativado quando ta quente) [Só é ativado quando o ITEM ta quente MULA]
-        if (temperatureComponent.CurrentTemperature > 373)
-            _flammable.AdjustFireStacks(uid, -4);
+        // pega o componente flammable pra apagar o fogo (teoricamente posso usar pra verificar a quantidade de fire stack ja que ele fica defifinido dessa parte do codigo)
+        if (!EntityManager.TryGetComponent(uid, out FlammableComponent? flammable))
+            return;
+
+        if (flammable.FireStacks >= 1)
+            _flammable.Extinguish(uid, flammable);
             loads -= 1;
     }
 }
