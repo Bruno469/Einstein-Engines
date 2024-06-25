@@ -8,6 +8,10 @@
   - type: HumanoidAppearance
     species: Moth
   - type: Hunger
+  - type: MothFly
+    actionPrototype: MothFlyAction
+    allowedStates:
+    - Alive
   - type: Thirst
   - type: Carriable # Carrying system from nyanotrasen.
   - type: Icon

@@ -27,12 +27,15 @@ public abstract partial class SharedMothFlySystem : EntitySystem
         base.Initialize();
         SubscribeLocalEvent<MothFlyComponent, MobStateChangedEvent>(OnMobStateChanged);
         SubscribeLocalEvent<MothFlyComponent, FlyActionEvent>(OnFlyAction);
+        SubscribeLocalEvent<MothFlyComponent, ComponentInit>(OnRoundStart);
     }
-    public void OnRoundStart(EntityUid uid, MothFlyComponent comp, MobStateChangedEvent args)
+
+    public void OnRoundStart(EntityUid uid, MothFlyComponent comp, ComponentInit args)
     {
         _actionsSystem.AddAction(uid, ref comp.ActionEntity, comp.ActionPrototype);
         return;
     }
+
     private void OnMobStateChanged(EntityUid uid, MothFlyComponent comp, MobStateChangedEvent args)
     {
         // When the mob changes state, check if they're dead and give them the action if so.
@@ -57,9 +60,6 @@ public abstract partial class SharedMothFlySystem : EntitySystem
     private void OnFlyAction(EntityUid uid, MothFlyComponent comp, FlyActionEvent args)
     {
         // When they use the action, gib them (It's a meme lol).
-        if (IsEnabled(uid) == true)
-            _popupSystem.PopupClient(Loc.GetString(comp.StopPopupText, ("name", uid)), uid, uid);
-        _popupSystem.PopupClient(Loc.GetString(comp.PopupText, ("name", uid)), uid, uid);
         bool canFly = CanEnable(uid, comp);
         SetEnabled(uid, comp, canFly);
     }
@@ -71,23 +71,35 @@ public abstract partial class SharedMothFlySystem : EntitySystem
 
     protected virtual bool CanEnable(EntityUid uid, MothFlyComponent component)
     {
-        return true;
+        if (IsEnabled(uid))
+            return false;
+        return false;
     }
+
     public void SetEnabled(EntityUid uid, MothFlyComponent component, bool enabled)
     {
         var user = component.Owner;
 
-        if (IsEnabled(uid) == enabled ||
+        if (IsEnabled(uid) == true ||
             enabled && !CanEnable(uid, component))
         {
             if (TryComp<PhysicsComponent>(user, out var physics))
                 _physics.SetBodyStatus(user, physics, BodyStatus.OnGround);
+                RemComp<ActiveJetpackComponent>(uid);
+                _movementSpeedModifier.ChangeBaseSpeed(user, _movementSpeedModifier.DefaultBaseWalkSpeed, _movementSpeedModifier.DefaultBaseSprintSpeed, _movementSpeedModifier.DefaultAcceleration);
+                _movementSpeedModifier.Friction = _movementSpeedModifier.DefaultFriction;
+                _movementSpeedModifier.FrictionNoInput = _movementSpeedModifier.DefaultFrictionNoInput;
+                _popupSystem.PopupClient(Loc.GetString(component.StopPopupText, ("name", uid)), uid, uid);
             return;
         }
 
         if (TryComp<PhysicsComponent>(user, out var newphysics))
             _physics.SetBodyStatus(user, newphysics, BodyStatus.InAir);
-            _movementSpeedModifier.ChangeBaseSpeed(user, 2, 2, 1);
+            AddComp<ActiveJetpackComponent>(uid);
+            _movementSpeedModifier.ChangeBaseSpeed(user, 5.0f, 8.0f, 30f);
+            _movementSpeedModifier.Friction = 10f;
+            _movementSpeedModifier.FrictionNoInput = 5f;
+            _popupSystem.PopupClient(Loc.GetString(component.PopupText, ("name", uid)), uid, uid);
     }
 
     public bool IsUserFlying(EntityUid uid)
