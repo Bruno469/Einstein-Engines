@@ -13,6 +13,7 @@ using Content.Shared.Movement.Systems;
 using Content.Shared.Movement.Components;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Utility;
+using Content.Shared.Stunnable;
 
 namespace Content.Shared.Species;
 public abstract partial class SharedMothFlySystem : EntitySystem
@@ -29,6 +30,7 @@ public abstract partial class SharedMothFlySystem : EntitySystem
         SubscribeLocalEvent<MothFlyComponent, MobStateChangedEvent>(OnMobStateChanged);
         SubscribeLocalEvent<MothFlyComponent, FlyActionEvent>(OnFlyAction);
         SubscribeLocalEvent<MothFlyComponent, ComponentInit>(OnRoundStart);
+        SubscribeLocalEvent<MothFlyComponent, StunnedEvent>(HardStopFly);
     }
 
     public void OnRoundStart(EntityUid uid, MothFlyComponent comp, ComponentInit args)
@@ -87,6 +89,7 @@ public abstract partial class SharedMothFlySystem : EntitySystem
             if (TryComp<PhysicsComponent>(user, out var physics))
                 _physics.SetBodyStatus(user, physics, BodyStatus.OnGround);
                 RemComp<ActiveJetpackComponent>(uid);
+                RemComp<CanMoveInAirComponent>(uid);
                 _movementSpeedModifier.ChangeBaseSpeed(user, MovementSpeedModifierComponent.DefaultBaseWalkSpeed, MovementSpeedModifierComponent.DefaultBaseSprintSpeed, MovementSpeedModifierComponent.DefaultAcceleration);
                 _movementSpeedModifier.ChangeFriction(user, MovementSpeedModifierComponent.DefaultFriction, MovementSpeedModifierComponent.DefaultFrictionNoInput, MovementSpeedModifierComponent.DefaultAcceleration);
                 _popupSystem.PopupClient(Loc.GetString(component.StopPopupText, ("name", uid)), uid, uid);
@@ -96,9 +99,18 @@ public abstract partial class SharedMothFlySystem : EntitySystem
         if (TryComp<PhysicsComponent>(user, out var newphysics))
             _physics.SetBodyStatus(user, newphysics, BodyStatus.InAir);
             AddComp<ActiveJetpackComponent>(uid);
+            AddComp<CanMoveInAirComponent>(uid);
             _movementSpeedModifier.ChangeBaseSpeed(user, 5.0f, 8.0f, 30f);
             _movementSpeedModifier.ChangeFriction(user, 10.0f, 5.0f, 30f);
             _popupSystem.PopupClient(Loc.GetString(component.PopupText, ("name", uid)), uid, uid);
+    }
+
+    private HardStopFly(EntityUid uid, StunnedEvent args)
+    {
+        if (!HasComp<CanMoveInAirComponent>(uid))
+            return;
+
+        //continue codgio
     }
 
     public bool IsUserFlying(EntityUid uid)
