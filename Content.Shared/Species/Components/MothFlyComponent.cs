@@ -13,6 +13,9 @@ public sealed partial class MothFlyComponent : Component
     [DataField("actionPrototype", required: true)]
     public EntProtoId ActionPrototype;
 
+    [DataField("StaminaDamage"), ViewVariables(VVAccess.ReadWrite)]
+    public float StaminaDamage = 2f;
+
     [DataField, AutoNetworkedField]
     public EntityUid? ActionEntity;
 
