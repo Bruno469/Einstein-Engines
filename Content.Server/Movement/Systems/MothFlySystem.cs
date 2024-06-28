@@ -28,7 +28,7 @@ public sealed class MothFlySystem : SharedMothFlySystem
     [Dependency] private readonly AtmosphereSystem _atmosphere = default!;
     [Dependency] private readonly IMapManager _mapManager = default!;
 
-    protected override bool CanEnable(EntityUid uid, MothFlyComponent component)
+    protected override bool CheckCanEnable(EntityUid uid, MothFlyComponent component)
     {
         var uidXform = Transform(uid);
         var coordinates = uidXform.Coordinates;

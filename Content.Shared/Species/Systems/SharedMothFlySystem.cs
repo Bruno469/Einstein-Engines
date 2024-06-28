@@ -1,19 +1,15 @@
 using Content.Shared.Species.Components;
 using Content.Shared.Actions;
-using Content.Shared.Body.Systems;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Popups;
 using Robust.Shared.Prototypes;
-using Content.Shared.Damage.Systems;
-using Content.Shared.Movement.Events;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Movement.Components;
-using Robust.Shared.GameObjects;
-using Robust.Shared.Utility;
 using Content.Shared.Stunnable;
+using Content.Shared.Damage.Events;
 
 namespace Content.Shared.Species;
 public abstract partial class SharedMothFlySystem : EntitySystem
@@ -23,6 +19,7 @@ public abstract partial class SharedMothFlySystem : EntitySystem
     [Dependency] private readonly SharedPopupSystem _popupSystem = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly MovementSpeedModifierSystem _movementSpeedModifier = default!;
+    [Dependency] private readonly SharedStunSystem _stun = default!;
 
     public override void Initialize()
     {
@@ -31,6 +28,7 @@ public abstract partial class SharedMothFlySystem : EntitySystem
         SubscribeLocalEvent<MothFlyComponent, FlyActionEvent>(OnFlyAction);
         SubscribeLocalEvent<MothFlyComponent, ComponentInit>(OnRoundStart);
         SubscribeLocalEvent<MothFlyComponent, StunnedEvent>(HardStopFly);
+        SubscribeLocalEvent<MothFlyComponent, StaminaMeleeHitEvent>(FallHard);
     }
 
     public void OnRoundStart(EntityUid uid, MothFlyComponent comp, ComponentInit args)
@@ -76,6 +74,15 @@ public abstract partial class SharedMothFlySystem : EntitySystem
     {
         if (IsEnabled(uid))
             return false;
+        return CheckCanEnable(uid, component);
+    }
+
+    protected virtual bool CheckCanEnable(EntityUid uid, MothFlyComponent component)
+    {
+        if (CanEnable(uid, component))
+        {
+            return true;
+        }
         return false;
     }
 
@@ -88,34 +95,51 @@ public abstract partial class SharedMothFlySystem : EntitySystem
         {
             if (TryComp<PhysicsComponent>(user, out var physics))
                 _physics.SetBodyStatus(user, physics, BodyStatus.OnGround);
-                RemComp<ActiveJetpackComponent>(uid);
-                RemComp<CanMoveInAirComponent>(uid);
-                _movementSpeedModifier.ChangeBaseSpeed(user, MovementSpeedModifierComponent.DefaultBaseWalkSpeed, MovementSpeedModifierComponent.DefaultBaseSprintSpeed, MovementSpeedModifierComponent.DefaultAcceleration);
-                _movementSpeedModifier.ChangeFriction(user, MovementSpeedModifierComponent.DefaultFriction, MovementSpeedModifierComponent.DefaultFrictionNoInput, MovementSpeedModifierComponent.DefaultAcceleration);
-                _popupSystem.PopupClient(Loc.GetString(component.StopPopupText, ("name", uid)), uid, uid);
+            RemComp<ActiveJetpackComponent>(uid);
+            RemComp<CanMoveInAirComponent>(uid);
+            _movementSpeedModifier.ChangeBaseSpeed(user, MovementSpeedModifierComponent.DefaultBaseWalkSpeed, MovementSpeedModifierComponent.DefaultBaseSprintSpeed, MovementSpeedModifierComponent.DefaultAcceleration);
+            _movementSpeedModifier.ChangeFriction(user, MovementSpeedModifierComponent.DefaultFriction, MovementSpeedModifierComponent.DefaultFrictionNoInput, MovementSpeedModifierComponent.DefaultAcceleration);
+            _popupSystem.PopupClient(Loc.GetString(component.StopPopupText, ("name", uid)), uid, uid);
             return;
         }
 
         if (TryComp<PhysicsComponent>(user, out var newphysics))
             _physics.SetBodyStatus(user, newphysics, BodyStatus.InAir);
-            AddComp<ActiveJetpackComponent>(uid);
-            AddComp<CanMoveInAirComponent>(uid);
-            _movementSpeedModifier.ChangeBaseSpeed(user, 5.0f, 8.0f, 30f);
-            _movementSpeedModifier.ChangeFriction(user, 10.0f, 5.0f, 30f);
-            _popupSystem.PopupClient(Loc.GetString(component.PopupText, ("name", uid)), uid, uid);
+        AddComp<ActiveJetpackComponent>(uid);
+        AddComp<CanMoveInAirComponent>(uid);
+        _movementSpeedModifier.ChangeBaseSpeed(user, 5.0f, 8.0f, 30f);
+        _movementSpeedModifier.ChangeFriction(user, 10.0f, 5.0f, 30f);
+        _popupSystem.PopupClient(Loc.GetString(component.PopupText, ("name", uid)), uid, uid);
     }
 
-    private HardStopFly(EntityUid uid, StunnedEvent args)
+    private void HardStopFly(EntityUid uid, MothFlyComponent component, StunnedEvent args)
     {
-        if (!HasComp<CanMoveInAirComponent>(uid))
+        var user = component.Owner;
+        if (!IsUserFlying(user))
             return;
+        FallHard(uid, component);
+    }
 
-        //continue codgio
+    private void FallHard(EntityUid uid, MothFlyComponent component, StaminaMeleeHitEvent? args = null)
+    {
+        var user = component.Owner;
+        if (TryComp<PhysicsComponent>(user, out var physics))
+            _physics.SetBodyStatus(user, physics, BodyStatus.OnGround);
+        RemComp<ActiveJetpackComponent>(uid);
+        RemComp<CanMoveInAirComponent>(uid);
+        _movementSpeedModifier.ChangeBaseSpeed(user, MovementSpeedModifierComponent.DefaultBaseWalkSpeed, MovementSpeedModifierComponent.DefaultBaseSprintSpeed, MovementSpeedModifierComponent.DefaultAcceleration);
+        _movementSpeedModifier.ChangeFriction(user, MovementSpeedModifierComponent.DefaultFriction, MovementSpeedModifierComponent.DefaultFrictionNoInput, MovementSpeedModifierComponent.DefaultAcceleration);
+        _popupSystem.PopupClient(Loc.GetString(component.ForcedStopPopupText, ("name", uid)), uid, uid);
+        _stun.TryStun(user, TimeSpan.FromSeconds(8.0f), true);
+        return;
     }
 
     public bool IsUserFlying(EntityUid uid)
     {
-        return HasComp<ActiveJetpackComponent>(uid);
+        if (TryComp<PhysicsComponent>(uid, out var physics))
+            if (HasComp<CanMoveInAirComponent>(uid) && HasComp<ActiveJetpackComponent>(uid) && physics.BodyStatus == BodyStatus.InAir)
+                return true;
+        return false;
     }
 
     public sealed partial class FlyActionEvent : InstantActionEvent { }
