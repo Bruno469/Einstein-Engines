@@ -6,6 +6,7 @@ using Content.Shared.Temperature;
 using Content.Server.Species.Components;
 using Content.Server.Atmos.Components;
 using Content.Server.Atmos.EntitySystems;
+using Content.Shared.Actions.Events;
 
 namespace Content.Server.Species.Systems;
 
@@ -17,10 +18,10 @@ public sealed class PlasmaManSystem : EntitySystem
 
     public override void Initialize()
     {
-        SubscribeLocalEvent<PlasmaManComponent, IsHotEvent>(TryExtinguirFire);
+        SubscribeLocalEvent<PlasmaManComponent, FireStarterActionEvent>(TryExtinguirFire);
     }
 
-    private void TryExtinguirFire(EntityUid uid, PlasmaManComponent comp, IsHotEvent args)
+    private void TryExtinguirFire(EntityUid uid, PlasmaManComponent comp, FireStarterActionEvent args)
     {
         int loads = 3;
         // Verifica se tem cargas suficientes para ativar a supressão de fogo
@@ -28,7 +29,7 @@ public sealed class PlasmaManSystem : EntitySystem
             return;
 
         // pega a temperatura e ve se ta alta (teoricamente não precisa já que esse event só é ativado quando ta quente) [Só é ativado quando o ITEM ta quente MULA]
-        // pega o componente flammable pra apagar o fogo (teoricamente posso usar pra verificar a quantidade de fire stack ja que ele fica defifinido dessa parte do codigo)
+        // pega o componente flammable pra apagar o fogo (teoricamente posso usar pra verificar a quantidade de fire stack ja que ele fica defifinido nessa parte do codigo)
         if (!EntityManager.TryGetComponent(uid, out FlammableComponent? flammable))
             return;
 
