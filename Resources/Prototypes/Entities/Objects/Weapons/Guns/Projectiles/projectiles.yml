@@ -991,3 +991,26 @@
         Heat: 20 # Slightly more damage than the 17heat from the Captain's Hitscan lasgun
     soundHit:
       collection: MeatLaserImpact
+
+- type: entity
+  id: BulletPoisonWeb
+  name: poison web
+  parent: BaseBullet
+  noSpawn: true
+  components:
+  - type: SpawnOnCollider
+    Prototype: SpiderWeb
+    radius: 3
+    points: 24
+  - type: StaminaDamageOnCollide
+    damage: 15
+  - type: Projectile
+    damage:
+      types:
+        Poison: 5
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Projectiles/xeno_toxic.rsi
+    layers:
+      - state: xeno_toxic
+  - type: Ammo
+    muzzleFlash: null

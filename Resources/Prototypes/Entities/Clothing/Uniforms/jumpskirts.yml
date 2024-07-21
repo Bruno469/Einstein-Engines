@@ -926,3 +926,15 @@
       - state: equipped-INNERCLOTHING-jumpskirt
       - state: equipped-INNERCLOTHING-shirt
         color: "#b30000"
+
+- type: entity
+  parent: ClothingUniformSkirtBase
+  id: ClothingUniformJumpskirtSakuya
+  name: Sakuya's uniform
+  description: "She works for her mistress, Remilia Scarlet, and she is apparently the only human living and working in the mansion... Wait, WHAT?!"
+  components:
+    - type: Sprite
+      sprite: Clothing/Uniforms/Jumpskirt/sakuya.rsi
+    - type: Clothing
+      sprite: Clothing/Uniforms/Jumpskirt/sakuya.rsi
+

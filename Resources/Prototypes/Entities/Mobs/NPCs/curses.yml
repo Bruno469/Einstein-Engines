@@ -1,0 +1,207 @@
+- type: entity
+  id: BaseCurse
+  parent: [ BaseMob, MobCombat ]
+  abstract: true
+  components:
+  - type: Curse
+  - type: HTN
+    rootTask:
+      task: SimpleRangedHostileCompound
+    blackboard:
+      NavClimb: !type:Bool
+        true
+      NavSmash: !type:Bool
+        true
+  - type: NpcFactionMember
+    factions:
+    - SimpleHostile
+  - type: MovementIgnoreGravity
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.5
+    baseSprintSpeed: 3.5
+  - type: MobState
+  - type: SlowOnDamage
+    speedModifierThresholds:
+      20: 0.5
+  - type: StatusEffects
+    allowed:
+    - Stun
+    - Corporeal
+    - Electrocution
+    - StaminaModifier
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.35
+        density: 60
+        mask:
+          - MobMask
+        layer:
+          - Opaque
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: Scale
+  - type: NoSlip
+  - type: Pullable
+  - type: ZombieImmune
+  - type: NameIdentifier
+    group: GenericNumber
+  - type: GhostTakeoverAvailable
+  - type: Speech
+    speechVerb: Ghost
+  - type: Tag
+    tags:
+      - FootstepSound
+  - type: Destructible
+    thresholds:
+      - trigger:
+          !type:DamageTrigger
+          damage: 25
+        behaviors:
+          - !type:DoActsBehavior
+            acts: [ "Destruction" ]
+          - !type:PlaySoundBehavior
+            sound:
+              collection: GlassBreak
+
+- type: entity
+  parent: BaseCurse
+  id: MobObserverCurse
+  name: curse
+  description: Boo!
+  components:
+  - type: MobState
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      50: Dead
+  - type: InputMover
+  - type: CombatMode
+  - type: MobMover
+  - type: HTN
+    rootTask:
+      task: SimpleHostileCompound
+    blackboard:
+      NavSmash: !type:Bool
+        true
+  - type: NpcFactionMember
+    factions:
+      - SimpleHostile
+  - type: CargoSellBlacklist
+  - type: Sprite
+    sprite: Mobs/Curses/smoker.rsi
+    layers:
+    - state: animated
+    - state: eyes
+      shader: unshaded
+  - type: ContentEye
+    maxZoom: 1.44,1.44
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.35
+        density: 15
+        mask:
+        - GhostImpassable
+  - type: Eye
+    drawFov: false
+  - type: Input
+    context: "ghost"
+  - type: Examiner
+    skipChecks: true
+  - type: Curse
+  - type: MovementSpeedModifier
+    baseSprintSpeed: 4
+    baseWalkSpeed: 4
+  - type: MovementIgnoreGravity
+  - type: Physics
+    bodyType: KinematicController
+    bodyStatus: InAir
+  - type: CanMoveInAir
+  - type: Tag
+    tags:
+    - BypassInteractionRangeChecks
+
+- type: entity
+  id: MobSpiderCurseEntity
+  parent: BaseCurse
+  name: Spider Curse
+  description: A dark enchantment that transforms its victim into a spider-like creature with heightened agility and a relentless craving for insects.
+  components:
+  - type: InputMover
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      50: Dead
+  - type: IgnoreSpiderWeb
+  - type: PassiveDamage
+    allowedStates:
+    - Alive
+    damageCap: 89
+    damage:
+      types:
+        Poison: -0.08
+      groups:
+        Brute: -0.08
+        Burn: -0.08
+  - type: Sprite
+    drawdepth: Mobs
+    sprite: Mobs/Animals/spacespider.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: spacespider
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+      state: glow
+      shader: unshaded
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: spider_curse_stop
+      Dead:
+        Base: nurse_dead
+  - type: MeleeWeapon
+    altDisarm: false
+    angle: 0
+    animation: WeaponArcBite
+    soundHit:
+      path: /Audio/Effects/bite.ogg
+    damage:
+      types:
+        Piercing: 18
+  - type: SolutionContainerManager
+    solutions:
+      melee:
+        maxVol: 10
+  - type: SolutionRegeneration
+    solution: melee
+    generated:
+      reagents:
+      - ReagentId: Toxin
+        Quantity: 10
+  - type: MeleeChemicalInjector
+    transferAmount: 0.25
+    solution: melee
+  - type: SpriteMovement
+    movementLayers:
+      movement:
+        state: spider_curse
+    noMovementLayers:
+      movement:
+        state: spider_curse_stop
+  - type: BasicEntityAmmoProvider
+    proto: BulletPoisonWeb
+    capacity: 6
+    count: 6
+  - type: Gun
+    fireRate: 0.3
+    useKey: false
+    showExamineText: false
+    selectedMode: SemiAuto
+    availableModes:
+      - SemiAuto
+    soundGunshot:
+      path: /Audio/Weapons/Guns/Gunshots/water_spray.ogg

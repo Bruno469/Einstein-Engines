@@ -1,0 +1,17 @@
+- type: entity
+  id: UpdateCrystal
+  name: Crystal
+  description: An energy surrounds this crystal.
+  parent: BaseItem
+  components:
+    - type: Sprite
+      sprite: Objects/Magic/psycupdate.rsi
+      state: crystal
+    - type: UpdateCristal
+      transformAfterSelect: AlwaysPoweredWallLight
+    - type: ActivatableUI
+      key: enum.UpdateCristalUIKey.Key
+    - type: UserInterface
+      interfaces:
+        - key: enum.UpdateCristalUIKey.Key
+          type: UpdateCristalBoundUserInterface

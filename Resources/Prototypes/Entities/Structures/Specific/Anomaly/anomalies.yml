@@ -48,7 +48,7 @@
     sound:
       path: /Audio/Effects/teleport_arrival.ogg
   - type: Psionic #Nyano - Summary: makes psionic on creation.
-  - type: GlimmerSource #Nyano - Summary: makes this a potential source of Glimmer. 
+  - type: GlimmerSource #Nyano - Summary: makes this a potential source of Glimmer.
     active: false
 
 - type: entity
@@ -813,6 +813,9 @@
     radius: 1.5
     energy: 12.5
     color: "#793a80"
+  - type: DarkDugeonCreate
+  - type: UseDelay
+    delay: 5
   - type: AmbientSound
     range: 5
     volume: -5

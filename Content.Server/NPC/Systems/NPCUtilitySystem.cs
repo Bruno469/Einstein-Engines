@@ -8,6 +8,8 @@ using Content.Server.Nutrition.Components;
 using Content.Server.Nutrition.EntitySystems;
 using Content.Server.Storage.Components;
 using Content.Shared.Examine;
+using Content.Shared.Security;
+using Content.Shared.Security.Components;
 using Content.Shared.Fluids.Components;
 using Content.Shared.Hands.Components;
 using Content.Shared.Inventory;
@@ -46,6 +48,7 @@ public sealed class NPCUtilitySystem : EntitySystem
     [Dependency] private readonly ExamineSystemShared _examine = default!;
 
     private EntityQuery<PuddleComponent> _puddleQuery;
+    private EntityQuery<CriminalRecordComponent> _wantedQuery;
     private EntityQuery<TransformComponent> _xformQuery;
 
     private ObjectPool<HashSet<EntityUid>> _entPool =
@@ -60,6 +63,7 @@ public sealed class NPCUtilitySystem : EntitySystem
     {
         base.Initialize();
         _puddleQuery = GetEntityQuery<PuddleComponent>();
+        _wantedQuery = GetEntityQuery<CriminalRecordComponent>();
         _xformQuery = GetEntityQuery<TransformComponent>();
     }
 
@@ -359,91 +363,99 @@ public sealed class NPCUtilitySystem : EntitySystem
     }
 
     private void Add(NPCBlackboard blackboard, HashSet<EntityUid> entities, UtilityQuery query)
+{
+    var owner = blackboard.GetValue<EntityUid>(NPCBlackboard.Owner);
+    var vision = blackboard.GetValueOrDefault<float>(NPCBlackboard.VisionRadius, EntityManager);
+
+    switch (query)
     {
-        var owner = blackboard.GetValue<EntityUid>(NPCBlackboard.Owner);
-        var vision = blackboard.GetValueOrDefault<float>(NPCBlackboard.VisionRadius, EntityManager);
-
-        switch (query)
+        case ComponentQuery compQuery:
         {
-            case ComponentQuery compQuery:
+            if (compQuery.Components.Count == 0)
+                return;
+
+            var mapPos = _xformQuery.GetComponent(owner).MapPosition;
+            _compTypes.Clear();
+            var i = -1;
+            EntityPrototype.ComponentRegistryEntry compZero = default!;
+
+            foreach (var compType in compQuery.Components.Values)
             {
-                if (compQuery.Components.Count == 0)
-                    return;
+                i++;
 
-                var mapPos = _xformQuery.GetComponent(owner).MapPosition;
-                _compTypes.Clear();
-                var i = -1;
-                EntityPrototype.ComponentRegistryEntry compZero = default!;
-
-                foreach (var compType in compQuery.Components.Values)
+                if (i == 0)
                 {
-                    i++;
-
-                    if (i == 0)
-                    {
-                        compZero = compType;
-                        continue;
-                    }
-
-                    _compTypes.Add(compType);
+                    compZero = compType;
+                    continue;
                 }
 
-                _entitySet.Clear();
-                _lookup.GetEntitiesInRange(compZero.Component.GetType(), mapPos, vision, _entitySet);
-
-                foreach (var comp in _entitySet)
-                {
-                    var ent = comp.Owner;
-
-                    if (ent == owner)
-                        continue;
-
-                    var othersFound = true;
-
-                    foreach (var compOther in _compTypes)
-                    {
-                        if (!HasComp(ent, compOther.Component.GetType()))
-                        {
-                            othersFound = false;
-                            break;
-                        }
-                    }
-
-                    if (!othersFound)
-                        continue;
-
-                    entities.Add(ent);
-                }
-
-                break;
+                _compTypes.Add(compType);
             }
-            case InventoryQuery:
-            {
-                if (!_inventory.TryGetContainerSlotEnumerator(owner, out var enumerator))
-                    break;
 
-                while (enumerator.MoveNext(out var slot))
+            _entitySet.Clear();
+            _lookup.GetEntitiesInRange(compZero.Component.GetType(), mapPos, vision, _entitySet);
+
+            foreach (var comp in _entitySet)
+            {
+                var ent = comp.Owner;
+
+                if (ent == owner)
+                    continue;
+
+                var othersFound = true;
+
+                foreach (var compOther in _compTypes)
                 {
-                    foreach (var child in slot.ContainedEntities)
+                    if (!HasComp(ent, compOther.Component.GetType()))
                     {
-                        RecursiveAdd(child, entities);
+                        othersFound = false;
+                        break;
                     }
                 }
 
-                break;
+                if (!othersFound)
+                    continue;
+
+                entities.Add(ent);
             }
-            case NearbyHostilesQuery:
-            {
-                foreach (var ent in _npcFaction.GetNearbyHostiles(owner, vision))
-                {
-                    entities.Add(ent);
-                }
-                break;
-            }
-            default:
-                throw new NotImplementedException();
+
+            break;
         }
+        case InventoryQuery:
+        {
+            if (!_inventory.TryGetContainerSlotEnumerator(owner, out var enumerator))
+                break;
+
+            while (enumerator.MoveNext(out var slot))
+            {
+                foreach (var child in slot.ContainedEntities)
+                {
+                    RecursiveAdd(child, entities);
+                }
+            }
+
+            break;
+        }
+        case NearbyHostilesQuery:
+        {
+            foreach (var ent in _npcFaction.GetNearbyHostiles(owner, vision))
+            {
+                entities.Add(ent);
+            }
+            break;
+        }
+        case NearbyWantedQuery:
+        {
+            foreach (var ent in _lookup.GetEntitiesInRange<CriminalRecordComponent>(_xformQuery.GetComponent(owner).MapPosition, vision))
+            {
+                entities.Add(ent);
+            }
+            break;
+        }
+        default:
+            throw new NotImplementedException();
     }
+}
 
     private void RecursiveAdd(EntityUid uid, HashSet<EntityUid> entities)
     {
@@ -494,6 +506,25 @@ public sealed class NPCUtilitySystem : EntitySystem
                     if (!_puddleQuery.TryGetComponent(ent, out var puddleComp) ||
                         !_solutions.TryGetSolution(ent, puddleComp.SolutionName, out _, out var sol) ||
                         _puddle.CanFullyEvaporate(sol))
+                    {
+                        _entityList.Add(ent);
+                    }
+                }
+
+                foreach (var ent in _entityList)
+                {
+                    entities.Remove(ent);
+                }
+
+                break;
+            }
+            case SecurityFilter:
+            {
+                _entityList.Clear();
+
+                foreach (var ent in entities)
+                {
+                    if (!_wantedQuery.TryGetComponent(ent, out var CriminalRecord) || CriminalRecord.StatusIcon == "SecurityIconWanted")
                     {
                         _entityList.Add(ent);
                     }
