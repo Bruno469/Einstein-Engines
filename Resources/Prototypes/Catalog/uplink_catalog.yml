@@ -243,7 +243,7 @@
     Telecrystal: 11
   categories:
     - UplinkExplosives
-  restockTime: 30
+  restockTime: 1800
   conditions:
   - !type:StoreWhitelistCondition
     blacklist:
@@ -1240,6 +1240,16 @@
     - UplinkUtility
 
 # Armor
+
+- type: listing
+  id: UplinkChestRig
+  name: uplink-chest-rig-name
+  description: uplink-chest-rig-desc
+  productEntity: ClothingBeltMilitaryWebbing
+  cost:
+    Telecrystal: 1
+  categories:
+    - UplinkArmor
 
 - type: listing
   id: UplinkChameleon
