@@ -10,6 +10,7 @@ using Content.Shared.Database;
 using Content.Shared.Popups;
 using Content.Shared.Chat;
 using Content.Shared.Verbs;
+using Content.Shared.Actions;
 using Robust.Server.GameObjects;
 using Robust.Server.Physics;
 using Robust.Shared.Player;
@@ -25,6 +26,7 @@ using Robust.Shared.Map.Components;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Prototypes;
 using Content.Server.Administration.Logs.Converters;
+using System.Runtime.CompilerServices;
 
 namespace Content.Server.Curse;
 public sealed class DarkDugeonCreate : EntitySystem
@@ -32,6 +34,7 @@ public sealed class DarkDugeonCreate : EntitySystem
     [Dependency] private readonly PopupSystem _popupSystem = default!;
     [Dependency] private readonly IMapManager _mapManager = default!;
     [Dependency] private readonly MapLoaderSystem _map = default!;
+    [Dependency] private readonly SharedActionSystem _actionSystem = default!;
     [Dependency] private readonly MetaDataSystem _metaDataSystem = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
@@ -73,6 +76,7 @@ public sealed class DarkDugeonCreate : EntitySystem
                 }
                 _popupSystem.PopupEntity(Loc.GetString("prayer-chat-notify-Teleport"), uid, actor.PlayerSession, PopupType.Large);
                 var (mapUid, gridUid) = LoadDungeon(uid, comp);
+                _actionSystem.StartUseDelay(args.User, args);
                 _transform.SetCoordinates(args.User, new EntityCoordinates(gridUid ?? mapUid, Vector2.One));
                 return;
             },

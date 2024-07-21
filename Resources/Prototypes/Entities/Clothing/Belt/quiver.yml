@@ -29,6 +29,9 @@
   name: magic knifes belt
   description: Can hold up to 6 knifes, and fits snug around your waist.
   components:
+  - type: RechargeBelt
+    proto: MagicThrowingKnife
+    rechargeCooldown: 40
   - type: Sprite
     sprite: Clothing/Belt/knife_belt.rsi
     layers:
@@ -40,4 +43,4 @@
     maxItemSize: Small
     whitelist:
       tags:
-      - Knife
+      - MagicKnife
