@@ -1,14 +1,17 @@
+using System.Linq;
+using Content.Server.Atmos.Components;
 using Content.Server.Bible.Components;
+using Content.Server.Atmos.EntitySystems;
 using Content.Server.Popups;
 using Content.Shared.ActionBlocker;
+using Content.Shared.Atmos.Components;
 using Content.Shared.Actions;
-using Content.Shared.Sword;
 using Content.Shared.Damage;
-using Content.Shared.Coordinates;
 using Content.Shared.Inventory;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Popups;
 using Content.Shared.Timing;
+using Content.Shared.Sword;
 using Content.Shared.Verbs;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
@@ -19,11 +22,14 @@ using Content.Shared.Maps;
 using Content.Shared.Movement.Components;
 using Robust.Shared.Map;
 using Vector2 = System.Numerics.Vector2;
+using Content.Shared.Coordinates;
+
 
 namespace Content.Server.Sword
 {
     public sealed class BlueRoseSwordSystem : SharedBlueRoseSwordComponent
     {
+        [Dependency] private readonly AtmosphereSystem _atmos = default!;
         [Dependency] private readonly IRobustRandom _random = default!;
         [Dependency] private readonly ActionBlockerSystem _blocker = default!;
         [Dependency] private readonly DamageableSystem _damageableSystem = default!;
@@ -51,6 +57,7 @@ namespace Content.Server.Sword
 
             args.AddAction(ref component.ReinforceActionEntity, component.ReinforceAction);
         }
+
         private void AddReinforceVerb(EntityUid uid, BlueRoseSwordComponent component, GetVerbsEvent<AlternativeVerb> args)
         {
             if (!args.CanInteract || !args.CanAccess || component.AlreadyReinforce)
@@ -67,7 +74,6 @@ namespace Content.Server.Sword
                         return;
 
                     Generate(args.User.ToCoordinates(), component.Radius, component.Points, component);
-                    // AttemptSummon((uid, component), args.User, userXform);
                 },
                 Text = Loc.GetString("sword-reinforced-verb"),
                 Priority = 2
@@ -77,29 +83,29 @@ namespace Content.Server.Sword
 
         private void OnReinforce(Entity<BlueRoseSwordComponent> ent, ref ActionReinforceArmamentEvent args)
         {
-            // AttemptSummon(ent, args.Performer, Transform(args.Performer));
             Generate(Transform(args.Performer).Coordinates, ent.Comp.Radius, ent.Comp.Points, ent.Comp);
         }
 
-
         private void Generate(EntityCoordinates center, int radius, int points, BlueRoseSwordComponent component)
         {
-            var angleStep = 360.0f / points;
-            var angle = 0.0f;
-
-            for (int i = 0; i < points; i++)
+            var stepSize = 1;
+            for (int x = -radius; x <= radius; x += stepSize)
             {
-                var offsetX = radius * Math.Cos(angle * Math.PI / 180.0f);
-                var offsetY = radius * Math.Sin(angle * Math.PI / 180.0f);
-                var offset = new Vector2((float)offsetX, (float)offsetY);
-                var newCoords = center.Offset(offset);
-
-                if (!IsTileBlockedBySomething(newCoords))
+                for (int y = -radius; y <= radius; y += stepSize)
                 {
-                    Spawn(component.Prototype, newCoords);
-                }
+                    var distance = Math.Sqrt(x * x + y * y);
+                    if (distance <= radius)
+                    {
+                        var offset = new Vector2(x, y);
+                        var newCoords = center.Offset(offset);
+                        var tilePosition = new Vector2i((int)newCoords.X, (int)newCoords.Y);
 
-                angle += angleStep;
+                        if (!IsTileBlockedBySomething(newCoords) || !_atmos.IsTileSpace(null, null, tilePosition))
+                        {
+                            Spawn(component.Prototype, newCoords);
+                        }
+                    }
+                }
             }
         }
 
@@ -112,5 +118,12 @@ namespace Content.Server.Sword
             }
             return false;
         }
+
+        //private bool IsTileOccupiedByEntities(Vector2i tilePosition, EntityUid gridId)
+        //{
+        //    var tileRef = new TileRef(tilePosition, gridId);
+        //    var entitiesInTile = _transform.GetEntitiesInTile(tileRef);
+        //    return entitiesInTile.Any(entity => !HasComp<PhysicsComponent>(entity));
+        //}
     }
 }

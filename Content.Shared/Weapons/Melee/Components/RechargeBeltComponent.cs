@@ -1,35 +1,37 @@
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
+using Robust.Shared.Prototypes;
+using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 
-namespace Content.Shared.Weapons.Melee.Components;
-
-/// <summary>
-///     Responsible for handling recharging a basic entity ammo provider over time.
-/// </summary>
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState, AutoGenerateComponentPause]
-public sealed partial class RechargeBeltComponent : Component
+namespace Content.Shared.Weapons.Melee.Components
 {
-
-    [ViewVariables(VVAccess.ReadWrite)]
-    [DataField("proto", required: true, customTypeSerializer:typeof(PrototypeIdSerializer<EntityPrototype>))]
-    public string Proto = default!;
-
-    [ViewVariables(VVAccess.ReadWrite)]
-    [DataField("rechargeCooldown")]
-    [AutoNetworkedField]
-    public float RechargeCooldown = 1.5f;
-
-    [DataField("rechargeSound")]
-    [AutoNetworkedField]
-    public SoundSpecifier RechargeSound = new SoundPathSpecifier("/Audio/Magic/forcewall.ogg")
+    /// <summary>
+    ///     Responsible for handling recharging a basic entity ammo provider over time.
+    /// </summary>
+    [RegisterComponent, NetworkedComponent, AutoGenerateComponentState, AutoGenerateComponentPause]
+    public sealed partial class RechargeBeltComponent : Component
     {
-        Params = AudioParams.Default.WithVolume(-5f)
-    };
+        [ViewVariables(VVAccess.ReadWrite)]
+        [DataField("proto", required: true)]
+        public string Proto = default!;
 
-    [ViewVariables(VVAccess.ReadWrite),
-     DataField("nextCharge", customTypeSerializer:typeof(TimeOffsetSerializer)),
-    AutoNetworkedField]
-    [AutoPausedField]
-    public TimeSpan? NextCharge;
+        [ViewVariables(VVAccess.ReadWrite)]
+        [DataField("rechargeCooldown")]
+        [AutoNetworkedField]
+        public float RechargeCooldown = 1.5f;
+
+        [DataField("rechargeSound")]
+        [AutoNetworkedField]
+        public SoundSpecifier RechargeSound = new SoundPathSpecifier("/Audio/Magic/forcewall.ogg")
+        {
+            Params = AudioParams.Default.WithVolume(-5f)
+        };
+
+        [ViewVariables(VVAccess.ReadWrite)]
+        [DataField("nextCharge", customTypeSerializer: typeof(TimeOffsetSerializer))]
+        [AutoNetworkedField]
+        [AutoPausedField]
+        public TimeSpan? NextCharge;
+    }
 }
