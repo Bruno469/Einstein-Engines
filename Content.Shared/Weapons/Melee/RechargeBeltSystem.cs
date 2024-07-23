@@ -1,6 +1,8 @@
 using System;
 using Content.Shared.Storage.EntitySystems;
 using Content.Shared.Examine;
+using Content.Shared.Storage;
+using Content.Shared.Item;
 using Content.Shared.Storage.Components;
 using Content.Shared.Weapons.Melee.Components;
 using Robust.Shared.Audio;
@@ -10,6 +12,9 @@ using Robust.Shared.Network;
 using Robust.Shared.Player;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Robust.Shared.Map;
+using Robust.Shared.Prototypes;
+using Robust.Shared.Maths;
 
 namespace Content.Shared.Weapons.Melee
 {
@@ -31,18 +36,26 @@ namespace Content.Shared.Weapons.Melee
         {
             base.Update(frameTime);
 
-            // Atualize a consulta para encontrar componentes de armazenamento
             var query = EntityQueryEnumerator<RechargeBeltComponent>();
 
             while (query.MoveNext(out var uid, out var recharge))
             {
-                // Verifique se NextCharge tem um valor
                 if (recharge.NextCharge.HasValue && recharge.NextCharge.Value > _timing.CurTime)
                     continue;
 
-                // Substitua FillStorage com o método apropriado se necessário
-                // Exemplo fictício de uso de um método de armazenamento:
-                // _storageSystem.Recharge(uid);
+                if (!TryComp<StorageComponent>(uid, out var storageComp))
+                {
+                    return;
+                }
+
+                var entity = EntityManager.SpawnEntity(recharge.Proto, Transform(uid).Coordinates);
+
+                if (entity == null || !TryComp<ItemComponent>(entity, out var itemComp))
+                {
+                    EntityManager.DeleteEntity(entity);
+                    continue;
+                }
+                _storageSystem.Insert(uid, entity, out _, stackAutomatically: false);
 
                 if (recharge.NextCharge.HasValue)
                 {
