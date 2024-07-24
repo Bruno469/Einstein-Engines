@@ -31,7 +31,6 @@ public sealed class NullRodUpdateSystem : EntitySystem
         SubscribeLocalEvent<NullRodComponent, BoundUIOpenedEvent>(OnUIOpened);
         SubscribeLocalEvent<NullRodComponent, NullRodApproveMessage>(OnApprove);
         SubscribeLocalEvent<NullRodComponent, NullRodChangeSetMessage>(OnChangeSet);
-        SubscribeLocalEvent<NullRodComponent, GetVerbsEvent<ActivationVerb>>(TryUpdate);
     }
 
     private void OnUIOpened(Entity<NullRodComponent> rod, ref BoundUIOpenedEvent args)
@@ -63,33 +62,6 @@ public sealed class NullRodUpdateSystem : EntitySystem
             backpack.Comp.SelectedSets.Add(args.SetNumber);
 
         UpdateUI(backpack.Owner, backpack.Comp);
-    }
-
-    private void TryUpdate(EntityUid uid, NullRodComponent comp, GetVerbsEvent<ActivationVerb> args)
-    {
-        if (!EntityManager.TryGetComponent(args.User, out ActorComponent? actor))
-            return;
-
-        // this is to prevent ghosts from using it
-        if (!args.CanInteract)
-            return;
-
-        var prayerVerb = new ActivationVerb
-        {
-            Text = Loc.GetString(comp.Verb),
-            Icon = comp.VerbImage,
-            Act = () =>
-            {
-                if (comp.BibleUserOnly && !EntityManager.TryGetComponent<BibleUserComponent>(args.User, out var bibleUser))
-                {
-                    _popupSystem.PopupEntity(Loc.GetString("prayer-popup-notify-try-Update"), uid, actor.PlayerSession, PopupType.Large);
-                    return;
-                }
-            },
-            Impact = LogImpact.Low,
-        };
-
-        args.Verbs.Add(prayerVerb);
     }
 
     private void UpdateUI(EntityUid uid, NullRodComponent? component = null)
