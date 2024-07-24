@@ -480,6 +480,9 @@
   id: CombatKnife
 
 - type: Tag
+  id: MagicKnife
+
+- type: Tag
   id: ComputerTelevisionCircuitboard
 
 - type: Tag
