@@ -43,4 +43,9 @@ public sealed partial class NullRodComponent : Component
     [DataField("verbImage")]
     [ViewVariables(VVAccess.ReadOnly)]
     public SpriteSpecifier? VerbImage = new SpriteSpecifier.Texture(new ("/Textures/Interface/pray.svg.png"));
+
+    [DataField("bibleUserOnly")]
+    [ViewVariables(VVAccess.ReadWrite)]
+    public bool BibleUserOnly = true;
+
 }

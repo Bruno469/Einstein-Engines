@@ -256,6 +256,10 @@
   id: NullRodMelee
   description: A rod of pure obsidian; its very presence disrupts and dampens 'magical forces'. That's what the guidebook says, anyway.
   components:
+    - type: UserInterface
+      interfaces:
+      - key: enum.NullRodUIKey.Key
+        type: NullRodBoundUserInterface
     - type: NullRod
       possibleSets:
       - NullRod

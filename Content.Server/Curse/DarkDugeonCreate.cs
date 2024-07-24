@@ -1,32 +1,16 @@
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Numerics;
-using Content.Server.Administration;
 using Content.Shared.Curse;
 using Content.Server.Bible.Components;
-using Content.Server.Chat.Managers;
 using Content.Server.Popups;
 using Content.Shared.Database;
 using Content.Shared.Popups;
-using Content.Shared.Chat;
 using Content.Shared.Verbs;
 using Content.Shared.Actions;
 using Robust.Server.GameObjects;
-using Robust.Server.Physics;
 using Robust.Shared.Player;
-using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
-using Robust.Shared.Network;
-using Robust.Shared.Physics.Dynamics;
-using Robust.Shared.Physics.Events;
-using Robust.Shared.Physics;
 using Robust.Shared.Random;
-using Robust.Shared.Utility;
 using Robust.Shared.Map.Components;
-using Robust.Shared.Physics.Components;
-using Robust.Shared.Prototypes;
-using Content.Server.Administration.Logs.Converters;
-using Robust.Shared.IoC; // Importar o namespace para DependencyAttribute
 
 namespace Content.Server.Curse
 {

@@ -1,11 +1,17 @@
 using Content.Shared.Item;
 using Content.Shared.Chaplain;
-using Content.Shared.Chaplain.Prototypes;
-using Content.Shared.Weapons.Melee.Components;
 using Content.Server.Chaplain.Components;
 using Robust.Server.GameObjects;
 using Robust.Server.Audio;
 using Robust.Shared.Prototypes;
+using Content.Shared.Verbs;
+using System.Numerics;
+using Content.Server.Bible.Components;
+using Content.Shared.Database;
+using Content.Shared.Popups;
+using Content.Server.Popups;
+using Robust.Shared.Player;
+using Robust.Shared.Map;
 
 namespace Content.Server.Chaplain;
 
@@ -15,6 +21,7 @@ public sealed class NullRodUpdateSystem : EntitySystem
     [Dependency] private readonly IPrototypeManager _proto = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly UserInterfaceSystem _ui = default!;
+    [Dependency] private readonly PopupSystem _popupSystem = default!;
 
     private const int MaxSelectedSets = 1;
     public override void Initialize()
@@ -24,6 +31,7 @@ public sealed class NullRodUpdateSystem : EntitySystem
         SubscribeLocalEvent<NullRodComponent, BoundUIOpenedEvent>(OnUIOpened);
         SubscribeLocalEvent<NullRodComponent, NullRodApproveMessage>(OnApprove);
         SubscribeLocalEvent<NullRodComponent, NullRodChangeSetMessage>(OnChangeSet);
+        SubscribeLocalEvent<NullRodComponent, GetVerbsEvent<ActivationVerb>>(TryUpdate);
     }
 
     private void OnUIOpened(Entity<NullRodComponent> rod, ref BoundUIOpenedEvent args)
@@ -55,6 +63,33 @@ public sealed class NullRodUpdateSystem : EntitySystem
             backpack.Comp.SelectedSets.Add(args.SetNumber);
 
         UpdateUI(backpack.Owner, backpack.Comp);
+    }
+
+    private void TryUpdate(EntityUid uid, NullRodComponent comp, GetVerbsEvent<ActivationVerb> args)
+    {
+        if (!EntityManager.TryGetComponent(args.User, out ActorComponent? actor))
+            return;
+
+        // this is to prevent ghosts from using it
+        if (!args.CanInteract)
+            return;
+
+        var prayerVerb = new ActivationVerb
+        {
+            Text = Loc.GetString(comp.Verb),
+            Icon = comp.VerbImage,
+            Act = () =>
+            {
+                if (comp.BibleUserOnly && !EntityManager.TryGetComponent<BibleUserComponent>(args.User, out var bibleUser))
+                {
+                    _popupSystem.PopupEntity(Loc.GetString("prayer-popup-notify-try-Update"), uid, actor.PlayerSession, PopupType.Large);
+                    return;
+                }
+            },
+            Impact = LogImpact.Low,
+        };
+
+        args.Verbs.Add(prayerVerb);
     }
 
     private void UpdateUI(EntityUid uid, NullRodComponent? component = null)
