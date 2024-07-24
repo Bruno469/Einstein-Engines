@@ -83,6 +83,7 @@ namespace Content.Server.Sword
 
         private void OnReinforce(Entity<BlueRoseSwordComponent> ent, ref ActionReinforceArmamentEvent args)
         {
+            Spawn("EffectMagicCircleBlue", Transform(args.Performer).Coordinates);
             Generate(Transform(args.Performer).Coordinates, ent.Comp.Radius, ent.Comp.Points, ent.Comp);
         }
 
