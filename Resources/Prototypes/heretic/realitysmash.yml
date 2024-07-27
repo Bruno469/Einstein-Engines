@@ -1,0 +1,32 @@
+- type: entity
+  id: RealitySmash
+  name: Reality smash
+  parent: BaseAnomaly
+  suffix: Reality
+  components:
+  - type: Transform
+    anchored: false
+  - type: Physics
+    bodyType: Static
+    bodyStatus: InAir
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.35
+        density: 50
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+  - type: Sprite
+    sprite: Effects/reality_smash.rsi
+    state: realitysmash
+  - type: Clickable
+  - type: PointLight
+    radius: 6.0
+    energy: 7.5
+    color: "#E25822"
+    castShadows: false
+  - type: RealitySmash
