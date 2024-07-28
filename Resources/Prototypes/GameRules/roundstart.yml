@@ -74,6 +74,16 @@
     faction: Syndicate
 
 - type: entity
+  id: Heretics
+  parent: BaseGameRule
+  noSpawn: true
+  components:
+  - type: GameRule
+    minPlayers: 35
+  - type: HereticsRule
+    faction: Heretics
+
+- type: entity
   id: Pirates
   parent: BaseGameRule
   noSpawn: true

@@ -21,6 +21,7 @@ namespace Content.Server.Heretic
 
             _curseQuery = GetEntityQuery<HereticComponent>();
 
+            SubscribeLocalEvent<RealitySmashComponent, InteractUsingEvent>(OnInteractUsing);
             SubscribeLocalEvent<RealitySmashComponent, ComponentStartup>(OnStartup);
             SubscribeLocalEvent<HereticComponent, ComponentStartup>(OnUserStartup);
         }
@@ -56,6 +57,16 @@ namespace Content.Server.Heretic
                 _eye.SetVisibilityMask(uid, eyeComponent.VisibilityMask | (int) VisibilityFlags.RealitySmash, eyeComponent);
             else
                 _eye.SetVisibilityMask(uid, eyeComponent.VisibilityMask & ~(int) VisibilityFlags.RealitySmash, eyeComponent);
+        }
+
+        private void OnInteractUsing(EntityUid uid, RealitySmashComponent component, InteractUsingEvent args)
+        {
+            if (component.IsUsed) return;
+            if (args.Handled) return;
+            if (component.AllowedItems == null) return;
+            if (!component.AllowedItems.IsValid(args.Used, EntityManager)) return;
+            args.Handled = InteractUI(args.User, uid, component);
+
         }
     }
 }
