@@ -1,5 +1,7 @@
 using Content.Server.GameTicking;
 using Content.Shared.Eye;
+using Content.Shared.Heretic.Systems;
+using Content.Shared.Interaction;
 using Content.Shared.Heretic.Components;
 using Robust.Server.GameObjects;
 
@@ -19,14 +21,14 @@ namespace Content.Server.Heretic
         {
             base.Initialize();
 
-            _curseQuery = GetEntityQuery<HereticComponent>();
+            _HereticQuery = GetEntityQuery<HereticComponent>();
 
             SubscribeLocalEvent<RealitySmashComponent, InteractUsingEvent>(OnInteractUsing);
             SubscribeLocalEvent<RealitySmashComponent, ComponentStartup>(OnStartup);
             SubscribeLocalEvent<HereticComponent, ComponentStartup>(OnUserStartup);
         }
 
-        private void OnStartup(EntityUid uid, CurseComponent component, ComponentStartup args)
+        private void OnStartup(EntityUid uid, RealitySmashComponent component, ComponentStartup args)
         {
             // Quando spawnado deixa invisivel pra outras entitidades (talvez, apenas talvez, a luz da entidade seja possivel ver mas ae é mais facil remover a luz hihi)
             var visibility = EnsureComp<VisibilityComponent>(uid);
@@ -41,7 +43,7 @@ namespace Content.Server.Heretic
             SetCanSee(uid, true);
         }
 
-        private void OnUserStartup(EntityUid uid, BibleUserComponent component, ComponentStartup args)
+        private void OnUserStartup(EntityUid uid, HereticComponent component, ComponentStartup args)
         {
             // Torna as RealitySmash para os heretic
             SetCanSee(uid, true);
@@ -63,9 +65,8 @@ namespace Content.Server.Heretic
         {
             if (component.IsUsed) return;
             if (args.Handled) return;
-            if (component.AllowedItems == null) return;
-            if (!component.AllowedItems.IsValid(args.Used, EntityManager)) return;
-            args.Handled = InteractUI(args.User, uid, component);
+            //if (component.AllowedItems == null) return;
+            //if (!component.AllowedItems.IsValid(args.Used, EntityManager)) return;
 
         }
     }

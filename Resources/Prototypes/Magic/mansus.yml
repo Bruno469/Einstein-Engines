@@ -5,7 +5,7 @@
   description: A hand of energy
   components:
   - type: Sprite
-    sprite: Objects/Weapons/Melee/kitchen_knife.rsi
+    sprite: Effects/mansusHand.rsi
     state: icon
   - type: Item
     sprite: Effects/mansusHand.rsi

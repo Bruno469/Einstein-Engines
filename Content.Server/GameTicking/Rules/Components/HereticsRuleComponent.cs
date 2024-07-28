@@ -1,6 +1,6 @@
 using Content.Shared.Roles;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
+using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 
 namespace Content.Server.GameTicking.Rules.Components;
 
@@ -23,38 +23,31 @@ public sealed partial class HereticsRuleComponent : Component
     public ProtoId<AntagPrototype> HereticPrototypeId = "Heretic";
 
     /// <summary>
-    /// Min players needed for Revolutionary gamemode to start.
+    /// Min players needed for heretic gamemode to start.
     /// </summary>
     [DataField, ViewVariables(VVAccess.ReadWrite)]
     public int MinPlayers = 30;
 
     /// <summary>
-    /// Max Head Revs allowed during selection.
+    /// Max heretics allowed during selection.
     /// </summary>
     [DataField, ViewVariables(VVAccess.ReadWrite)]
     public int MaxHeretics = 3;
 
     /// <summary>
-    /// The amount of Head Revs that will spawn per this amount of players.
+    /// The amount of heretics that will spawn per this amount of players.
     /// </summary>
     [DataField, ViewVariables(VVAccess.ReadWrite)]
     public int PlayersPerHeretic = 15;
-
-    /// <summary>
-    /// The gear head revolutionaries are given on spawn.
-    /// </summary>
-    [DataField]
-    public List<EntProtoId> StartingGear = new()
-    {
-        "heretichandbook",
-        "ClothingEyesGlassesSunglasses"
-    };
 
     /// <summary>
     /// The time it takes after the last heretic is dead
     /// </summary>
     [DataField, ViewVariables(VVAccess.ReadWrite)]
     public TimeSpan ShuttleCallTime = TimeSpan.FromMinutes(3);
+
+    [DataField("RealitySmashSpawnerPrototype", customTypeSerializer: typeof(PrototypeIdSerializer<EntityPrototype>))]
+    public string RealitySmashSpawnerPrototype = "RealitySmash";
 
     /// <summary>
     /// Start knowledge

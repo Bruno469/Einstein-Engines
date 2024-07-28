@@ -376,3 +376,15 @@
     event:
       !type:FabricateActionEvent
       fabrication: FoodGumball
+
+- type: entity
+  id: ActionToggleMansusHand
+  name: MansusHand
+  description: MansusHand
+  noSpawn: true
+  components:
+  - type: InstantAction
+    icon: { sprite: Objects/Magic/magicactions.rsi, state: mansus }
+    iconOn: { sprite: Objects/Magic/magicactions.rsi, state: mansus }
+    useDelay: 60
+    event: !type:ToggleActionEvent

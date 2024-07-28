@@ -17,6 +17,8 @@ using Content.Shared.Database;
 using Content.Shared.Humanoid;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Inventory;
+using Content.Shared.Heretic.Components;
+using Content.Server.Station.Components;
 using Content.Server.Anomaly;
 using Content.Shared.Mind;
 using Content.Shared.Mind.Components;
@@ -33,38 +35,32 @@ using Robust.Shared.Timing;
 using System.Linq;
 
 namespace Content.Server.GameTicking.Rules;
-public sealed class RevolutionaryRuleSystem : GameRuleSystem<HereticsRuleComponent>
+public sealed class HereticsRuleSystem : GameRuleSystem<HereticsRuleComponent>
 {
     [Dependency] private readonly IAdminLogManager _adminLogManager = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly AntagSelectionSystem _antagSelection = default!;
-    [Dependency] private readonly EuiManager _euiMan = default!;
     [Dependency] private readonly MindSystem _mind = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
-    [Dependency] private readonly NpcFactionSystem _npcFaction = default!;
     [Dependency] private readonly PopupSystem _popup = default!;
     [Dependency] private readonly RoleSystem _role = default!;
-    [Dependency] private readonly SharedStunSystem _stun = default!;
+    [Dependency] private readonly StationSystem _station = default!;
     [Dependency] private readonly RoundEndSystem _roundEnd = default!;
     [Dependency] private readonly StationSystem _stationSystem = default!;
     [Dependency] private readonly EmergencyShuttleSystem _emergencyShuttle = default!;
-    Dependency] private readonly AnomalySystem _anomaly = default!;
+    [Dependency] private readonly AnomalySystem _anomaly = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
 
-    //Used in OnPostFlash, no reference to the rule component is available
-    public readonly ProtoId<NpcFactionPrototype> HereticNpcFaction = "Revolutionary";
-    public readonly ProtoId<NpcFactionPrototype> HereticPrototypeId = "Rev";
+    public readonly ProtoId<NpcFactionPrototype> HereticNpcFaction = "Heretics";
+    public readonly ProtoId<NpcFactionPrototype> HereticPrototypeId = "Heretic";
 
     public override void Initialize()
     {
         base.Initialize();
         SubscribeLocalEvent<RoundStartAttemptEvent>(OnStartAttempt);
         SubscribeLocalEvent<RulePlayerJobsAssignedEvent>(OnPlayerJobAssigned);
-        SubscribeLocalEvent<CommandStaffComponent, MobStateChangedEvent>(OnCommandMobStateChanged);
-        SubscribeLocalEvent<HeadRevolutionaryComponent, MobStateChangedEvent>(OnHeadRevMobStateChanged);
+        //SubscribeLocalEvent<HereticComponent, MobStateChangedEvent>(OnHeadRevMobStateChanged);
         SubscribeLocalEvent<RoundEndTextAppendEvent>(OnRoundEndText);
-        SubscribeLocalEvent<RevolutionaryRoleComponent, GetBriefingEvent>(OnGetBriefing);
-        SubscribeLocalEvent<HeadRevolutionaryComponent, AfterFlashedEvent>(OnPostFlash);
+        SubscribeLocalEvent<HereticsRoleComponent, GetBriefingEvent>(OnGetBriefing);
     }
 
     //Set miniumum players
@@ -78,68 +74,66 @@ public sealed class RevolutionaryRuleSystem : GameRuleSystem<HereticsRuleCompone
     protected override void Started(EntityUid uid, HereticsRuleComponent component, GameRuleComponent gameRule, GameRuleStartedEvent args)
     {
         base.Started(uid, component, gameRule, args);
-        component.CommandCheck = _timing.CurTime + component.TimerWait;
-    }
 
-    protected override void ActiveTick(EntityUid uid, HereticsRuleComponent component, GameRuleComponent gameRule, float frameTime)
-    {
-        base.ActiveTick(uid, component, gameRule, frameTime);
-        if (component.CommandCheck <= _timing.CurTime)
+        if (!TryGetRandomStation(out var chosenStation))
+            return;
+
+        if (!TryComp<StationDataComponent>(chosenStation, out var stationData))
+            return;
+
+        var grid = _station.GetLargestGrid(stationData);
+
+        if (grid is null)
+            return;
+
+        // 12 / 3 = 4 i dont know how it horking in ss13 but 4 for 3 heretics :)
+        var amountToSpawn = 12;
+        for (var i = 0; i < amountToSpawn; i++)
         {
-            component.CommandCheck = _timing.CurTime + component.TimerWait;
-
-            if (CheckCommandLose())
-            {
-                _roundEnd.DoRoundEndBehavior(RoundEndBehavior.ShuttleCall, component.ShuttleCallTime);
-                GameTicker.EndGameRule(uid, gameRule);
-            }
+            _anomaly.SpawnOnRandomGridLocation(grid.Value, component.RealitySmashSpawnerPrototype);
         }
     }
 
+    //protected override void ActiveTick(EntityUid uid, HereticsRuleComponent component, GameRuleComponent gameRule, float frameTime)
+    //{
+    //    base.ActiveTick(uid, component, gameRule, frameTime);
+    //}
+
     private void OnRoundEndText(RoundEndTextAppendEvent ev)
     {
-        var revsLost = CheckHereticsLose();
-        var commandLost = CheckCommandLose();
+        var hereticsLost = CheckHereticsLose();
         var query = AllEntityQuery<HereticsRuleComponent>();
-        while (query.MoveNext(out var headrev))
+        while (query.MoveNext(out var heretic))
         {
-            // This is (revsLost, commandsLost) concatted together
-            // (moony wrote this comment idk what it means)
-            var index = (commandLost ? 1 : 0) | (revsLost ? 2 : 0);
-            ev.AddLine(Loc.GetString(Outcomes[index]));
-
-            ev.AddLine(Loc.GetString("rev-headrev-count", ("initialCount", headrev.heretics.Count)));
-            foreach (var player in headrev.heretics)
+            ev.AddLine(Loc.GetString("heretic-count", ("initialCount", heretic.Heretics.Count)));
+            foreach (var player in heretic.Heretics)
             {
-                // TODO: when role entities are a thing this has to change
-                var count = CompOrNull<RevolutionaryRoleComponent>(player.Value)?.ConvertedCount ?? 0;
+                var count = CompOrNull<HereticsRoleComponent>(player.Value)?.Sacrifices ?? 0;
 
                 _mind.TryGetSession(player.Value, out var session);
                 var username = session?.Name;
                 if (username != null)
                 {
-                    ev.AddLine(Loc.GetString("rev-headrev-name-user",
+                    ev.AddLine(Loc.GetString("heretic-name-user",
                     ("name", player.Key),
                     ("username", username), ("count", count)));
                 }
                 else
                 {
-                    ev.AddLine(Loc.GetString("rev-headrev-name",
+                    ev.AddLine(Loc.GetString("heretic-name",
                     ("name", player.Key), ("count", count)));
                 }
-
-                // TODO: someone suggested listing all alive? revs maybe implement at some point
             }
         }
     }
 
-    private void OnGetBriefing(EntityUid uid, RevolutionaryRoleComponent comp, ref GetBriefingEvent args)
+    private void OnGetBriefing(EntityUid uid, HereticsRoleComponent comp, ref GetBriefingEvent args)
     {
         if (!TryComp<MindComponent>(uid, out var mind) || mind.OwnedEntity == null)
             return;
 
-        var head = HasComp<HeadRevolutionaryComponent>(mind.OwnedEntity);
-        args.Append(Loc.GetString(head ? "head-rev-briefing" : "rev-briefing"));
+        var head = HasComp<HereticComponent>(mind.OwnedEntity);
+        args.Append(Loc.GetString(head ? "heretic-briefing" : "heretic-briefing"));
     }
 
     //Check for enough players to start rule
@@ -158,7 +152,7 @@ public sealed class RevolutionaryRuleSystem : GameRuleSystem<HereticsRuleCompone
             if (eligiblePlayers.Count == 0)
                 continue;
 
-            var hereticCount = _antagSelection.CalculateAntagCount(ev.Players.Length, comp.PlayersPerHeadRev, comp.Maxheretics);
+            var hereticCount = _antagSelection.CalculateAntagCount(ev.Players.Length, comp.PlayersPerHeretic, comp.MaxHeretics);
 
             var heretic = _antagSelection.ChooseAntags(hereticCount, eligiblePlayers);
 
@@ -180,22 +174,24 @@ public sealed class RevolutionaryRuleSystem : GameRuleSystem<HereticsRuleCompone
         if (!_mind.TryGetMind(chosen, out var mind, out _))
             return;
 
-        if (!_role.MindHasRole<HereticRoleComponent>(mind))
+        if (!_role.MindHasRole<HereticsRoleComponent>(mind))
         {
-            _role.MindAddRole(mind, new HereticRoleComponent { PrototypeId = antagProto }, silent: true);
+            _role.MindAddRole(mind, new HereticsRoleComponent { PrototypeId = antagProto }, silent: true);
         }
 
         comp.Heretics.Add(inCharacterName, mind);
-        _inventory.SpawnItemsOnEntity(chosen, comp.StartingGear);
-        var revComp = EnsureComp<RevolutionaryComponent>(chosen);
+
+        // _inventory.SpawnItemsOnEntity(chosen, comp.StartingGear);
+
+        var hereticComp = EnsureComp<HereticComponent>(chosen);
         EnsureComp<HereticComponent>(chosen);
 
-        _antagSelection.SendBriefing(chosen, Loc.GetString("heretic-role-greeting"), Color.CornflowerBlue, revComp.RevStartSound);
+        _antagSelection.SendBriefing(chosen, Loc.GetString("heretic-role-greeting"), Color.CornflowerBlue, hereticComp.HereticStartSound);
     }
 
     public void OnHeadRevAdmin(EntityUid entity)
     {
-        if (HasComp<HereticRoleComponent>(entity))
+        if (HasComp<HereticsRoleComponent>(entity))
             return;
 
         var hereticsRule = EntityQuery<HereticsRuleComponent>().FirstOrDefault();
@@ -269,29 +265,6 @@ public sealed class RevolutionaryRuleSystem : GameRuleSystem<HereticsRuleCompone
         }
 
         return dead == list.Count || list.Count == 0;
-    }
-
-    protected override void Started(EntityUid uid, HereticComponent component, GameRuleComponent gameRule, GameRuleStartedEvent args)
-    {
-        base.Started(uid, component, gameRule, args);
-
-        if (!TryGetRandomStation(out var chosenStation))
-            return;
-
-        if (!TryComp<StationDataComponent>(chosenStation, out var stationData))
-            return;
-
-        var grid = StationSystem.GetLargestGrid(stationData);
-
-        if (grid is null)
-            return;
-
-        // 12 / 3 = 4 i dont know how it horking in ss13 but 4 for 3 heretics :)
-        var amountToSpawn = 12;
-        for (var i = 0; i < amountToSpawn; i++)
-        {
-            _anomaly.SpawnOnRandomGridLocation(grid.Value, RealitySmash);
-        }
     }
 
     private static readonly string[] Outcomes =
