@@ -1,0 +1,12 @@
+- type: entity
+  name: Mansus hand
+  parent: BaseItem
+  id: MansusHand
+  description: A hand of energy
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Melee/kitchen_knife.rsi
+    state: icon
+  - type: Item
+    sprite: Effects/mansusHand.rsi
+  - type: Unremoveable

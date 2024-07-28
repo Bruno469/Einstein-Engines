@@ -17,6 +17,7 @@ using Content.Shared.Database;
 using Content.Shared.Humanoid;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Inventory;
+using Content.Server.Anomaly;
 using Content.Shared.Mind;
 using Content.Shared.Mind.Components;
 using Content.Shared.Mindshield.Components;
@@ -32,10 +33,6 @@ using Robust.Shared.Timing;
 using System.Linq;
 
 namespace Content.Server.GameTicking.Rules;
-
-/// <summary>
-/// Where all the main stuff for Revolutionaries happens (Assigning Head Revs, Command on station, and checking for the game to end.)
-/// </summary>
 public sealed class RevolutionaryRuleSystem : GameRuleSystem<HereticsRuleComponent>
 {
     [Dependency] private readonly IAdminLogManager _adminLogManager = default!;
@@ -51,11 +48,12 @@ public sealed class RevolutionaryRuleSystem : GameRuleSystem<HereticsRuleCompone
     [Dependency] private readonly RoundEndSystem _roundEnd = default!;
     [Dependency] private readonly StationSystem _stationSystem = default!;
     [Dependency] private readonly EmergencyShuttleSystem _emergencyShuttle = default!;
+    Dependency] private readonly AnomalySystem _anomaly = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
 
     //Used in OnPostFlash, no reference to the rule component is available
-    public readonly ProtoId<NpcFactionPrototype> RevolutionaryNpcFaction = "Revolutionary";
-    public readonly ProtoId<NpcFactionPrototype> RevPrototypeId = "Rev";
+    public readonly ProtoId<NpcFactionPrototype> HereticNpcFaction = "Revolutionary";
+    public readonly ProtoId<NpcFactionPrototype> HereticPrototypeId = "Rev";
 
     public override void Initialize()
     {
@@ -271,6 +269,29 @@ public sealed class RevolutionaryRuleSystem : GameRuleSystem<HereticsRuleCompone
         }
 
         return dead == list.Count || list.Count == 0;
+    }
+
+    protected override void Started(EntityUid uid, HereticComponent component, GameRuleComponent gameRule, GameRuleStartedEvent args)
+    {
+        base.Started(uid, component, gameRule, args);
+
+        if (!TryGetRandomStation(out var chosenStation))
+            return;
+
+        if (!TryComp<StationDataComponent>(chosenStation, out var stationData))
+            return;
+
+        var grid = StationSystem.GetLargestGrid(stationData);
+
+        if (grid is null)
+            return;
+
+        // 12 / 3 = 4 i dont know how it horking in ss13 but 4 for 3 heretics :)
+        var amountToSpawn = 12;
+        for (var i = 0; i < amountToSpawn; i++)
+        {
+            _anomaly.SpawnOnRandomGridLocation(grid.Value, RealitySmash);
+        }
     }
 
     private static readonly string[] Outcomes =
