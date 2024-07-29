@@ -1,7 +1,6 @@
 - type: entity
   id: RealitySmash
   name: Reality smash
-  parent: BaseAnomaly
   suffix: Reality
   components:
   - type: Transform

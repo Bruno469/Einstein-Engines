@@ -11,4 +11,6 @@ public sealed partial class MansusHandComponent : Component
 
     [DataField, ViewVariables(VVAccess.ReadWrite)]
     public TimeSpan StunTime = TimeSpan.FromSeconds(8);
+    [DataField("speech")]
+    public string Speech { get; private set; }
 }

@@ -4,9 +4,13 @@
   id: MansusHand
   description: A hand of energy
   components:
+  - type: TimedDespawn
+    lifetime: 30
   - type: Sprite
     sprite: Effects/mansusHand.rsi
     state: icon
   - type: Item
     sprite: Effects/mansusHand.rsi
+  - type: MansusHand
+    speech: annuum
   - type: Unremoveable

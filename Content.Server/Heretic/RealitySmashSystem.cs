@@ -39,17 +39,15 @@ namespace Content.Server.Heretic
                 _visibilitySystem.RemoveLayer((uid, visibility), (int) VisibilityFlags.Normal, false);
                 _visibilitySystem.RefreshVisibility(uid, visibilityComponent: visibility);
             }
-
-            SetCanSee(uid, true);
         }
 
         private void OnUserStartup(EntityUid uid, HereticComponent component, ComponentStartup args)
         {
-            // Torna as RealitySmash para os heretic
+            // Torna as RealitySmash visiveis para os heretic
             SetCanSee(uid, true);
         }
 
-        private void SetCanSee(EntityUid uid, bool canSee, EyeComponent? eyeComponent = null)
+        public void SetCanSee(EntityUid uid, bool canSee, EyeComponent? eyeComponent = null)
         {
             if (!Resolve(uid, ref eyeComponent, false))
                 return;

@@ -7,6 +7,7 @@ using Content.Server.Mind;
 using Content.Server.NPC.Components;
 using Content.Server.NPC.Systems;
 using Content.Server.Popups;
+using Content.Server.Heretic;
 using Content.Server.Revolutionary;
 using Content.Server.Revolutionary.Components;
 using Content.Server.Roles;
@@ -48,6 +49,7 @@ public sealed class HereticsRuleSystem : GameRuleSystem<HereticsRuleComponent>
     [Dependency] private readonly StationSystem _stationSystem = default!;
     [Dependency] private readonly EmergencyShuttleSystem _emergencyShuttle = default!;
     [Dependency] private readonly AnomalySystem _anomaly = default!;
+    [Dependency] private readonly RealitySmashSystem _realitySmash = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
 
     public readonly ProtoId<NpcFactionPrototype> HereticNpcFaction = "Heretics";
@@ -185,11 +187,12 @@ public sealed class HereticsRuleSystem : GameRuleSystem<HereticsRuleComponent>
 
         var hereticComp = EnsureComp<HereticComponent>(chosen);
         EnsureComp<HereticComponent>(chosen);
+        _realitySmash.SetCanSee(chosen, true);
 
         _antagSelection.SendBriefing(chosen, Loc.GetString("heretic-role-greeting"), Color.CornflowerBlue, hereticComp.HereticStartSound);
     }
 
-    public void OnHeadRevAdmin(EntityUid entity)
+    public void OnHereticAdmin(EntityUid entity)
     {
         if (HasComp<HereticsRoleComponent>(entity))
             return;

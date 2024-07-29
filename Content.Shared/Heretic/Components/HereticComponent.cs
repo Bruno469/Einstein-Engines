@@ -15,11 +15,10 @@ public sealed partial class HereticComponent : Component
 
     public override bool SessionSpecific => true;
 
-    [DataField]
-    public EntityUid MansusHandToggleActionEntity;
-
     [DataField("MansusHandToggleAction", customTypeSerializer: typeof(PrototypeIdSerializer<EntityPrototype>))]
     public string MansusHandToggleAction = "ActionToggleMansusHand";
+    [DataField("MansusHandActionEntity")]
+    public EntityUid? MansusHandActionEntity;
 
     [DataField("MansusHandProtoId")]
     public EntProtoId MansusHandProtoId = "MansusHand";
