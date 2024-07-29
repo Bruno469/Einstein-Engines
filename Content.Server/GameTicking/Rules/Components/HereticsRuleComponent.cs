@@ -8,12 +8,6 @@ namespace Content.Server.GameTicking.Rules.Components;
 public sealed partial class HereticsRuleComponent : Component
 {
     /// <summary>
-    /// The amount of time between each check for command check.
-    /// </summary>
-    [DataField]
-    public TimeSpan TimerWait = TimeSpan.FromSeconds(20);
-
-    /// <summary>
     /// Stores players minds
     /// </summary>
     [DataField]

@@ -150,6 +150,17 @@
     - BasicRoundstartVariation
 
 - type: gamePreset
+  id: Heretics
+  name: heretic-title
+  description: heretic-description
+  showInVote: false
+  rules:
+    - Heretics
+    - SubGamemodesRule
+    - BasicStationEventScheduler
+    - BasicRoundstartVariation
+
+- type: gamePreset
   id: Zombie
   alias:
   - zombie

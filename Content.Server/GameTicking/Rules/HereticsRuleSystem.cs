@@ -274,8 +274,6 @@ public sealed class HereticsRuleSystem : GameRuleSystem<HereticsRuleComponent>
         // heretic won and crewn died
         "heretic-won",
         // heretic lost and crewn survived
-        "heretic-lost",
-        // heretic lost and crewn died
-        "heretic-stalemate"
+        "heretic-lost"
     };
 }

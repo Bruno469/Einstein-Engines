@@ -1,0 +1,12 @@
+- type: antag
+  id: Heretic
+  name: roles-antag-heretic-name
+  antagonist: true
+  setPreference: true
+  objective: heretic-objective
+  requirements:
+  - !type:OverallPlaytimeRequirement
+    time: 172800
+  - !type:DepartmentTimeRequirement
+    department: Command
+    time: 36000 #

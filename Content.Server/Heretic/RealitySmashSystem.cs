@@ -67,7 +67,6 @@ namespace Content.Server.Heretic
             if (args.Handled) return;
             //if (component.AllowedItems == null) return;
             //if (!component.AllowedItems.IsValid(args.Used, EntityManager)) return;
-
         }
     }
 }
