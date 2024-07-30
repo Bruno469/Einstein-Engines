@@ -1,7 +1,9 @@
 using Content.Server.GameTicking;
+using Content.Server.DoAfter;
 using Content.Shared.Eye;
 using Content.Shared.Heretic.Systems;
 using Content.Shared.Interaction;
+using Content.Shared.DoAfter;
 using Content.Shared.Heretic.Components;
 using Robust.Server.GameObjects;
 
@@ -14,6 +16,7 @@ namespace Content.Server.Heretic
         [Dependency] private readonly TransformSystem _transformSystem = default!;
         [Dependency] private readonly VisibilitySystem _visibilitySystem = default!;
         [Dependency] private readonly MetaDataSystem _metaData = default!;
+        [Dependency] private readonly DoAfterSystem _doAfter = default!;
 
         private EntityQuery<HereticComponent> _HereticQuery;
 
@@ -23,8 +26,9 @@ namespace Content.Server.Heretic
 
             _HereticQuery = GetEntityQuery<HereticComponent>();
 
-            SubscribeLocalEvent<RealitySmashComponent, InteractUsingEvent>(OnInteractUsing);
+            SubscribeLocalEvent<RealitySmashComponent, InteractHandEvent>(OnInteract);
             SubscribeLocalEvent<RealitySmashComponent, ComponentStartup>(OnStartup);
+            SubscribeLocalEvent<RealitySmashComponent, ColletedDoAfterEvent>(OnDoAfter);
             SubscribeLocalEvent<HereticComponent, ComponentStartup>(OnUserStartup);
         }
 
@@ -59,12 +63,36 @@ namespace Content.Server.Heretic
                 _eye.SetVisibilityMask(uid, eyeComponent.VisibilityMask & ~(int) VisibilityFlags.RealitySmash, eyeComponent);
         }
 
-        private void OnInteractUsing(EntityUid uid, RealitySmashComponent component, InteractUsingEvent args)
+        private void OnInteract(EntityUid uid, RealitySmashComponent component, InteractHandEvent args)
         {
             if (component.IsUsed) return;
             if (args.Handled) return;
-            //if (component.AllowedItems == null) return;
-            //if (!component.AllowedItems.IsValid(args.Used, EntityManager)) return;
+            args.Handled = TryStartCollet(uid, component, args);
+        }
+        private bool TryStartCollet(EntityUid uid, RealitySmashComponent component, InteractHandEvent args)
+        {
+            return _doAfter.TryStartDoAfter(new DoAfterArgs(EntityManager, args.User, component.DoAfterDuration, new ColletedDoAfterEvent(),
+                uid, args.Target, uid)
+                {
+                    BlockDuplicate = true,
+                    BreakOnUserMove = true,
+                    BreakOnTargetMove = true,
+                    BreakOnHandChange = true,
+                    NeedHand = true
+                });
+        }
+        private void OnDoAfter(EntityUid uid, RealitySmashComponent component, ColletedDoAfterEvent args)
+        {
+            if (args.Cancelled)
+                return;
+
+            if (args.Target is not { } target)
+                return;
+
+            if (Deleted(uid) || Terminating(uid))
+                return;
+
+            QueueDel(uid);
         }
     }
 }

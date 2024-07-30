@@ -25,14 +25,15 @@ namespace Content.Server.Heretic
         {
             base.Initialize();
 
-            //SubscribeLocalEvent<MansusHandComponent, GotEquippedHandEvent>(OnTakeInHand);
+            SubscribeLocalEvent<MansusHandComponent, GotEquippedHandEvent>(OnTakeInHand);
             SubscribeLocalEvent<MansusHandComponent, AfterInteractEvent>(OnAfterInteract);
         }
 
-        //private void OnTakeInHand(EntityUid uid, MansusHandComponent component, GotEquippedHandEvent args)
-        //{
-        //    var user = component.Owner;
-        //}
+        private void OnTakeInHand(EntityUid uid, MansusHandComponent component, GotEquippedHandEvent args)
+        {
+            var user = component.Owner;
+            AddComp<CanDrawnRuneComponent>(args.User);
+        }
 
         private void OnAfterInteract(EntityUid uid, MansusHandComponent component, AfterInteractEvent args)
         {
@@ -41,7 +42,6 @@ namespace Content.Server.Heretic
 
             if (!CanStun(uid, target, args.User, component))
                 return;
-
 
             TryStun(uid, target, args.User, component);
         }

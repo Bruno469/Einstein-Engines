@@ -63,6 +63,10 @@ namespace Content.Server.Heretic
                 || !_handsSystem.TryPickup(uid.Value, itemToSpawn, hand, checkActionBlocker, animate, handsComp, item))
             {
                 QueueDel(itemToSpawn);
+            } else {
+                _actionsSystem.TryGetActionData( component.MansusHandActionEntity, out var actionData );
+                if (actionData is { UseDelay: not null })
+                    _actionsSystem.StartUseDelay(component.MansusHandActionEntity);
             }
         }
     }

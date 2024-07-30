@@ -3,25 +3,27 @@ using Content.Shared.Heretic.Systems;
 using Content.Shared.Damage;
 using Content.Shared.DoAfter;
 using Robust.Shared.Audio;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
+using Robust.Shared.Map;
 
 namespace Content.Shared.Heretic.Components;
 
 [RegisterComponent, NetworkedComponent]
-[AutoGenerateComponentState]
-[Access(typeof(SharedRealitySmashSystem))]
-public sealed partial class RealitySmashComponent : Component
+public sealed partial class CanDrawnRuneComponent : Component
 {
-    [DataField("isUsed"), ViewVariables(VVAccess.ReadWrite)]
-    [AutoNetworkedField]
     public bool IsUsed = false;
     [DataField("doAfterDuration"), ViewVariables(VVAccess.ReadWrite)]
-    public TimeSpan DoAfterDuration = TimeSpan.FromSeconds(3);
+    public TimeSpan DoAfterDuration = TimeSpan.FromSeconds(7.6);
+    [DataField("EffectProtoId")]
+    public EntProtoId EffectProtoId = "RuneDrawing";
+
+    public EntityCoordinates LocationToDrawn;
 }
 
 [Serializable, NetSerializable]
-public sealed partial class ColletedDoAfterEvent : SimpleDoAfterEvent
+public sealed partial class StartDrawnDoAfterEvent : SimpleDoAfterEvent
 {
 
 }

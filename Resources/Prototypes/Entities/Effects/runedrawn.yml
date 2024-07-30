@@ -1,0 +1,27 @@
+- type: entity
+  id: RuneDrawing
+  name: Rune
+  description: Transmutation Rune
+  noSpawn: true
+  components:
+  - type: Transform
+    anchored: True
+  - type: InteractionOutline
+  - type: Physics
+    bodyType: Static
+  - type: Sprite
+    sprite: /Textures/Effects/drawntransmutationrune.rsi
+    state: transmutationRune
+  - type: Fixtures
+    fixtures:
+      portalFixture:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.25,-0.48,0.25,0.48"
+        mask:
+        - FullTileMask
+        layer:
+        - WallLayer
+        hard: false
+  - type: TimedDespawn
+    lifetime: 7.6
