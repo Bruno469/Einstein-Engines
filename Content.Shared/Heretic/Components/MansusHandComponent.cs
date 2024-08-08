@@ -13,4 +13,6 @@ public sealed partial class MansusHandComponent : Component
     public TimeSpan StunTime = TimeSpan.FromSeconds(8);
     [DataField("speech")]
     public string Speech { get; private set; }
+
+    public EntityUid Actor;
 }

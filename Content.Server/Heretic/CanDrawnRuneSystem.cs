@@ -7,6 +7,8 @@ using Content.Server.DoAfter;
 using Content.Server.Atmos.Components;
 using Content.Shared.Interaction;
 using Content.Shared.DoAfter;
+using Content.Shared.Hands;
+using Content.Shared.Heretic.Systems;
 using Content.Server.Atmos.EntitySystems;
 using Content.Shared.Heretic.Components;
 using Robust.Shared.Map.Components;
@@ -17,11 +19,9 @@ using Content.Shared.Physics;
 
 namespace Content.Server.Heretic
 {
-    public sealed class CanDrawnRuneSystem : EntitySystem
+    public sealed class CanDrawnRuneSystem : SharedCanDrawnRuneSystem
     {
         [Dependency] private readonly TagSystem _tag = default!;
-        [Dependency] private readonly StationSystem _station = default!;
-        [Dependency] private readonly SharedTransformSystem _transform = default!;
         [Dependency] private readonly IMapManager _mapManager = default!;
         [Dependency] private readonly AtmosphereSystem _atmosphereSystem = default!;
         [Dependency] private readonly DoAfterSystem _doAfter = default!;
@@ -36,33 +36,38 @@ namespace Content.Server.Heretic
         private void OnUseItem(EntityUid uid, CanDrawnRuneComponent component, AfterInteractEvent args)
         {
             if (!_tag.HasTag(args.Used, "Write"))
+            {
                 return;
+            }
 
-            var location = args.ClickLocation.Offset(new Vector2(-0.5f, -0.5f));
+            var location = args.ClickLocation;
             var gridUid = location.GetGridUid(EntityManager);
 
             if (gridUid == null)
+            {
                 return;
+            }
 
             if (ValidLocation(gridUid.Value, location))
             {
                 TryStartDrawn(uid, component, location, args);
             }
+            else
+            {
+                Console.WriteLine("Localização inválida!");
+            }
         }
-
-        private bool TryStartDrawn(EntityUid uid, CanDrawnRuneComponent component, EntityCoordinates location, AfterInteractEvent args)
+        private bool TryStartDrawn(EntityUid uid, CanDrawnRuneComponent component, EntityCoordinates location, InteractEvent args)
         {
-            var doAfterArgs = new DoAfterArgs(EntityManager, args.User, component.DoAfterDuration, new StartDrawnDoAfterEvent(), uid, args.Target, uid)
+            component.LocationToDrawn = location;
+            return _doAfter.TryStartDoAfter(new DoAfterArgs(EntityManager, args.User, component.DoAfterDuration, new StartDrawnDoAfterEvent(), uid, args.Used, uid)
             {
                 BlockDuplicate = true,
                 BreakOnUserMove = true,
                 BreakOnTargetMove = true,
                 BreakOnHandChange = true,
                 NeedHand = true
-            };
-
-            component.LocationToDrawn = location;
-            return _doAfter.TryStartDoAfter(doAfterArgs);
+            });
         }
 
         private void OnDoAfter(EntityUid uid, CanDrawnRuneComponent component, StartDrawnDoAfterEvent args)
@@ -84,11 +89,16 @@ namespace Content.Server.Heretic
 
         private bool ValidLocation(EntityUid gridUid, EntityCoordinates location)
         {
+
             if (!TryComp<MapGridComponent>(gridUid, out var gridComp))
+            {
                 return false;
+            }
 
             if (!TryComp<MapAtmosphereComponent>(gridUid, out var gridAtmoComp))
+            {
                 return false;
+            }
 
             var grid = _mapManager.GetGrid(gridUid);
             var gridBounds = gridComp.LocalAABB;
@@ -109,16 +119,16 @@ namespace Content.Server.Heretic
             foreach (var tile in checkArea)
             {
                 var tilePosition = new Vector2i((int)tile.X, (int)tile.Y);
-                if (!_atmosphereSystem.IsTileSpace(gridUid, null, tilePosition))
+                if (_atmosphereSystem.IsTileSpace(gridUid, null, tilePosition))
+                {
                     return false;
+                }
 
                 foreach (var ent in gridComp.GetAnchoredEntities(tilePosition))
                 {
                     if (physQuery.TryGetComponent(ent, out var body))
                     {
-                        if (body.BodyType != BodyType.Static ||
-                            !body.Hard ||
-                            (body.CollisionLayer & (int)CollisionGroup.Impassable) != 0)
+                        if (body.BodyType != BodyType.Static || !body.Hard || (body.CollisionLayer & (int)CollisionGroup.Impassable) != 0)
                         {
                             return false;
                         }

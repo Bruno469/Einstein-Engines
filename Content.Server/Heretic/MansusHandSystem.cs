@@ -2,6 +2,7 @@ using System;
 using Content.Server.Construction.Completions;
 using Content.Server.GameTicking;
 using Content.Server.Chat.Systems;
+using Content.Server.Spawners.Components;
 using Content.Shared.Eye;
 using Content.Shared.Chat;
 using Content.Shared.Heretic.Components;
@@ -9,6 +10,7 @@ using Content.Shared.Stunnable;
 using Content.Shared.Heretic.Systems;
 using Content.Shared.Interaction;
 using Content.Shared.Hands;
+using Robust.Shared.Spawners;
 using Robust.Shared.Timing;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Audio.Systems;
@@ -27,11 +29,12 @@ namespace Content.Server.Heretic
 
             SubscribeLocalEvent<MansusHandComponent, GotEquippedHandEvent>(OnTakeInHand);
             SubscribeLocalEvent<MansusHandComponent, AfterInteractEvent>(OnAfterInteract);
+            SubscribeLocalEvent<MansusHandComponent, TimedDespawnEvent>(OnDespawn);
         }
 
         private void OnTakeInHand(EntityUid uid, MansusHandComponent component, GotEquippedHandEvent args)
         {
-            var user = component.Owner;
+            component.Actor = args.User;
             AddComp<CanDrawnRuneComponent>(args.User);
         }
 
@@ -51,6 +54,7 @@ namespace Content.Server.Heretic
             Speak(user, component.Speech);
             _audio.PlayPvs(component.Sound, uid);
             _stun.TryParalyze(target, component.StunTime, refresh: false);
+            EntityManager.RemoveComponent<CanDrawnRuneComponent>(user);
             DeleteEntity(component.Owner);
         }
         public bool CanStun(EntityUid uid, EntityUid target, EntityUid? user = null, MansusHandComponent? component = null)
@@ -66,6 +70,13 @@ namespace Content.Server.Heretic
             if (Deleted(uid) || Terminating(uid))
                 return;
             QueueDel(uid);
+        }
+        private void OnDespawn(EntityUid uid, MansusHandComponent comp, ref TimedDespawnEvent args)
+        {
+            if (comp.Actor == null)
+                return;
+
+            EntityManager.RemoveComponent<CanDrawnRuneComponent>(comp.Actor);
         }
         private void Speak(EntityUid user, string args)
         {
