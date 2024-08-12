@@ -15,11 +15,12 @@ public sealed partial class CanDrawnRuneComponent : Component
 {
     public bool IsUsed = false;
     [DataField("doAfterDuration"), ViewVariables(VVAccess.ReadWrite)]
-    public TimeSpan DoAfterDuration = TimeSpan.FromSeconds(7.6);
+    public TimeSpan DoAfterDuration = TimeSpan.FromSeconds(13.4);
     [DataField("EffectProtoId")]
     public EntProtoId EffectProtoId = "RuneDrawing";
 
     public EntityCoordinates LocationToDrawn;
+    public EntityUid? ActiveEffect;
 }
 
 [Serializable, NetSerializable]

@@ -24,4 +24,4 @@
         - WallLayer
         hard: false
   - type: TimedDespawn
-    lifetime: 7.6
+    lifetime: 11.6 # 13.4

@@ -29,11 +29,11 @@ namespace Content.Server.Heretic
         public override void Initialize()
         {
             base.Initialize();
-            SubscribeLocalEvent<CanDrawnRuneComponent, AfterInteractEvent>(OnUseItem);
+            SubscribeLocalEvent<CanDrawnRuneComponent, InteractUsingEvent>(OnUseItem);
             SubscribeLocalEvent<CanDrawnRuneComponent, StartDrawnDoAfterEvent>(OnDoAfter);
         }
 
-        private void OnUseItem(EntityUid uid, CanDrawnRuneComponent component, AfterInteractEvent args)
+        private void OnUseItem(EntityUid uid, CanDrawnRuneComponent component, InteractUsingEvent args)
         {
             if (!_tag.HasTag(args.Used, "Write"))
             {
@@ -57,9 +57,13 @@ namespace Content.Server.Heretic
                 Console.WriteLine("Localização inválida!");
             }
         }
-        private bool TryStartDrawn(EntityUid uid, CanDrawnRuneComponent component, EntityCoordinates location, InteractEvent args)
+        private bool TryStartDrawn(EntityUid uid, CanDrawnRuneComponent component, EntityCoordinates location, InteractUsingEvent args)
         {
             component.LocationToDrawn = location;
+
+            var effect = Spawn(component.EffectProtoId, component.LocationToDrawn);
+            component.ActiveEffect = effect;
+
             return _doAfter.TryStartDoAfter(new DoAfterArgs(EntityManager, args.User, component.DoAfterDuration, new StartDrawnDoAfterEvent(), uid, args.Used, uid)
             {
                 BlockDuplicate = true,
@@ -72,19 +76,19 @@ namespace Content.Server.Heretic
 
         private void OnDoAfter(EntityUid uid, CanDrawnRuneComponent component, StartDrawnDoAfterEvent args)
         {
-            var effect = Spawn(component.EffectProtoId, component.LocationToDrawn);
+            if (component.ActiveEffect == null)
+                return;
 
             if (args.Cancelled)
             {
-                if (Deleted(effect) || Terminating(effect))
-                    return;
-
-                QueueDel(effect);
+                if (component.ActiveEffect != null && !Deleted(component.ActiveEffect.Value))
+                {
+                    QueueDel(component.ActiveEffect.Value);
+                }
                 return;
             }
 
-            if (args.Target is not { } target)
-                return;
+            QueueDel(component.ActiveEffect.Value);
         }
 
         private bool ValidLocation(EntityUid gridUid, EntityCoordinates location)
@@ -94,14 +98,6 @@ namespace Content.Server.Heretic
             {
                 return false;
             }
-
-            if (!TryComp<MapAtmosphereComponent>(gridUid, out var gridAtmoComp))
-            {
-                return false;
-            }
-
-            var grid = _mapManager.GetGrid(gridUid);
-            var gridBounds = gridComp.LocalAABB;
 
             var checkArea = new List<EntityCoordinates>();
             for (int x = -1; x <= 1; x++)
@@ -126,16 +122,16 @@ namespace Content.Server.Heretic
 
                 foreach (var ent in gridComp.GetAnchoredEntities(tilePosition))
                 {
-                    if (physQuery.TryGetComponent(ent, out var body))
-                    {
-                        if (body.BodyType != BodyType.Static || !body.Hard || (body.CollisionLayer & (int)CollisionGroup.Impassable) != 0)
-                        {
-                            return false;
-                        }
-                    }
+                    if (!physQuery.TryGetComponent(ent, out var body))
+                        continue;
+                    if (body.BodyType != BodyType.Static ||
+                        !body.Hard ||
+                        (body.CollisionLayer & (int) CollisionGroup.Impassable) == 0)
+                        continue;
+
+                    return false;
                 }
             }
-
             return true;
         }
     }
