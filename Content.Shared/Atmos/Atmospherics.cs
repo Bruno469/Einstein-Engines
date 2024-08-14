@@ -172,7 +172,7 @@ namespace Content.Shared.Atmos
         /// <summary>
         ///     Total number of gases. Increase this if you want to add more!
         /// </summary>
-        public const int TotalNumberOfGases = 9;
+        public const int TotalNumberOfGases = 10;
 
         /// <summary>
         ///     This is the actual length of the gases arrays in mixtures.
@@ -203,9 +203,12 @@ namespace Content.Shared.Atmos
         ///     This is calculated to help prevent singlecap bombs (Overpowered tritium/oxygen single tank bombs)
         /// </summary>
         public const float MinimumTritiumOxyburnEnergy = 143000f;
+        public const float MinimumHydrogenOxyburnEnergy = 141800f;
 
         public const float TritiumBurnOxyFactor = 100f;
         public const float TritiumBurnTritFactor = 10f;
+        public const float HydrogenBurnOxyFactor = 2f;
+        public const float HydrogenBurnHydrogenFactor = 1f;
 
         public const float FrezonCoolLowerTemperature = 23.15f;
 
@@ -335,6 +338,7 @@ namespace Content.Shared.Atmos
         WaterVapor = 5,
         Ammonia = 6,
         NitrousOxide = 7,
-        Frezon = 8
+        Frezon = 8,
+        Hydrogen = 9
     }
 }

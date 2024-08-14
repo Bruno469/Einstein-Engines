@@ -95,3 +95,16 @@
   color: 3a758c
   reagent: Frezon
   pricePerMole: 3
+
+- type: gas
+  id: 9
+  name: gases-hydrogen
+  specificHeat: 14.304
+  heatCapacityRatio: 1.41
+  molarMass: 2
+  gasOverlaySprite: /Textures/Effects/atmospherics.rsi
+  gasOverlayState: plasma_old
+  gasMolesVisible: 0.6
+  color: FFB6C1
+  reagent: Hydrogen
+  pricePerMole: 1

@@ -91,6 +91,47 @@
   effects:
   - !type:N2ODecompositionReaction {}
 
+- type: gasReaction
+  id: HydrogenFire
+  priority: -1
+  minimumTemperature: 373.149
+  minimumRequirements:
+  - 0.01  # oxygen
+  - 0     # nitrogen
+  - 0     # carbon dioxide
+  - 0     # plasma
+  - 0     # tritium
+  - 0     # vapor
+  - 0     # ammonia
+  - 0     # n2o
+  - 0     # frezon
+  - 0.02  # hydrogen
+  effects:
+  - !type:HydrogenFireReaction {}
+
+- type: gasReaction
+  id: HydrogenElectrolysis
+  priority: 1
+  minimumTemperature: 0
+  maximumTemperature: 10000
+  MinimumEnergyRequirement: 100
+  minimumRequirements:
+    - 0     # oxigênio
+    - 0     # hidrogênio
+    - 0     # nitrogênio
+    - 0     # dióxido de carbono
+    - 0     # plasma
+    - 0     # trítio
+    - 0.01  # vapor
+    - 0     # amônia
+    - 0     # n2o
+    - 0     # frezon
+  effects:
+    - !type:ElectrolysisReaction
+      gasesProduced:
+        oxygen: 0.01
+        hydrogen: 0.02
+
 #- type: gasReaction
 #  id: WaterVaporPuddle
 #  priority: 1

@@ -1,0 +1,21 @@
+{
+    "version":1,
+    "size":{"x":32,"y":32},
+    "copyright":"Base sprites taken from tgstation, splitted to display on two layers (machinebody/panel) by Menshin, for SS14",
+    "license":"CC-BY-SA-3.0",
+    "states":[
+        {
+            "name":"electrolyzerOff",
+            "directions":1
+        },
+        {
+            "name":"electrolyzerPanelOpen",
+            "directions":1
+        },
+        {
+            "name":"electrolyzerOn",
+            "directions":1,
+            "delays":[ [ 0.1, 0.1] ]
+        }
+    ]
+}

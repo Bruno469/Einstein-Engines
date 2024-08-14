@@ -1515,3 +1515,24 @@
       Manipulator: 3
     materialRequirements:
       Glass: 1
+
+- type: entity
+  id: ElectrolyzerMachineCircuitBoard
+  parent: BaseMachineCircuitboard
+  name: Electrolyzer Gas machine board
+  description: Looks like you could use a screwdriver to change the board type.
+  components:
+  - type: Sprite
+    state: engineering
+  - type: MachineBoard
+    prototype: GasElectrolyzerMachine
+    requirements:
+      MatterBin: 2
+      Capacitor: 3
+    materialRequirements:
+      Steel: 2
+      Cable: 5
+  - type: Construction
+    deconstructionTarget: null
+    graph: ElectrolyzerBoard
+    node: electrolyzer

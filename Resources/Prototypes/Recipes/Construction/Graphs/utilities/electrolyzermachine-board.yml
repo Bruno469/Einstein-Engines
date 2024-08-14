@@ -1,0 +1,11 @@
+- type: constructionGraph
+  id: ElectrolyzerBoard
+  start: electrolyzer
+  graph:
+  - node: electrolyzer
+    entity: ElectrolyzerMachineCircuitBoard
+    edges:
+    - to: heater
+      steps:
+      - tool: Screwing
+        doAfter: 2

@@ -96,6 +96,72 @@
             acts: [ "Destruction" ]
 
 - type: entity
+  id: GasElectrolyzerMachine
+  name: electrolyzer
+  description: electrolyzer gas
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.15,-0.35,0.15,0.5"
+        density: 100
+        mask:
+        - MachineMask
+        layer:
+        - MachineLayer
+  - type: Sprite
+    sprite: Structures/Machines/electrolyzer.rsi
+    granularLayersRendering : true
+    layers:
+      - state: electrolyzerOff
+        map: [ "enum.PowerDeviceVisualLayers.Powered" ]
+      - state: electrolyzerPanelOpen
+        map: ["enum.WiresVisualLayers.MaintenancePanel"]
+  - type: GenericVisualizer
+    visuals:
+      enum.PowerDeviceVisuals.Powered:
+        enum.PowerDeviceVisualLayers.Powered:
+          True: { state: electrolyzerOn }
+          False: { state: electrolyzerOff }
+  - type: ApcPowerReceiver
+    powerDisabled: true #starts off
+  - type: AtmosDevice
+  - type: Machine
+    board: ElectrolyzerMachineCircuitBoard
+  - type: Appearance
+  - type: DeviceNetwork
+    prefix: device-address-prefix-electrolyzer
+  - type: Damageable
+    damageContainer: Inorganic
+    damageModifierSet: Metallic
+  - type: Destructible
+    thresholds:
+      - trigger:
+          !type:DamageTrigger
+          damage: 600
+        behaviors:
+          - !type:DoActsBehavior
+            acts: [ "Destruction" ]
+      - trigger:
+          !type:DamageTrigger
+          damage: 300
+        behaviors:
+          - !type:PlaySoundBehavior
+            sound:
+              collection: MetalBreak
+          - !type:SpawnEntitiesBehavior
+            spawn:
+              SheetSteel1:
+                min: 1
+                max: 3
+          - !type:DoActsBehavior
+            acts: [ "Destruction" ]
+
+- type: entity
   id: SpaceHeater
   parent: [BaseMachinePowered, ConstructibleMachine]
   name: space heater
