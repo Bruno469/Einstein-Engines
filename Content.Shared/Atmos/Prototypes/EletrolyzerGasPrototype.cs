@@ -12,18 +12,18 @@ namespace Content.Shared.Atmos.Prototypes
         public string ID { get; private set; } = default!;
 
         /// <summary>
-        ///     Specific heat for gas.
+        /// The efficience of the reaction is calculed based in temperature (more temperature = more efficiency)
         /// </summary>
         [DataField("efficiency")]
         public float Efficiency { get; private set; }
 
         /// <summary>
-        /// The reagent that this gas will turn into when inhaled.
+        /// minimumRequirements to make eletrolise
         /// </summary>
-        [DataField("gas", customTypeSerializer:typeof(PrototypeIdSerializer<GasPrototype>))]
-        public string? gas { get; private set; } = default!;
+        [DataField("minimumRequirements")]
+        public float[] MinimumRequirements { get; private set; } = new float[Atmospherics.TotalNumberOfGases];
 
-        [DataField("gasTo", customTypeSerializer:typeof(PrototypeIdSerializer<GasPrototype>))]
-        public string? GasTo { get; private set; } = default!;
+        [DataField("Produces")]
+        public float[] Produces { get; private set; } = new float[Atmospherics.TotalNumberOfGases];
     }
 }

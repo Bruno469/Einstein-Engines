@@ -29,42 +29,22 @@ namespace Content.Server.Atmos.EntitySystems
         private void OnDeviceUpdated(EntityUid uid, ElectrolyzerComponent electrolyzer, ref AtmosDeviceUpdateEvent args)
         {
             if (!TryComp<ApcPowerReceiverComponent>(uid, out var powerReceiver))
-            {
-                Logger.WarningS("electrolyzer", $"Missing ApcPowerReceiverComponent for {uid}");
                 return;
-            }
+
             if (!_power.IsPowered(uid))
-            {
-                Logger.InfoS("electrolyzer", $"Electrolyzer at {uid} is not powered.");
                 return;
-            }
 
             var requiredPower = electrolyzer.MinimumEnergyRequirement;
             if (powerReceiver.PowerReceived < requiredPower)
-            {
-                Logger.InfoS("electrolyzer", $"Not enough power for electrolyzer {uid}. Required: {requiredPower}, Available: {powerReceiver.PowerReceived}");
                 return;
-            }
 
             var environment = _atmosphereSystem.GetContainingMixture(uid, args.Grid, args.Map);
+
             if (environment == null)
-            {
-                Logger.WarningS("electrolyzer", $"No environment found for electrolyzer {uid}");
                 return;
-            }
 
-
-            ProcessElectrolyzer(uid, environment, electrolyzer, powerReceiver);
-        }
-
-        private void ProcessElectrolyzer(EntityUid uid, GasMixture environment, ElectrolyzerComponent electrolyzer, ApcPowerReceiverComponent powerReceiver)
-        {
+            React(environment, AtmosphereSysteme);
             powerReceiver.NetworkLoad.ReceivingPower -= electrolyzer.MinimumEnergyRequirement;
-
-            foreach (var effect in electrolyzer.Effects)
-            {
-                effect.React(environment, null, _atmosphereSystem, 1.0f);
-            }
             Logger.InfoS("electrolyzer", $"Electrolyzer {uid} processed successfully.");
         }
     }

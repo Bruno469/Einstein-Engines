@@ -36,7 +36,8 @@ namespace Content.Server.Atmos
         public readonly Dictionary<GasReaction, float> ReactionResults = new()
         {
             // We initialize the dictionary here.
-            { GasReaction.Fire, 0f }
+            { GasReaction.Fire, 0f },
+            { GasReaction.Electrolyzer, 0f }
         };
 
         [ViewVariables]

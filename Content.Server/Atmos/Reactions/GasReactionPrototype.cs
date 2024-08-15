@@ -15,6 +15,7 @@ namespace Content.Server.Atmos.Reactions
     public enum GasReaction : byte
     {
         Fire = 0,
+        Electrolyzer = 1,
     }
 
     [Prototype("gasReaction")]

@@ -109,12 +109,10 @@
   effects:
   - !type:HydrogenFireReaction {}
 
-- type: gasReaction
-  id: HydrogenElectrolysis
-  priority: 1
+- type: GasEletrolyzer
+  id: WaterVaporElectrolysis
+  priority: -1
   minimumTemperature: 0
-  maximumTemperature: 10000
-  MinimumEnergyRequirement: 100
   minimumRequirements:
     - 0     # oxigênio
     - 0     # hidrogênio
@@ -123,14 +121,8 @@
     - 0     # plasma
     - 0     # trítio
     - 0.01  # vapor
-    - 0     # amônia
-    - 0     # n2o
-    - 0     # frezon
   effects:
-    - !type:ElectrolysisReaction
-      gasesProduced:
-        oxygen: 0.01
-        hydrogen: 0.02
+  - !type:WaterVaporEletrolyzerReaction {}
 
 #- type: gasReaction
 #  id: WaterVaporPuddle
