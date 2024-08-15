@@ -1,0 +1,29 @@
+- type: ChaplainSet
+  id: NullRod
+  name: Null Rod
+  description: A rod of pure obsidian; its very presence disrupts and dampens 'magical forces'. That's what the guidebook says, anyway.
+  sprite:
+    sprite: Objects/Weapons/Melee/null_rod.rsi
+    state: icon
+  content:
+  - NullRodMelee
+
+- type: ChaplainSet
+  id: Beltknifes
+  name: Belt of knifes
+  description: A belt made of dark leather can carry infinite knives with a limit of 6.
+  sprite:
+    sprite: Clothing/Belt/knife_belt.rsi
+    state: icon
+  content:
+  - ClothingBeltknifes
+
+- type: ChaplainSet
+  id: ClaymoreSword
+  name: Claymore Divine Sword
+  description: A divine blade made of gold and a misterius type of iron
+  sprite:
+    sprite: Objects/Weapons/Melee/claymore.rsi
+    state: icon
+  content:
+  - Claymore

@@ -769,3 +769,15 @@
     color: "#f4ffad"
     radius: 5
     energy: 2
+
+- type: entity
+  parent: ClothingHeadHardsuitBase
+  id: ClothingHeadHelmetHardsuitERTDiplomatic
+  name: ERT Diplomatic hardsuit helmet
+  description: A special hardsuit helmet worn by members of an emergency response team.
+  components:
+  - type: BreathMask
+  - type: Sprite
+    sprite: Clothing/Head/Hardsuits/ERThelmets/ertdiplomatic.rsi
+  - type: Clothing
+    sprite: Clothing/Head/Hardsuits/ERThelmets/ertdiplomatic.rsi
