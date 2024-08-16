@@ -87,7 +87,7 @@ namespace Content.Server.Heretic
                 }
                 return;
             }
-
+            Spawn("HereticRune", component.LocationToDrawn);
             QueueDel(component.ActiveEffect.Value);
         }
 

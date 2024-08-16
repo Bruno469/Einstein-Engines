@@ -25,3 +25,29 @@
         hard: false
   - type: TimedDespawn
     lifetime: 11.6 # 13.4
+
+- type: entity
+  id: HereticRune
+  name: Rune
+  description: Transmutation Rune
+  noSpawn: true
+  components:
+  - type: Transform
+    anchored: True
+  - type: InteractionOutline
+  - type: Physics
+    bodyType: Static
+  - type: Sprite
+    sprite: /Textures/Effects/drawntransmutationrune.rsi
+    state: transmutationRuneIcon
+  - type: Fixtures
+    fixtures:
+      portalFixture:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.25,-0.48,0.25,0.48"
+        mask:
+        - FullTileMask
+        layer:
+        - WallLayer
+        hard: false
