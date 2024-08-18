@@ -124,6 +124,24 @@
   effects:
   - !type:WaterVaporEletrolyzerReaction {}
 
+- type: gasReaction
+  id: BZFormation
+  priority: 1
+  minimumTemperature: 10.0
+  minimumRequirements:
+    - 0     # oxygen
+    - 0     # nitrogen
+    - 0     # carbon dioxide
+    - 0.02  # plasma
+    - 0     # tritium
+    - 0     # vapor
+    - 0     # ammonia
+    - 0.01  # n2o
+    - 0     # frezon
+    - 0     # hydrogen
+  effects:
+  - !type:BZFormationReaction {}
+
 #- type: gasReaction
 #  id: WaterVaporPuddle
 #  priority: 1
