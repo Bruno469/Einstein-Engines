@@ -1,51 +1,68 @@
+using Content.Server.Atmos.EntitySystems;
 using Content.Server.Atmos.Components;
 using Content.Server.Atmos.Reactions;
-using Content.Server.Power.EntitySystems;
-using Content.Server.Power.Components;
-using Content.Server.Atmos.EntitySystems;
 using Content.Server.Atmos.Piping.Components;
-using Content.Server.Atmos.Piping.Unary.Components;
-using Content.Server.Popups;
-using Content.Shared.Atmos.Piping.Portable.Components;
-using Content.Shared.Atmos.Visuals;
-using Content.Shared.UserInterface;
-using Robust.Server.GameObjects;
 using Robust.Shared.Prototypes;
 
-namespace Content.Server.Atmos.EntitySystems
+namespace Content.Server.Atmos
 {
     public sealed class ElectrolyzerSystem : EntitySystem
     {
+        private const float BaseEfficiency = 1.0f;
+        private const float MinTemperatureForMaxEfficiency = 300.0f;
+        private const float MaxTemperatureForMaxEfficiency = 800.0f;
+
         [Dependency] private readonly AtmosphereSystem _atmosphereSystem = default!;
-        [Dependency] private readonly PowerReceiverSystem _power = default!;
         [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
 
         public override void Initialize()
         {
             base.Initialize();
-            SubscribeLocalEvent<ElectrolyzerComponent, AtmosDeviceUpdateEvent>(OnDeviceUpdated);
+            SubscribeLocalEvent<ElectrolyzerComponent, AtmosDeviceUpdateEvent>(OnAtmosDeviceUpdate);
         }
 
-        private void OnDeviceUpdated(EntityUid uid, ElectrolyzerComponent electrolyzer, ref AtmosDeviceUpdateEvent args)
+        private void OnAtmosDeviceUpdate(EntityUid uid, ElectrolyzerComponent component, AtmosDeviceUpdateEvent args)
         {
-            if (!TryComp<ApcPowerReceiverComponent>(uid, out var powerReceiver))
+            var mixture = _atmosphereSystem.GetContainingMixture(uid);
+            if (mixture == null)
                 return;
 
-            if (!_power.IsPowered(uid))
+            var gasReaction = GetElectrolysisReactionPrototype();
+            if (gasReaction == null)
                 return;
 
-            var requiredPower = electrolyzer.MinimumEnergyRequirement;
-            if (powerReceiver.PowerReceived < requiredPower)
+            if (mixture.Temperature < gasReaction.MinimumTemperatureRequirement ||
+                mixture.Temperature > gasReaction.MaximumTemperatureRequirement)
+            {
                 return;
+            }
 
-            var environment = _atmosphereSystem.GetContainingMixture(uid, args.Grid, args.Map);
+            float efficiency = CalculateEfficiencyBasedOnTemperature(mixture.Temperature);
 
-            if (environment == null)
-                return;
+            var reactionResult = gasReaction.React(mixture, null, _atmosphereSystem, efficiency);
 
-            React(environment, AtmosphereSysteme);
-            powerReceiver.NetworkLoad.ReceivingPower -= electrolyzer.MinimumEnergyRequirement;
-            Logger.InfoS("electrolyzer", $"Electrolyzer {uid} processed successfully.");
+            if (reactionResult.HasFlag(ReactionResult.StopReactions))
+            {
+
+            }
+        }
+
+        private GasReactionPrototype? GetElectrolysisReactionPrototype()
+        {
+            return _prototypeManager.Index<GasReactionPrototype>("Electrolyzer");
+        }
+
+        private float CalculateEfficiencyBasedOnTemperature(float temperature)
+        {
+            if (temperature < MinTemperatureForMaxEfficiency)
+            {
+                return BaseEfficiency * (temperature / MinTemperatureForMaxEfficiency);
+            }
+            else if (temperature > MaxTemperatureForMaxEfficiency)
+            {
+                return BaseEfficiency * (MaxTemperatureForMaxEfficiency / temperature);
+            }
+            return BaseEfficiency;
         }
     }
 }

@@ -96,6 +96,7 @@
             acts: [ "Destruction" ]
 
 - type: entity
+  parent: [ BaseMachinePowered, ConstructibleMachine ]
   id: GasElectrolyzerMachine
   name: electrolyzer
   description: electrolyzer gas
@@ -133,8 +134,9 @@
   - type: Machine
     board: ElectrolyzerMachineCircuitBoard
   - type: Appearance
-  - type: DeviceNetwork
-    prefix: device-address-prefix-electrolyzer
+  - type: PowerSwitch
+  - type: Transform
+    noRot: true
   - type: Damageable
     damageContainer: Inorganic
     damageModifierSet: Metallic
