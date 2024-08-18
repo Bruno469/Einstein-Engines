@@ -49,7 +49,6 @@ namespace Content.Server.Atmos.Reactions
                 mixture.Temperature = temperature;
             }
 
-            // Removido o código relacionado ao hotspot
             return ReactionResult.Reacting;
         }
     }

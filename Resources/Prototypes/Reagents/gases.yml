@@ -362,7 +362,7 @@
           ignoreResistances: true
           damage:
             types:
-              Brain: 3
+              Cellular: 3
           probability: 0.33
       - !type:GenericStatusEffect
           conditions:
@@ -376,12 +376,3 @@
           type: Add
           time: 9999
           refresh: false
-      - !type:AdjustReagent
-          conditions:
-            - !type:OrganType
-              type: Changeling
-            - !type:ReagentThreshold
-              reagent: BZ
-              min: 1.0
-          reagent: ChangelingChemicals
-          amount: -2.0

@@ -23,7 +23,7 @@ public sealed partial class BZFormationReaction : IGasReactionEffect
         mixture.AdjustMoles(Gas.Plasma, -plasmaConsumed);
         mixture.AdjustMoles(Gas.NitrousOxide, -n2oConsumed);
 
-        var bzProduced = plasmaConsumed * 1.5f
+        var bzProduced = plasmaConsumed * 1.5f;
         mixture.AdjustMoles(Gas.BZ, bzProduced);
 
         var energyReleased = bzProduced * 50f;
