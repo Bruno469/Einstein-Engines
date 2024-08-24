@@ -23,6 +23,32 @@
     sprite: Effects/reality_smash.rsi
     state: realitysmash
   - type: Clickable
+  - type: RealitySmash
+
+- type: entity
+  id: ProfundRealitySmash
+  name: Profund Reality smash
+  suffix: Reality
+  components:
+  - type: Transform
+    anchored: false
+  - type: Physics
+    bodyType: Static
+    bodyStatus: InAir
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.35
+        density: 50
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+  - type: Sprite
+    sprite: Effects/reality_smash.rsi
+    state: realitysmash
   - type: PointLight
     radius: 6.0
     energy: 7.5

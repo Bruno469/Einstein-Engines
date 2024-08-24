@@ -92,6 +92,7 @@ namespace Content.Server.Heretic
             if (Deleted(uid) || Terminating(uid))
                 return;
 
+            Spawn("ProfundRealitySmash", args.Target);
             QueueDel(uid);
         }
     }
