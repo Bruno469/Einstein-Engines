@@ -14,6 +14,7 @@ using Robust.Shared.Audio.Systems;
 using Robust.Shared.Timing;
 using Robust.Server.GameObjects;
 using Content.Shared.Hands.EntitySystems;
+using Robust.Shared.Player;
 
 namespace Content.Server.Heretic
 {
@@ -22,6 +23,7 @@ namespace Content.Server.Heretic
         [Dependency] private readonly SharedActionsSystem _actionsSystem = default!;
         [Dependency] private readonly SharedHandsSystem _handsSystem = default!;
         [Dependency] private readonly SharedTransformSystem _transform = default!;
+        [Dependency] private readonly UserInterfaceSystem _uiSystem = default!;
 
         public override void Initialize()
         {
@@ -29,6 +31,7 @@ namespace Content.Server.Heretic
 
             SubscribeLocalEvent<HereticComponent, ToggleActionEvent>(OnToggleAction);
             SubscribeLocalEvent<HereticComponent, ComponentInit>(OnComponentInit);
+            SubscribeLocalEvent<HereticComponent, HereticResearchMenuActionEvent>(OnOpenResearch);
         }
 
         private void OnToggleAction(EntityUid uid, HereticComponent component, ToggleActionEvent args)
@@ -44,6 +47,21 @@ namespace Content.Server.Heretic
             _actionsSystem.TryGetActionData( component.MansusHandActionEntity, out var actionData );
             if (actionData is { UseDelay: not null })
                 _actionsSystem.StartUseDelay(component.MansusHandActionEntity);
+        }
+
+        private void OnOpenResearch(EntityUid uid, HereticComponent component, HereticResearchMenuActionEvent args)
+        {
+            if (!TryComp<ActorComponent>(args.Performer, out var actor) ||
+                !_uiSystem.TryGetUi(uid, SharedCrayonComponent.CrayonUiKey.Key, out var ui))
+            {
+                return;
+            }
+
+            _uiSystem.ToggleUi(ui, actor.PlayerSession);
+            if (ui.SubscribedSessions.Contains(actor.PlayerSession))
+            {
+                _uiSystem.SetUiState(ui, new CrayonBoundUserInterfaceState(component.SelectedState, component.SelectableColor, component.Color));
+            }
         }
 
         private void PickupOrDelete(EntityUid? uid, HereticComponent component, bool checkActionBlocker = true, bool animateUser = false, bool animate = false, HandsComponent? handsComp = null, ItemComponent? item = null)

@@ -57,7 +57,7 @@
             </PanelContainer>
         </BoxContainer>
 
-        <!-- Right side: Technology cards section -->
+        <!-- Right side: Research cards section -->
         <BoxContainer Orientation="Vertical"
                       VerticalExpand="True"
                       HorizontalExpand="True"
@@ -73,7 +73,7 @@
                     SizeFlagsStretchRatio="2"
                     VerticalExpand="True">
                     <BoxContainer
-                        Name="TechnologyCardsContainer"
+                        Name="ResearchCardsContainer"
                         MinSize="100 256"
                         Orientation="Vertical"
                         SizeFlagsStretchRatio="2"

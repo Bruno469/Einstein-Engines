@@ -1,0 +1,53 @@
+﻿<Control xmlns="https://spacestation14.io"
+         xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+         xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+         MinHeight="75"
+         Margin="0 5 0 5">
+    <PanelContainer StyleClasses="LowDivider" VerticalExpand="True">
+        <PanelContainer.PanelOverride>
+            <gfx:StyleBoxFlat BackgroundColor="#1B1B1E" ContentMargin="10" />
+        </PanelContainer.PanelOverride>
+        <Button Name="MainButton"
+                Disabled="True"
+                HorizontalExpand="True"
+                VerticalExpand="True"
+                StyleClasses="ButtonSquare">
+            <BoxContainer Orientation="Horizontal" VerticalExpand="True">
+                <!-- Research Icon -->
+                <TextureRect Name="ResearchTexture"
+                             TextureScale="2 2"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Left"
+                             MinSize="64 64"
+                             Margin="0 10 0 0"/>
+
+                <!-- Text and Other Details -->
+                <BoxContainer Orientation="Vertical"
+                              HorizontalExpand="True"
+                              VerticalAlignment="Center"
+                              Margin="10 0 0 0">
+                    <Label Name="ResearchNameLabel"
+                           StyleClasses="LabelKeyText"
+                           HorizontalExpand="True"
+                           Margin="0 0 0 5"/>
+                    <customControls:HSeparator StyleClasses="LowDivider" Margin="0 0 0 5"/>
+                    <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                        <RichTextLabel Name="TierLabel"
+                                       StyleClasses="LabelSubText"
+                                       HorizontalExpand="True"
+                                       Margin="0 5 0 0"/>
+                        <Button Name="ResearchButton"
+                                Text="{Loc 'research-menu-server-research-button'}"
+                                StyleClasses="OpenButton"
+                                VerticalAlignment="Center"/>
+                    </BoxContainer>
+                    <RichTextLabel Name="UnlocksLabel"
+                                   StyleClasses="LabelSubText"
+                                   HorizontalExpand="True"
+                                   VerticalAlignment="Bottom"
+                                   Margin="5 0 0 0"/>
+                </BoxContainer>
+            </BoxContainer>
+        </Button>
+    </PanelContainer>
+</Control>

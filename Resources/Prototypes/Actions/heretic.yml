@@ -1,0 +1,9 @@
+- type: entity
+  id: ActionHereticShop
+  name: Research
+  description: Opens the research menu.
+  noSpawn: true
+  components:
+  - type: InstantAction
+    icon: Interface/Actions/shop.png
+    event: !type:HereticResearchMenuActionEvent
