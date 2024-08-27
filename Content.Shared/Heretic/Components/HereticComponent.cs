@@ -1,7 +1,8 @@
-using Robust.Shared.GameStates;
 using Content.Shared.Antag;
 using Content.Shared.StatusIcon;
 using Robust.Shared.Prototypes;
+using Robust.Shared.GameStates;
+using Robust.Shared.Serialization;
 using Robust.Shared.Audio;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 
@@ -29,4 +30,31 @@ public sealed partial class HereticComponent : Component
     //Forgotten, devoured, gutted. Humanity has forgotten the eldritch forces
     //of decay, but the mansus veil has weakened. We will make them taste fear
     //again...
+
+    [NetSerializable, Serializable]
+    public enum HereticResearchUiKey : byte
+    {
+        Key,
+    }
+
+    [Serializable, NetSerializable]
+    public sealed class UnlockHereticResearchMessage : BoundUserInterfaceMessage
+    {
+        public string Id;
+
+        public UnlockHereticResearchMessage(string id)
+        {
+            Id = id;
+        }
+    }
+
+    [Serializable, NetSerializable]
+    public sealed class HereticResearchBoundInterfaceState : BoundUserInterfaceState
+    {
+        public int Points;
+        public HereticResearchBoundInterfaceState(int points)
+        {
+            Points = points;
+        }
+    }
 }

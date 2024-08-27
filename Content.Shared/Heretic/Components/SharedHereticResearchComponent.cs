@@ -3,27 +3,27 @@ using Robust.Shared.Serialization;
 namespace Content.Shared.Heretic.Components
 {
     [NetSerializable, Serializable]
-    public enum ResearchUiKey : byte
+    public enum HereticResearchUiKey : byte
     {
         Key,
     }
 
     [Serializable, NetSerializable]
-    public sealed class ConsoleUnlockResearchMessage : BoundUserInterfaceMessage
+    public sealed class UnlockHereticResearchMessage : BoundUserInterfaceMessage
     {
         public string Id;
 
-        public ConsoleUnlockResearchMessage(string id)
+        public UnlockHereticResearchMessage(string id)
         {
             Id = id;
         }
     }
 
     [Serializable, NetSerializable]
-    public sealed class ResearchBoundInterfaceState : BoundUserInterfaceState
+    public sealed class HereticResearchBoundInterfaceState : BoundUserInterfaceState
     {
         public int Points;
-        public ResearchBoundInterfaceState(int points)
+        public HereticResearchBoundInterfaceState(int points)
         {
             Points = points;
         }

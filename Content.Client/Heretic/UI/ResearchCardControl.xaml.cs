@@ -20,15 +20,15 @@ public sealed partial class ResearchCardControl : Control
         var discipline = prototypeManager.Index<PathPrototype>(technology.Discipline);
         Background.ModulateSelfOverride = discipline.Color;
 
-        DisciplineTexture.Texture = spriteSys.Frame0(discipline.Icon);
-        TechnologyNameLabel.Text = Loc.GetString(technology.Name);
+        ResearchTexture.Texture = spriteSys.Frame0(discipline.Icon);
+        ResearchNameLabel.Text = Loc.GetString(technology.Name);
         var message = new FormattedMessage();
         message.AddMarkup(Loc.GetString("research-console-tier-discipline-info",
             ("tier", technology.Tier), ("color", discipline.Color), ("discipline", Loc.GetString(discipline.Name))));
         TierLabel.SetMessage(message);
         UnlocksLabel.SetMessage(description);
 
-        TechnologyTexture.Texture = spriteSys.Frame0(technology.Icon);
+        ResearchTexture.Texture = spriteSys.Frame0(technology.Icon);
 
         if (!hasAccess)
             ResearchButton.ToolTip = Loc.GetString("research-console-no-access-popup");

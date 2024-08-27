@@ -52,16 +52,12 @@ namespace Content.Server.Heretic
         private void OnOpenResearch(EntityUid uid, HereticComponent component, HereticResearchMenuActionEvent args)
         {
             if (!TryComp<ActorComponent>(args.Performer, out var actor) ||
-                !_uiSystem.TryGetUi(uid, SharedCrayonComponent.CrayonUiKey.Key, out var ui))
+                !_uiSystem.TryGetUi(uid, HereticComponent.HereticResearchUiKey.Key, out var ui))
             {
                 return;
             }
 
             _uiSystem.ToggleUi(ui, actor.PlayerSession);
-            if (ui.SubscribedSessions.Contains(actor.PlayerSession))
-            {
-                _uiSystem.SetUiState(ui, new CrayonBoundUserInterfaceState(component.SelectedState, component.SelectableColor, component.Color));
-            }
         }
 
         private void PickupOrDelete(EntityUid? uid, HereticComponent component, bool checkActionBlocker = true, bool animateUser = false, bool animate = false, HandsComponent? handsComp = null, ItemComponent? item = null)
