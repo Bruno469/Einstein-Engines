@@ -85,6 +85,22 @@
   - Dragon
 
 - type: npcFaction
+  id: Pibble
+  hostile:
+  - Cat
+  - Birb
+  - Mailman
+
+- type: npcFaction
+  id: Mailman
+
+- type: npcFaction
+  id: Cat
+
+- type: npcFaction
+  id: Birb
+
+- type: npcFaction
   id: Heretics
   hostile:
   - NanoTrasen
