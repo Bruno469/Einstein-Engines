@@ -6,6 +6,10 @@ using Content.Shared.Interaction;
 using Content.Shared.DoAfter;
 using Content.Shared.Heretic.Components;
 using Robust.Server.GameObjects;
+using Robust.Shared.Containers;
+using Robust.Shared.Map;
+using Robust.Shared.Random;
+using Content.Shared.Coordinates;
 
 namespace Content.Server.Heretic
 {
@@ -92,7 +96,9 @@ namespace Content.Server.Heretic
             if (Deleted(uid) || Terminating(uid))
                 return;
 
-            Spawn("ProfundRealitySmash", args.Target);
+
+            var coords = _transformSystem.GetGridOrMapTilePosition(uid);
+            Spawn("ProfundRealitySmash", new EntityCoordinates(uid, coords));
             QueueDel(uid);
         }
     }

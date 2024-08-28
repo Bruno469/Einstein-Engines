@@ -24,6 +24,8 @@ namespace Content.Server.Heretic
         [Dependency] private readonly SharedHandsSystem _handsSystem = default!;
         [Dependency] private readonly SharedTransformSystem _transform = default!;
         [Dependency] private readonly UserInterfaceSystem _uiSystem = default!;
+        [ValidatePrototypeId<EntityPrototype>]
+        private const string HereticResearchMenuId = "ActionHereticShop";
 
         public override void Initialize()
         {
@@ -44,6 +46,7 @@ namespace Content.Server.Heretic
         {
             var user = component.Owner;
             _actionsSystem.AddAction(user, ref component.MansusHandActionEntity, component.MansusHandToggleAction);
+            _actionsSystem.AddAction(uid, ref component.Action, HereticResearchMenuId);
             _actionsSystem.TryGetActionData( component.MansusHandActionEntity, out var actionData );
             if (actionData is { UseDelay: not null })
                 _actionsSystem.StartUseDelay(component.MansusHandActionEntity);

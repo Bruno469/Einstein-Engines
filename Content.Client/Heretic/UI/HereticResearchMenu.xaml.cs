@@ -47,7 +47,7 @@ public sealed partial class HereticResearchMenu : FancyWindow
         _entity.TryGetComponent(entity, out _researchDatabase);
     }
 
-    public void UpdatePanels(HereticResearchBoundUserInterface state)
+    public void UpdatePanels(HereticResearchBoundInterfaceState state)
     {
         ResearchCardsContainer.Children.Clear();
 
@@ -67,7 +67,7 @@ public sealed partial class HereticResearchMenu : FancyWindow
                         _accessReader.IsAllowed(local, Entity, access);
         foreach (var techId in _researchDatabase.CurrentResearch)
         {
-            var tech = _prototype.Index<PathPrototype>(techId);
+            var tech = _prototype.Index<HereticResearchPrototype>(techId);
             var cardControl = new ResearchCardControl(tech, _prototype, _sprite, _research.GetResearchDescription(tech, includeTier: false), state.Points, hasAccess);
             cardControl.OnPressed += () => OnHereticCardPressed?.Invoke(techId);
             ResearchCardsContainer.AddChild(cardControl);
@@ -101,10 +101,9 @@ public sealed partial class HereticResearchMenu : FancyWindow
             ("name", disciplineText), ("color", disciplineColor)));
         MainDisciplineLabel.SetMessage(msg);
 
-        TierDisplayContainer.Children.Clear();
         foreach (var disciplineId in _researchDatabase.SupportedDisciplines)
         {
-            var discipline = _prototype.Index<HereticResearchPrototype>(disciplineId);
+            var discipline = _prototype.Index<PathPrototype>(disciplineId); //HereticResearchPrototype
             var tier = _research.GetHighestDisciplineTier(_researchDatabase, discipline);
 
             // don't show tiers with no available tech
@@ -133,7 +132,6 @@ public sealed partial class HereticResearchMenu : FancyWindow
                     }
                 }
             };
-            TierDisplayContainer.AddChild(control);
         }
     }
 
@@ -149,9 +147,9 @@ public sealed partial class HereticResearchMenu : FancyWindow
         var currentTechControls = new Dictionary<HereticResearchPrototype, Control>();
         foreach (var child in container.Children)
         {
-            if (child is MiniTechnologyCardControl)
+            if (child is MiniHereticResearchCardControl)
             {
-                currentTechControls.Add((child as MiniTechnologyCardControl)!.Technology, child);
+                currentTechControls.Add((child as MiniHereticResearchCardControl)!.Research, child);
             }
         }
 
@@ -160,7 +158,7 @@ public sealed partial class HereticResearchMenu : FancyWindow
             if (!currentTechControls.ContainsKey(tech))
             {
                 // Create a card for any technology which doesn't already have one.
-                var mini = new MiniTechnologyCardControl(tech, _prototype, _sprite, _research.GetTechnologyDescription(tech));
+                var mini = new MiniHereticResearchCardControl(tech, _prototype, _sprite, _research.GetResearchDescription(tech));
                 container.AddChild(mini);
             }
             else

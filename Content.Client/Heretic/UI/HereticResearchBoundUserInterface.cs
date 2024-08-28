@@ -24,7 +24,7 @@ public sealed class HereticResearchBoundUserInterface : BoundUserInterface
 
         _hereticMenu.OnHereticCardPressed += id =>
         {
-            SendMessage(new HereticResearchUnlockMessage(id));
+            SendMessage(new UnlockHereticResearchMessage(id));
         };
 
         _hereticMenu.OnClose += Close;

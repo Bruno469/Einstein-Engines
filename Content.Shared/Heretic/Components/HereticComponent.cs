@@ -24,6 +24,8 @@ public sealed partial class HereticComponent : Component
     [DataField("MansusHandProtoId")]
     public EntProtoId MansusHandProtoId = "MansusHand";
 
+    [DataField] public EntityUid? Action;
+
     //Find hidden influences and sacrifice crew members to gain magical
     //powers and ascend as one of several paths.
 
