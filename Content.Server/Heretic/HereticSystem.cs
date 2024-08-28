@@ -46,6 +46,8 @@ namespace Content.Server.Heretic
         {
             var user = component.Owner;
             _actionsSystem.AddAction(user, ref component.MansusHandActionEntity, component.MansusHandToggleAction);
+            var inter = AddComp<UserInterfaceComponent>(user);
+            inter.Interfaces.Add(HereticResearchUiKey.Key, new HereticResearchBoundInterfaceState(1));
             _actionsSystem.AddAction(uid, ref component.Action, HereticResearchMenuId);
             _actionsSystem.TryGetActionData( component.MansusHandActionEntity, out var actionData );
             if (actionData is { UseDelay: not null })
