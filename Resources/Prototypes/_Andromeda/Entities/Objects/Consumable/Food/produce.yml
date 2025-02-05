@@ -1,7 +1,7 @@
 - type: entity
-  name: coffee bushel
+  name: coffee bean
   description: Sigh... coffee... a-grain?
-  id: CoffeeBushel
+  id: CoffeeBean
   parent: ProduceBase
   components:
   - type: Sprite
@@ -10,10 +10,30 @@
     solutions:
       food:
         reagents:
-        - ReagentId: Coffee
-          Quantity: 5
+        - ReagentId: Nutriment
+          Quantity: 2
   - type: Produce
     seedId: coffee
+  - type: Tag
+    tags:
+    - Coffee
+
+- type: entity
+  name: coffee bean dried
+  description: smell like coffee
+  id: CoffeeBeanDried
+  parent: BaseItem
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/coffee.rsi
+    layers:
+      - state: beandried
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: Coffee
+          Quantity: 5
   - type: Tag
     tags:
     - Coffee

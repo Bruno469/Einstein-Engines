@@ -29,3 +29,18 @@
               doAfter: 10
     - node: strawhat
       entity: ClothingHeadHatStrawHat
+
+# REMOVE THIS LATER
+- type: constructionGraph
+  id: makeGroundCoffee
+  start: start
+  graph:
+    - node: start
+      edges:
+        - to: ground
+          steps:
+            - material: CoffeeBeanDried
+              amount: 1
+              doAfter: 15
+    - node: ground
+      entity: GroundCoffee

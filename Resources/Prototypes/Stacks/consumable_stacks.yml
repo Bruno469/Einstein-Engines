@@ -82,3 +82,11 @@
   spawn: LeavesCannabisRainbowDried
   maxCount: 5
   itemSize: 5
+
+- type: stack
+  id: GroundCoffee
+  name: ground coffee
+  icon: { sprite: /Textures/Objects/Misc/reagent_fillings.rsi, state: powderpile }
+  spawn: GroundCoffee
+  maxCount: 5
+  itemSize: 1

@@ -6,7 +6,8 @@
   plantRsi: Objects/Specific/Hydroponics/coffee.rsi
   packetPrototype: CoffeeSeeds
   productPrototypes:
-    - CoffeeBushel
+    - CoffeeBean
+  harvestRepeat: Repeat
   lifespan: 25
   maturation: 6
   production: 2

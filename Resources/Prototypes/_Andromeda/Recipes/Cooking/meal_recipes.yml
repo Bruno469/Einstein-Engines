@@ -1,0 +1,7 @@
+- type: microwaveMealRecipe
+  id: RecipeDriedCoffeeBean
+  name: dried coffee bean recipe
+  result: CoffeeBeanDried
+  time: 30
+  solids:
+    CoffeeBean: 1
