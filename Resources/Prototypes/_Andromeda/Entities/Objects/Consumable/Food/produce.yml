@@ -1,0 +1,19 @@
+- type: entity
+  name: coffee bushel
+  description: Sigh... coffee... a-grain?
+  id: CoffeeBushel
+  parent: ProduceBase
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Hydroponics/coffee.rsi
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        reagents:
+        - ReagentId: Coffee
+          Quantity: 5
+  - type: Produce
+    seedId: coffee
+  - type: Tag
+    tags:
+    - Coffee

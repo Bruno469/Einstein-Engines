@@ -1,0 +1,26 @@
+- type: seed
+  id: coffee
+  name: seeds-coffee-name
+  noun: seeds-noun-seeds
+  displayName: seeds-coffee-display-name
+  plantRsi: Objects/Specific/Hydroponics/coffee.rsi
+  packetPrototype: CoffeeSeeds
+  productPrototypes:
+    - CoffeeBushel
+  lifespan: 25
+  maturation: 6
+  production: 2
+  yield: 3
+  potency: 5
+  idealLight: 8
+  nutrientConsumption: 0.40
+  chemicals:
+    Nutriment:
+      Min: 1
+      Max: 2
+      PotencyDivisor: 20
+    Coffee:
+      Min: 5
+      Max: 10
+      PotencyDivisor: 20
+

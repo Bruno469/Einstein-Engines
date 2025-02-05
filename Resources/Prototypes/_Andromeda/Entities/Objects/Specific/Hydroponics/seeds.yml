@@ -1,0 +1,9 @@
+- type: entity
+  parent: SeedBase
+  name: packet of coffee seeds
+  id: CoffeeSeeds
+  components:
+    - type: Seed
+      seedId: coffee
+    - type: Sprite
+      sprite: Objects/Specific/Hydroponics/coffee.rsi
