@@ -7,6 +7,9 @@
   components:
   - type: HumanoidAppearance
     species: Moth
+    hideLayersOnEquip:
+    - Hair
+    - Snout
   - type: Hunger
   - type: Thirst
   - type: Carriable # Carrying system from nyanotrasen.
